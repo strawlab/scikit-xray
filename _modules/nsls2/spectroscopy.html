@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsls2.spectroscopy &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for nsls2.spectroscopy</h1><div class="highlight"><pre>
+<span class="c"># Copyright (c) Brookhaven National Lab 2O14</span>
+<span class="c"># All rights reserved</span>
+<span class="c"># BSD License</span>
+<span class="c"># See LICENSE for full text</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is for spectroscopy specific tools (spectrum fitting etc).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
+                        <span class="n">unicode_literals</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="nb">zip</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="fit_quad_to_peak"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.fit_quad_to_peak">[docs]</a><span class="k">def</span> <span class="nf">fit_quad_to_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fits a quadratic to the data points handed in</span>
+<span class="sd">    to the from y = b[0](x-b[1])**2 + b[2] and R2</span>
+<span class="sd">    (measure of goodness of fit)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : ndarray</span>
+<span class="sd">        locations</span>
+<span class="sd">    y : ndarray</span>
+<span class="sd">        values</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    b : tuple</span>
+<span class="sd">       coefficients of form y = b[0](x-b[1])**2 + b[2]</span>
+
+<span class="sd">    R2 : float</span>
+<span class="sd">      R2 value</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">lenx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c"># some sanity checks</span>
+    <span class="k">if</span> <span class="n">lenx</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;insufficient points handed in &#39;</span><span class="p">)</span>
+    <span class="c"># set up fitting array</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">lenx</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    <span class="c"># use linear least squares fitting</span>
+    <span class="n">beta</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="n">SSerr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">SStot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="c"># re-map the returned value to match the form we want</span>
+    <span class="n">ret_beta</span> <span class="o">=</span> <span class="p">(</span><span class="n">beta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="o">-</span><span class="n">beta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">beta</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">beta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">beta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">beta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">beta</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ret_beta</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">SSerr</span> <span class="o">/</span> <span class="n">SStot</span>
+
+</div>
+<div class="viewcode-block" id="align_and_scale"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.align_and_scale">[docs]</a><span class="k">def</span> <span class="nf">align_and_scale</span><span class="p">(</span><span class="n">energy_list</span><span class="p">,</span> <span class="n">counts_list</span><span class="p">,</span> <span class="n">pk_find_fun</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    energy_list : iterable of ndarrays</span>
+<span class="sd">        list of ndarrays with the energy of each element</span>
+
+<span class="sd">    counts_list : iterable of ndarrays</span>
+<span class="sd">        list of ndarrays of counts/element</span>
+
+<span class="sd">    pk_find_fun : function or None</span>
+<span class="sd">       A function which takes two ndarrays and returns parameters</span>
+<span class="sd">       about the largest peak.  If None, defaults to `find_largest_peak`.</span>
+<span class="sd">       For this demo, the output is (center, height, width), but this sould</span>
+<span class="sd">       be pinned down better.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out_e : list of ndarray</span>
+<span class="sd">       The aligned/scaled energy arrays</span>
+
+<span class="sd">    out_c : list of ndarray</span>
+<span class="sd">       The count arrays (should be the same as the input)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pk_find_fun</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pk_find_fun</span> <span class="o">=</span> <span class="n">find_larest_peak</span>
+
+    <span class="n">base_sigma</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">out_e</span><span class="p">,</span> <span class="n">out_c</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">energy_list</span><span class="p">,</span> <span class="n">counts_list</span><span class="p">):</span>
+        <span class="n">E0</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">pk_find_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">E0</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">base_sigma</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">base_sigma</span> <span class="o">=</span> <span class="n">sigma</span>
+        <span class="n">out_e</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span> <span class="o">*</span> <span class="n">base_sigma</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span>
+        <span class="n">out_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out_e</span><span class="p">,</span> <span class="n">out_c</span>
+
+</div>
+<div class="viewcode-block" id="find_larest_peak"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.find_larest_peak">[docs]</a><span class="k">def</span> <span class="nf">find_larest_peak</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds and estimates the location, width, and height of</span>
+<span class="sd">    the largest peak. Assumes the top of the peak can be</span>
+<span class="sd">    approximated as a Gaussian.  Finds the peak properties</span>
+<span class="sd">    using least-squares fitting of a parabola to the log of</span>
+<span class="sd">    the counts.</span>
+
+<span class="sd">    The region around the peak can be approximated by</span>
+<span class="sd">    Y = Y0 * exp(- (X - X0)**2 / (2 * sigma **2))</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : ndarray</span>
+<span class="sd">       The independent variable</span>
+
+<span class="sd">    Y : ndarary</span>
+<span class="sd">      Dependent variable sampled at positions X</span>
+
+<span class="sd">    window : int, optional</span>
+<span class="sd">       The size of the window around the maximum to use</span>
+<span class="sd">       for the fitting</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    X0 : float</span>
+<span class="sd">        The location of the peak</span>
+
+<span class="sd">    Y0 : float</span>
+<span class="sd">        The magnitude of the peak</span>
+
+<span class="sd">    sigma : float</span>
+<span class="sd">        Width of the peak</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># make sure they are _really_ arrays</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+
+    <span class="c"># get the bin with the largest number of counts</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">roi</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">window</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">j</span> <span class="o">+</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">X0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">),</span> <span class="n">R2</span> <span class="o">=</span> <span class="n">fit_quad_to_peak</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">roi</span><span class="p">],</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">roi</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">X0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Y0</span><span class="p">),</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">w</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

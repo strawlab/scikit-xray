@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>spectroscopy Module &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="up" title="API" href="index.html" />
+    <link rel="next" title="IO API" href="io/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="io/index.html" title="IO API"
+             accesskey="N">next</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-nsls2.spectroscopy">
+<span id="spectroscopy-module"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">spectroscopy</span></tt> Module<a class="headerlink" href="#module-nsls2.spectroscopy" title="Permalink to this headline">¶</a></h1>
+<p>This module is for spectroscopy specific tools (spectrum fitting etc).</p>
+<dl class="function">
+<dt id="nsls2.spectroscopy.align_and_scale">
+<tt class="descclassname">nsls2.spectroscopy.</tt><tt class="descname">align_and_scale</tt><big>(</big><em>energy_list</em>, <em>counts_list</em>, <em>pk_find_fun=None</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#align_and_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.align_and_scale" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>energy_list</strong> : iterable of ndarrays</p>
+<blockquote>
+<div><p>list of ndarrays with the energy of each element</p>
+</div></blockquote>
+<p><strong>counts_list</strong> : iterable of ndarrays</p>
+<blockquote>
+<div><p>list of ndarrays of counts/element</p>
+</div></blockquote>
+<p><strong>pk_find_fun</strong> : function or None</p>
+<blockquote>
+<div><p>A function which takes two ndarrays and returns parameters
+about the largest peak.  If None, defaults to <cite>find_largest_peak</cite>.
+For this demo, the output is (center, height, width), but this sould
+be pinned down better.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>out_e</strong> : list of ndarray</p>
+<blockquote>
+<div><p>The aligned/scaled energy arrays</p>
+</div></blockquote>
+<p><strong>out_c</strong> : list of ndarray</p>
+<blockquote class="last">
+<div><p>The count arrays (should be the same as the input)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.spectroscopy.find_larest_peak">
+<tt class="descclassname">nsls2.spectroscopy.</tt><tt class="descname">find_larest_peak</tt><big>(</big><em>X</em>, <em>Y</em>, <em>window=5</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#find_larest_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.find_larest_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds and estimates the location, width, and height of
+the largest peak. Assumes the top of the peak can be
+approximated as a Gaussian.  Finds the peak properties
+using least-squares fitting of a parabola to the log of
+the counts.</p>
+<p>The region around the peak can be approximated by
+Y = Y0 * exp(- (X - X0)**2 / (2 * sigma <a href="#id1"><span class="problematic" id="id2">**</span></a>2))</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : ndarray</p>
+<blockquote>
+<div><p>The independent variable</p>
+</div></blockquote>
+<p><strong>Y</strong> : ndarary</p>
+<blockquote>
+<div><p>Dependent variable sampled at positions X</p>
+</div></blockquote>
+<p><strong>window</strong> : int, optional</p>
+<blockquote>
+<div><p>The size of the window around the maximum to use
+for the fitting</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X0</strong> : float</p>
+<blockquote>
+<div><p>The location of the peak</p>
+</div></blockquote>
+<p><strong>Y0</strong> : float</p>
+<blockquote>
+<div><p>The magnitude of the peak</p>
+</div></blockquote>
+<p><strong>sigma</strong> : float</p>
+<blockquote class="last">
+<div><p>Width of the peak</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.spectroscopy.fit_quad_to_peak">
+<tt class="descclassname">nsls2.spectroscopy.</tt><tt class="descname">fit_quad_to_peak</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#fit_quad_to_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.fit_quad_to_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits a quadratic to the data points handed in
+to the from y = b[0](x-b[1])**2 + b[2] and R2
+(measure of goodness of fit)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : ndarray</p>
+<blockquote>
+<div><p>locations</p>
+</div></blockquote>
+<p><strong>y</strong> : ndarray</p>
+<blockquote>
+<div><p>values</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>b</strong> : tuple</p>
+<blockquote>
+<div><p>coefficients of form y = b[0](x-b[1])**2 + b[2]</p>
+</div></blockquote>
+<p><strong>R2</strong> : float</p>
+<blockquote class="last">
+<div><p>R2 value</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Next topic</h4>
+  <p class="topless"><a href="io/index.html"
+                        title="next chapter">IO API</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/resource/api/spectroscopy.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="io/index.html" title="IO API"
+             >next</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

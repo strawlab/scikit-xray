@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Git workflow &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="up" title="Development Guide" href="index.html" />
+    <link rel="next" title="Documentation" href="doc_doc.html" />
+    <link rel="prev" title="Introduction to Git" href="git_guide.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="doc_doc.html" title="Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="git_guide.html" title="Introduction to Git"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Development Guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="git-workflow">
+<span id="workflow"></span><h1>Git workflow<a class="headerlink" href="#git-workflow" title="Permalink to this headline">¶</a></h1>
+<p>The basic workflow is that you develop new code on feature branches in
+your local repository.  When you want your code merged into the main
+repository you push your work to <tt class="docutils literal"><span class="pre">github</span></tt> and create a &#8220;Pull
+Request&#8221; (PR).  The code is then reviewed and once everyone is happy,
+it will be merged into <tt class="docutils literal"><span class="pre">NLSL-II/master</span></tt>.</p>
+<div class="section" id="rules">
+<h2>Rules<a class="headerlink" href="#rules" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Don&#8217;t work directly on the main repository, push commits to your
+personal github repository</li>
+<li>Never work on <tt class="docutils literal"><span class="pre">master</span></tt>, always work on a feature branch</li>
+<li>Don&#8217;t merge your own PR.</li>
+<li>Don&#8217;t merge <tt class="docutils literal"><span class="pre">NSLS-II/master</span></tt> into your feature branch
+as this can make merging back into master tricky.</li>
+<li>Commit messages must be at least one sentence and preferably a short
+paragraph.  They should not be longer than 2 paragraphs (if you need to
+write that much the commit should probably be split up).</li>
+<li>Commit messages should start with a descriptor code (borrowed from numpy
+), see table below.</li>
+<li>Add a file in <tt class="docutils literal"><span class="pre">changelog</span></tt> describing the propose of this branch
+in a sentence.  When we make releases these will be compiled into
+a <tt class="docutils literal"><span class="pre">CHANGELOG</span></tt>.  Doing it this way prevents excessive merge conflicts.</li>
+<li>Add a test for every new function you add</li>
+<li>When you fix a bug add a test that used to fail and now passes</li>
+</ol>
+</div></blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="93%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>API</td>
+<td>an (incompatible) API change</td>
+</tr>
+<tr class="row-odd"><td>BLD</td>
+<td>change related to building</td>
+</tr>
+<tr class="row-even"><td>BUG</td>
+<td>bug fix</td>
+</tr>
+<tr class="row-odd"><td>DEP</td>
+<td>deprecate something, or remove a deprecated object</td>
+</tr>
+<tr class="row-even"><td>DEV</td>
+<td>development tool or utility</td>
+</tr>
+<tr class="row-odd"><td>DOC</td>
+<td>documentation</td>
+</tr>
+<tr class="row-even"><td>ENH</td>
+<td>enhancement</td>
+</tr>
+<tr class="row-odd"><td>MNT</td>
+<td>maintenance commit (refactoring, typos, etc.)</td>
+</tr>
+<tr class="row-even"><td>REV</td>
+<td>revert an earlier commit</td>
+</tr>
+<tr class="row-odd"><td>STY</td>
+<td>style fix (whitespace, PEP8)</td>
+</tr>
+<tr class="row-even"><td>TST</td>
+<td>addition or modification of tests</td>
+</tr>
+<tr class="row-odd"><td>REL</td>
+<td>related to releasing numpy</td>
+</tr>
+<tr class="row-even"><td>WIP</td>
+<td>Commit that is a work in progress</td>
+</tr>
+</tbody>
+</table>
+<p>We should try to conform to pep8.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Assuming you already have your repository set up:</p>
+<div class="highlight-python"><div class="highlight"><pre>git fetch upstream
+git checkout master  # switch to master
+git merge upstream/master  # make sure master is up-to-date
+git checkout -b new_feature
+</pre></div>
+</div>
+<p>You now do a bunch of work:</p>
+<div class="highlight-python"><div class="highlight"><pre>git add ...
+git commit
+git add ...
+git commit
+</pre></div>
+</div>
+<p>and when you are happy with it <strong>push</strong> it to github</p>
+<div class="highlight-python"><div class="highlight"><pre>git push --set-upstream github new_feature
+</pre></div>
+</div>
+<p>On the github webpage navigate to your repository and there should be a
+green button that says &#8216;Compare and Pull request&#8217;.  Push this button and
+fill out the form.  This will create the PR and the change can be discussed
+on github.  To make changes to the PR all you need to do is <strong>push</strong> more
+commits to that branch on github</p>
+<div class="highlight-python"><div class="highlight"><pre>git add ...
+git commit
+git push github
+</pre></div>
+</div>
+<p>Once everyone is happy with the changes, the branch can be merged into
+the main <tt class="docutils literal"><span class="pre">master</span></tt> branch via the web interface.  If there are
+conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> with your work, it is your responsibility to
+<strong>rebase</strong> your branch on to the current <tt class="docutils literal"><span class="pre">master</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Git workflow</a><ul>
+<li><a class="reference internal" href="#rules">Rules</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="git_guide.html"
+                        title="previous chapter">Introduction to Git</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="doc_doc.html"
+                        title="next chapter">Documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/resource/dev_guide/workflow.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="doc_doc.html" title="Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="git_guide.html" title="Introduction to Git"
+             >previous</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Development Guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

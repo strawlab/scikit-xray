@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>recip Module &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="up" title="API" href="index.html" />
+    <link rel="next" title="rcparams Module" href="rcparams.html" />
+    <link rel="prev" title="image Module" href="image.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rcparams.html" title="rcparams Module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="image.html" title="image Module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-nsls2.recip">
+<span id="recip-module"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">recip</span></tt> Module<a class="headerlink" href="#module-nsls2.recip" title="Permalink to this headline">¶</a></h1>
+<p>This module is for functions and classes specific to reciprocal space
+calculations.</p>
+<dl class="function">
+<dt id="nsls2.recip.project_to_sphere">
+<tt class="descclassname">nsls2.recip.</tt><tt class="descname">project_to_sphere</tt><big>(</big><em>img</em>, <em>dist_sample</em>, <em>detector_center</em>, <em>pixel_size</em>, <em>wavelength</em>, <em>ROI=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/recip.html#project_to_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.project_to_sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project the pixels on the 2D detector to the surface of a sphere.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>img: ndarray</strong></p>
+<blockquote>
+<div><p>2D detector image</p>
+</div></blockquote>
+<p><strong>dist_sample: float</strong></p>
+<blockquote>
+<div><p>see keys_core
+(mm)</p>
+</div></blockquote>
+<p><strong>detector_center: 2 element float array</strong></p>
+<blockquote>
+<div><p>see keys_core
+(pixels)</p>
+</div></blockquote>
+<p><strong>pixel_size: 2 element float array</strong></p>
+<blockquote>
+<div><p>see keys_core
+(mm)</p>
+</div></blockquote>
+<p><strong>wavelength: float</strong></p>
+<blockquote>
+<div><p>see keys_core
+(Angstroms)</p>
+</div></blockquote>
+<p><strong>ROI: 4 element int array</strong></p>
+<blockquote>
+<div><p>ROI defines a rectangular ROI for img
+ROI[0] == x_min
+ROI[1] == x_max
+ROI[2] == y_min
+ROI[3] == y_max</p>
+</div></blockquote>
+<p><strong>**kwargs: dict</strong></p>
+<blockquote>
+<div><p>Bucket for extra parameters from an unpacked dictionary</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">qi: 4 x N array of the coordinates in Q space (A^-1)</p>
+<blockquote class="last">
+<div><p>Rows correspond to individual pixels
+Columns are (Qx, Qy, Qz, I)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="image.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">image</span></tt> Module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="rcparams.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">rcparams</span></tt> Module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/resource/api/recip.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rcparams.html" title="rcparams Module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="image.html" title="image Module"
+             >previous</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
