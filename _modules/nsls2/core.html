@@ -48,10 +48,40 @@
           <div class="body">
             
   <h1>Source code for nsls2.core</h1><div class="highlight"><pre>
-<span class="c"># Copyright (c) Brookhaven National Lab 2O14</span>
-<span class="c"># All rights reserved</span>
-<span class="c"># BSD License</span>
-<span class="c"># See LICENSE for full text</span>
+<span class="c"># ######################################################################</span>
+<span class="c"># Copyright (c) 2014, Brookhaven Science Associates, Brookhaven        #</span>
+<span class="c"># National Laboratory. All rights reserved.                            #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># Redistribution and use in source and binary forms, with or without   #</span>
+<span class="c"># modification, are permitted provided that the following conditions   #</span>
+<span class="c"># are met:                                                             #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions of source code must retain the above copyright     #</span>
+<span class="c">#   notice, this list of conditions and the following disclaimer.      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions in binary form must reproduce the above copyright  #</span>
+<span class="c">#   notice this list of conditions and the following disclaimer in     #</span>
+<span class="c">#   the documentation and/or other materials provided with the         #</span>
+<span class="c">#   distribution.                                                      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Neither the name of the Brookhaven Science Associates, Brookhaven  #</span>
+<span class="c">#   National Laboratory nor the names of its contributors may be used  #</span>
+<span class="c">#   to endorse or promote products derived from this software without  #</span>
+<span class="c">#   specific prior written permission.                                 #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  #</span>
+<span class="c"># &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    #</span>
+<span class="c"># LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    #</span>
+<span class="c"># FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE       #</span>
+<span class="c"># COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,           #</span>
+<span class="c"># INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES   #</span>
+<span class="c"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR   #</span>
+<span class="c"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)   #</span>
+<span class="c"># HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,  #</span>
+<span class="c"># STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OTHERWISE) ARISING   #</span>
+<span class="c"># IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   #</span>
+<span class="c"># POSSIBILITY OF SUCH DAMAGE.                                          #</span>
+<span class="c">########################################################################</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module is for the &#39;core&#39; data types.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -73,7 +103,7 @@
 
 
 <span class="n">_defaults</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&quot;bins&quot;</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s">&quot;bins&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -265,34 +295,49 @@
 
 <span class="n">keys_core</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&quot;pixel_size&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;description&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="s">&quot;2 element tuple defining the (x y) dimensions of the &quot;</span>
-                         <span class="s">&quot;pixel&quot;</span><span class="p">),</span>
-        <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="s">&quot;units&quot;</span> <span class="p">:</span> <span class="s">&quot;um&quot;</span><span class="p">,</span>
-        <span class="p">},</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;2 element tuple defining the (x y) dimensions of the &quot;</span>
+                        <span class="s">&quot;pixel&quot;</span><span class="p">),</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
     <span class="s">&quot;voxel_size&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;description&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="s">&quot;3 element tuple defining the (x y z) dimensions of the &quot;</span>
-                         <span class="s">&quot;voxel&quot;</span><span class="p">),</span>
-        <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="s">&quot;units&quot;</span> <span class="p">:</span> <span class="s">&quot;um&quot;</span><span class="p">,</span>
-        <span class="p">},</span>
-     <span class="s">&quot;detector_center&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;description&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="s">&quot;2 element tuple defining the (x y) center of the &quot;</span>
-                         <span class="s">&quot;detector in pixels&quot;</span><span class="p">),</span>
-        <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="s">&quot;units&quot;</span> <span class="p">:</span> <span class="s">&quot;pixel&quot;</span><span class="p">,</span>
-        <span class="p">},</span>
-     <span class="s">&quot;dist_sample&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;description&quot;</span> <span class="p">:</span> <span class="s">&quot;distance from the sample to the detector (mm)&quot;</span><span class="p">,</span>
-        <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="s">&quot;units&quot;</span> <span class="p">:</span> <span class="s">&quot;mm&quot;</span><span class="p">,</span>
-        <span class="p">},</span>
-     <span class="s">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;description&quot;</span> <span class="p">:</span> <span class="s">&quot;wavelength of incident radiation (Angstroms)&quot;</span><span class="p">,</span>
-        <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="s">&quot;units&quot;</span> <span class="p">:</span> <span class="s">&quot;angstrom&quot;</span><span class="p">,</span>
-        <span class="p">},</span>
-     <span class="p">}</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;3 element tuple defining the (x y z) dimensions of &quot;</span>
+                        <span class="s">&quot;the voxel&quot;</span><span class="p">),</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;calibrated_center&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;2 element tuple defining the (x y) center of the &quot;</span>
+                        <span class="s">&quot;detector in pixels&quot;</span><span class="p">),</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;pixel&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;detector_size&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;2 element tuple defining no. of pixels(size) in the &quot;</span>
+                        <span class="s">&quot;detector X and Y direction&quot;</span><span class="p">),</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;pixel&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;detector_tilt_angles&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Detector tilt angle&quot;</span><span class="p">,</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot; degrees&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;dist_sample&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;distance from the sample to the detector (mm)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;mm&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;wavelength of incident radiation (Angstroms)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;angstrom&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;ub_mat&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;UB matrix(orientation matrix) 3x3 array&quot;</span><span class="p">,</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;ndarray&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
 
 
 <div class="viewcode-block" id="img_subtraction_pre"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.img_subtraction_pre">[docs]</a><span class="k">def</span> <span class="nf">img_subtraction_pre</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="n">is_reference</span><span class="p">):</span>
@@ -478,7 +523,108 @@
 <span class="sd">    float</span>
 <span class="sd">        The integrated intensity under the wedge</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="bin_edges"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.bin_edges">[docs]</a><span class="k">def</span> <span class="nf">bin_edges</span><span class="p">(</span><span class="n">range_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">range_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate bin edges.  The last value is the returned array is</span>
+<span class="sd">    the right edge of the last bin, the rest of the values are the</span>
+<span class="sd">    left edges of each bin.</span>
+
+<span class="sd">    If `range_max` is specified all bin edges will be less than or</span>
+<span class="sd">    equal to it&#39;s value.</span>
+
+<span class="sd">    If `range_min` is specified all bin edges will be greater than</span>
+<span class="sd">    or equal to it&#39;s value</span>
+
+<span class="sd">    If `nbins` is specified then there will be than number of bins and</span>
+<span class="sd">    the returned array will have length `nbins + 1` (as the right most</span>
+<span class="sd">    edge is included)</span>
+
+<span class="sd">    If `step` is specified then bin width is approximately `step` (It is</span>
+<span class="sd">    not exact due to the nature of floats). The arrays generated by</span>
+<span class="sd">    `np.cumsum(np.ones(nbins) * step)` and `np.arange(nbins) * step` are</span>
+<span class="sd">    not identical.  This function uses the second method in all cases</span>
+<span class="sd">    where `step` is specified.</span>
+
+<span class="sd">    .. warning :: If the set :code:`(range_min, range_max, step)` is</span>
+<span class="sd">        given there is no guarantee that :code:`range_max - range_min`</span>
+<span class="sd">        is an integer multiple of :code:`step`.  In this case the left</span>
+<span class="sd">        most bin edge is :code:`range_min` and the right most bin edge</span>
+<span class="sd">        is less than :code:`range_max` and the distance between the</span>
+<span class="sd">        right most edge and :code:`range_max` is not greater than</span>
+<span class="sd">        :code:`step` (this is the same behavior as the built-in</span>
+<span class="sd">        :code:`range()`).  It is not recommended to specify bins in this</span>
+<span class="sd">        manner.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    range_min : float, optional</span>
+<span class="sd">        The minimum value that may be included as a bin edge</span>
+
+<span class="sd">    range_max : float, optional</span>
+<span class="sd">        The maximum value that may be included as a bin edge</span>
+
+<span class="sd">    nbins : int, optional</span>
+<span class="sd">        The number of bins, if specified the length of the returned</span>
+<span class="sd">        value will be nbins + 1</span>
+
+<span class="sd">    step : float, optional</span>
+<span class="sd">        The step between the bins</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.array</span>
+<span class="sd">        An array of floats for the bin edges.  The last value is the</span>
+<span class="sd">        right edge of the last bin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_valid_args</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">range_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span> <span class="n">range_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span>
+                          <span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">,</span> <span class="n">nbins</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">num_valid_args</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Exactly three of the arguments must be non-None &quot;</span>
+                         <span class="s">&quot;not {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_valid_args</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">range_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">range_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">range_max</span> <span class="o">&lt;=</span> <span class="n">range_min</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The minimum must be less than the maximum&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">nbins</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nbins</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The number of bins must be positive&quot;</span><span class="p">)</span>
+
+    <span class="c"># The easy case</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">range_min</span><span class="p">,</span> <span class="n">range_max</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="c"># in this case, the user gave use min, max, and step</span>
+    <span class="k">if</span> <span class="n">nbins</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">step</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">range_max</span> <span class="o">-</span> <span class="n">range_min</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The step can not be greater than the difference &quot;</span>
+                             <span class="s">&quot;between min and max&quot;</span><span class="p">)</span>
+        <span class="n">nbins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">range_max</span> <span class="o">-</span> <span class="n">range_min</span><span class="p">)</span><span class="o">//</span><span class="n">step</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">range_min</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
+        <span class="c"># if the last value is greater than the max (should never happen)</span>
+        <span class="k">if</span> <span class="n">ret</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">range_max</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">range_max</span> <span class="o">-</span> <span class="n">ret</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-10</span> <span class="o">*</span> <span class="n">step</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Inconsistent &quot;</span>
+                         <span class="s">&quot;(range_min, range_max, step) &quot;</span>
+                         <span class="s">&quot;and step does not evenly divide &quot;</span>
+                         <span class="s">&quot;(range_min - range_max). &quot;</span>
+                         <span class="s">&quot;The bins has been truncated.</span><span class="se">\n</span><span class="s">&quot;</span>
+                         <span class="s">&quot;min: </span><span class="si">%f</span><span class="s"> max: </span><span class="si">%f</span><span class="s"> step: </span><span class="si">%f</span><span class="s"> gap: </span><span class="si">%f</span><span class="s">&quot;</span><span class="p">,</span>
+                         <span class="n">range_min</span><span class="p">,</span> <span class="n">range_max</span><span class="p">,</span>
+                         <span class="n">step</span><span class="p">,</span> <span class="n">range_max</span> <span class="o">-</span> <span class="n">ret</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="c"># in this case we got range_min, nbins, step</span>
+    <span class="k">if</span> <span class="n">range_max</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">range_min</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span>
+
+    <span class="c"># in this case we got range_max, nbins, step</span>
+    <span class="k">if</span> <span class="n">range_min</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">range_max</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">step</span></div>
 </pre></div>
 
           </div>

@@ -48,10 +48,40 @@
           <div class="body">
             
   <h1>Source code for nsls2.spectroscopy</h1><div class="highlight"><pre>
-<span class="c"># Copyright (c) Brookhaven National Lab 2O14</span>
-<span class="c"># All rights reserved</span>
-<span class="c"># BSD License</span>
-<span class="c"># See LICENSE for full text</span>
+<span class="c"># ######################################################################</span>
+<span class="c"># Copyright (c) 2014, Brookhaven Science Associates, Brookhaven        #</span>
+<span class="c"># National Laboratory. All rights reserved.                            #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># Redistribution and use in source and binary forms, with or without   #</span>
+<span class="c"># modification, are permitted provided that the following conditions   #</span>
+<span class="c"># are met:                                                             #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions of source code must retain the above copyright     #</span>
+<span class="c">#   notice, this list of conditions and the following disclaimer.      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions in binary form must reproduce the above copyright  #</span>
+<span class="c">#   notice this list of conditions and the following disclaimer in     #</span>
+<span class="c">#   the documentation and/or other materials provided with the         #</span>
+<span class="c">#   distribution.                                                      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Neither the name of the Brookhaven Science Associates, Brookhaven  #</span>
+<span class="c">#   National Laboratory nor the names of its contributors may be used  #</span>
+<span class="c">#   to endorse or promote products derived from this software without  #</span>
+<span class="c">#   specific prior written permission.                                 #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  #</span>
+<span class="c"># &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    #</span>
+<span class="c"># LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    #</span>
+<span class="c"># FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE       #</span>
+<span class="c"># COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,           #</span>
+<span class="c"># INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES   #</span>
+<span class="c"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR   #</span>
+<span class="c"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)   #</span>
+<span class="c"># HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,  #</span>
+<span class="c"># STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OTHERWISE) ARISING   #</span>
+<span class="c"># IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   #</span>
+<span class="c"># POSSIBILITY OF SUCH DAMAGE.                                          #</span>
+<span class="c">########################################################################</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module is for spectroscopy specific tools (spectrum fitting etc).</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -63,6 +93,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">simps</span>
 
 
 <div class="viewcode-block" id="fit_quad_to_peak"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.fit_quad_to_peak">[docs]</a><span class="k">def</span> <span class="nf">fit_quad_to_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -134,13 +165,12 @@
 <span class="sd">       The count arrays (should be the same as the input)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">pk_find_fun</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">pk_find_fun</span> <span class="o">=</span> <span class="n">find_larest_peak</span>
+        <span class="n">pk_find_fun</span> <span class="o">=</span> <span class="n">find_largest_peak</span>
 
     <span class="n">base_sigma</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">out_e</span><span class="p">,</span> <span class="n">out_c</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">energy_list</span><span class="p">,</span> <span class="n">counts_list</span><span class="p">):</span>
         <span class="n">E0</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">pk_find_fun</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">E0</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">base_sigma</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">base_sigma</span> <span class="o">=</span> <span class="n">sigma</span>
         <span class="n">out_e</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">e</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span> <span class="o">*</span> <span class="n">base_sigma</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span>
@@ -149,7 +179,7 @@
     <span class="k">return</span> <span class="n">out_e</span><span class="p">,</span> <span class="n">out_c</span>
 
 </div>
-<div class="viewcode-block" id="find_larest_peak"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.find_larest_peak">[docs]</a><span class="k">def</span> <span class="nf">find_larest_peak</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="viewcode-block" id="find_largest_peak"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.find_largest_peak">[docs]</a><span class="k">def</span> <span class="nf">find_largest_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds and estimates the location, width, and height of</span>
 <span class="sd">    the largest peak. Assumes the top of the peak can be</span>
@@ -162,10 +192,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    X : ndarray</span>
+<span class="sd">    x : ndarray</span>
 <span class="sd">       The independent variable</span>
 
-<span class="sd">    Y : ndarary</span>
+<span class="sd">    y : ndarary</span>
 <span class="sd">      Dependent variable sampled at positions X</span>
 
 <span class="sd">    window : int, optional</span>
@@ -175,10 +205,10 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    X0 : float</span>
+<span class="sd">    x0 : float</span>
 <span class="sd">        The location of the peak</span>
 
-<span class="sd">    Y0 : float</span>
+<span class="sd">    y0 : float</span>
 <span class="sd">        The magnitude of the peak</span>
 
 <span class="sd">    sigma : float</span>
@@ -186,18 +216,232 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c"># make sure they are _really_ arrays</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
     <span class="c"># get the bin with the largest number of counts</span>
-    <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">roi</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">window</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
                 <span class="n">j</span> <span class="o">+</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">X0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">),</span> <span class="n">R2</span> <span class="o">=</span> <span class="n">fit_quad_to_peak</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">roi</span><span class="p">],</span>
-                                        <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">roi</span><span class="p">]))</span>
+    <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">fit_quad_to_peak</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">roi</span><span class="p">],</span>
+                                       <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">roi</span><span class="p">]))</span>
 
-    <span class="k">return</span> <span class="n">X0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Y0</span><span class="p">),</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">w</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">x0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y0</span><span class="p">),</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">w</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="integrate_ROI_spectrum"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.integrate_ROI_spectrum">[docs]</a><span class="k">def</span> <span class="nf">integrate_ROI_spectrum</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Integrate region(s) of histogram.</span>
+
+<span class="sd">    If `x_min` and `x_max` are arrays/lists they must be equal in</span>
+<span class="sd">    length. The values contained in the &#39;x_value_array&#39; must be</span>
+<span class="sd">    monotonic (up or down).  The returned value is the sum of all the</span>
+<span class="sd">    regions and a single scalar value is returned.  Each region is</span>
+<span class="sd">    computed independently, if regions overlap the overlapped area will</span>
+<span class="sd">    be included multiple times in the final sum.</span>
+
+<span class="sd">    `bin_edges` is an array of the left edges and the final right</span>
+<span class="sd">    edges of the bins.  `counts` is the value in each of those bins.</span>
+
+<span class="sd">    The bins who&#39;s centers fall with in the integration limits are</span>
+<span class="sd">    included in the sum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bin_edges : array</span>
+<span class="sd">        Independent variable, any unit.</span>
+
+<span class="sd">        Must be one longer in length than counts</span>
+
+<span class="sd">    counts : array</span>
+<span class="sd">        Dependent variable, any units</span>
+
+<span class="sd">    x_min : float or array</span>
+<span class="sd">        The lower edge of the integration region(s).</span>
+
+<span class="sd">    x_max : float or array</span>
+<span class="sd">        The upper edge of the integration region(s).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The totals integrated value in same units as `counts`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">integrate_ROI</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">),</span>
+                         <span class="n">counts</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_formatter_array_regions</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tab_count</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a formatted string of sub-sections of an array</span>
+
+<span class="sd">    Each value in center generates a section of the string like:</span>
+
+<span class="sd">       {tab_count*\t}c : [x[c - n] ... x[c] ... x[c + n + 1]]</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        The array to be looked into</span>
+
+<span class="sd">    centers : iterable</span>
+<span class="sd">        The locations to print out around</span>
+
+<span class="sd">    window : int, optional</span>
+<span class="sd">        how many values on either side of center to include</span>
+
+<span class="sd">        defaults to 1</span>
+
+<span class="sd">    tab_count : int, optional</span>
+<span class="sd">       The number of tabs to pre-fix lines with</span>
+
+<span class="sd">       default is 0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">      The formatted string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="o">*</span><span class="n">tab_count</span> <span class="o">+</span> <span class="s">&#39;center</span><span class="se">\t</span><span class="s">array values</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span>
+              <span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="o">*</span><span class="n">tab_count</span> <span class="o">+</span> <span class="s">&#39;------</span><span class="se">\t</span><span class="s">------------</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">header</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="o">*</span><span class="n">tab_count</span> <span class="o">+</span>
+               <span class="s">&quot;{c}: </span><span class="se">\t</span><span class="s"> {vals}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+                                    <span class="n">vals</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">-</span><span class="n">window</span><span class="p">]):</span>
+                                           <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">xl</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])])</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">centers</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="integrate_ROI"><a class="viewcode-back" href="../../resource/api/spectroscopy.html#nsls2.spectroscopy.integrate_ROI">[docs]</a><span class="k">def</span> <span class="nf">integrate_ROI</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Integrate region(s) of input data.</span>
+
+<span class="sd">    If `x_min` and `x_max` are arrays/lists they must be equal in</span>
+<span class="sd">    length. The values contained in the &#39;x&#39; must be monotonic (up or</span>
+<span class="sd">    down).  The returned value is the sum of all the regions and a</span>
+<span class="sd">    single scalar value is returned.  Each region is computed</span>
+<span class="sd">    independently, if regions overlap the overlapped area will be</span>
+<span class="sd">    included multiple times in the final sum.</span>
+
+<span class="sd">    This function assumes that `y` is a function of</span>
+<span class="sd">    `x` sampled at `x`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        Independent variable, any unit</span>
+
+<span class="sd">    y : array</span>
+<span class="sd">        Dependent variable, any units</span>
+
+<span class="sd">    x_min : float or array</span>
+<span class="sd">        The lower edge of the integration region(s)</span>
+<span class="sd">        in units of x.</span>
+
+<span class="sd">    x_max : float or array</span>
+<span class="sd">        The upper edge of the integration region(s)</span>
+<span class="sd">        in units of x.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The totals integrated value in same units as `y`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># make sure x (x-values) and y (y-values) are arrays</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Inputs (x and y) must be the same &quot;</span>
+                         <span class="s">&quot;size. x.shape = {0} and y.shape = &quot;</span>
+                         <span class="s">&quot;{1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="c"># use np.sign() to obtain array which has evaluated sign changes in all</span>
+    <span class="c"># diff in input x_value array. Checks and tests are then run on the</span>
+    <span class="c"># evaluated sign change array.</span>
+    <span class="n">eval_x_arr_sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c"># check to make sure no outliers exist which violate the monotonically</span>
+    <span class="c"># increasing requirement, and if exceptions exist, then error points to the</span>
+    <span class="c"># location within the source array where the exception occurs.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">eval_x_arr_sign</span> <span class="o">==</span> <span class="n">eval_x_arr_sign</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">error_locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">eval_x_arr_sign</span> <span class="o">!=</span> <span class="n">eval_x_arr_sign</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Independent variable must be monotonically &quot;</span>
+                         <span class="s">&quot;increasing. Erroneous values found at x-value &quot;</span>
+                         <span class="s">&quot;array index locations:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
+                         <span class="n">_formatter_array_regions</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">error_locations</span><span class="p">))</span>
+
+    <span class="c"># check whether the sign of all diff measures are negative in the</span>
+    <span class="c"># x. If so, then the input array for both x_values and</span>
+    <span class="c"># count are reversed so that they are positive, and monotonically increase</span>
+    <span class="c"># in value</span>
+    <span class="k">if</span> <span class="n">eval_x_arr_sign</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Input values for &#39;x&#39; were found to be &quot;</span>
+                      <span class="s">&quot;monotonically decreasing. The &#39;x&#39; and &quot;</span>
+                      <span class="s">&quot;&#39;y&#39; arrays have been reversed prior to &quot;</span>
+                      <span class="s">&quot;integration.&quot;</span><span class="p">)</span>
+
+    <span class="c"># up-cast to 1d and make sure it is flat</span>
+    <span class="n">x_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x_min</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">x_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="c"># verify that the number of minimum and maximum boundary values are equal</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_min</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_max</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;integration bounds must have same lengths&quot;</span><span class="p">)</span>
+
+    <span class="c"># verify that the specified minimum values are actually less than the</span>
+    <span class="c"># sister maximum value, and raise error if any minimum value is actually</span>
+    <span class="c"># greater than the sister maximum value.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">x_min</span> <span class="o">&gt;=</span> <span class="n">x_max</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;All lower integration bounds must be less than &quot;</span>
+                         <span class="s">&quot;upper integration bounds.&quot;</span><span class="p">)</span>
+
+    <span class="c"># check to make sure that all specified minimum and maximum values are</span>
+    <span class="c"># actually contained within the extents of the independent variable array</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">x_min</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">error_locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_min</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Specified lower integration boundary values are &quot;</span>
+                         <span class="s">&quot;outside the spectrum range. All minimum integration &quot;</span>
+                         <span class="s">&quot;boundaries must be greater than, or equal to the &quot;</span>
+                         <span class="s">&quot;lowest value in spectrum range. The erroneous x_min_&quot;</span>
+                         <span class="s">&quot;array indices are:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
+                         <span class="n">_formatter_array_regions</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span>
+                                                  <span class="n">error_locations</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">x_max</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">error_locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_max</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Specified upper integration boundary values &quot;</span>
+                         <span class="s">&quot;are outside the spectrum range. All maximum &quot;</span>
+                         <span class="s">&quot;integration boundary values must be less &quot;</span>
+                         <span class="s">&quot;than, or equal to the highest value in the spectrum &quot;</span>
+                         <span class="s">&quot;range. The erroneous x_max array indices are: &quot;</span>
+                         <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
+                         <span class="n">_formatter_array_regions</span><span class="p">(</span><span class="n">x_max</span><span class="p">,</span>
+                                                  <span class="n">error_locations</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="c"># find the bottom index of each integration bound</span>
+    <span class="n">bottom_indx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">x_min</span><span class="p">)</span>
+    <span class="c"># find the top index of each integration bound</span>
+    <span class="c"># NOTE: +1 required for correct slicing for integration function</span>
+    <span class="n">top_indx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c"># set up temporary variables</span>
+    <span class="n">accum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c"># integrate each region</span>
+    <span class="k">for</span> <span class="n">bot</span><span class="p">,</span> <span class="n">top</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bottom_indx</span><span class="p">,</span> <span class="n">top_indx</span><span class="p">):</span>
+        <span class="c"># Note: If an odd number of intervals is specified, then the</span>
+        <span class="c"># even=&#39;avg&#39; setting calculates and averages first AND last</span>
+        <span class="c"># N-2 intervals using trapezoidal rule.</span>
+        <span class="c"># If calculation speed become an issue, then consider changing</span>
+        <span class="c"># setting to &#39;first&#39;, or &#39;last&#39; in which case trap rule is only</span>
+        <span class="c"># applied to either first or last N-2 intervals.</span>
+        <span class="n">accum</span> <span class="o">+=</span> <span class="n">simps</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">bot</span><span class="p">:</span><span class="n">top</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">bot</span><span class="p">:</span><span class="n">top</span><span class="p">],</span> <span class="n">even</span><span class="o">=</span><span class="s">&#39;avg&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">accum</span></div>
 </pre></div>
 
           </div>

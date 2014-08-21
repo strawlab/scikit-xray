@@ -93,8 +93,8 @@ be pinned down better.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nsls2.spectroscopy.find_larest_peak">
-<tt class="descclassname">nsls2.spectroscopy.</tt><tt class="descname">find_larest_peak</tt><big>(</big><em>X</em>, <em>Y</em>, <em>window=5</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#find_larest_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.find_larest_peak" title="Permalink to this definition">¶</a></dt>
+<dt id="nsls2.spectroscopy.find_largest_peak">
+<tt class="descclassname">nsls2.spectroscopy.</tt><tt class="descname">find_largest_peak</tt><big>(</big><em>x</em>, <em>y</em>, <em>window=5</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#find_largest_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.find_largest_peak" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds and estimates the location, width, and height of
 the largest peak. Assumes the top of the peak can be
 approximated as a Gaussian.  Finds the peak properties
@@ -106,11 +106,11 @@ Y = Y0 * exp(- (X - X0)**2 / (2 * sigma <a href="#id1"><span class="problematic"
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : ndarray</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : ndarray</p>
 <blockquote>
 <div><p>The independent variable</p>
 </div></blockquote>
-<p><strong>Y</strong> : ndarary</p>
+<p><strong>y</strong> : ndarary</p>
 <blockquote>
 <div><p>Dependent variable sampled at positions X</p>
 </div></blockquote>
@@ -121,11 +121,11 @@ for the fitting</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X0</strong> : float</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>x0</strong> : float</p>
 <blockquote>
 <div><p>The location of the peak</p>
 </div></blockquote>
-<p><strong>Y0</strong> : float</p>
+<p><strong>y0</strong> : float</p>
 <blockquote>
 <div><p>The magnitude of the peak</p>
 </div></blockquote>
@@ -166,6 +166,99 @@ to the from y = b[0](x-b[1])**2 + b[2] and R2
 <p><strong>R2</strong> : float</p>
 <blockquote class="last">
 <div><p>R2 value</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.spectroscopy.integrate_ROI">
+<tt class="descclassname">nsls2.spectroscopy.</tt><tt class="descname">integrate_ROI</tt><big>(</big><em>x</em>, <em>y</em>, <em>x_min</em>, <em>x_max</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#integrate_ROI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.integrate_ROI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrate region(s) of input data.</p>
+<p>If <cite>x_min</cite> and <cite>x_max</cite> are arrays/lists they must be equal in
+length. The values contained in the &#8216;x&#8217; must be monotonic (up or
+down).  The returned value is the sum of all the regions and a
+single scalar value is returned.  Each region is computed
+independently, if regions overlap the overlapped area will be
+included multiple times in the final sum.</p>
+<p>This function assumes that <cite>y</cite> is a function of
+<cite>x</cite> sampled at <cite>x</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>Independent variable, any unit</p>
+</div></blockquote>
+<p><strong>y</strong> : array</p>
+<blockquote>
+<div><p>Dependent variable, any units</p>
+</div></blockquote>
+<p><strong>x_min</strong> : float or array</p>
+<blockquote>
+<div><p>The lower edge of the integration region(s)
+in units of x.</p>
+</div></blockquote>
+<p><strong>x_max</strong> : float or array</p>
+<blockquote>
+<div><p>The upper edge of the integration region(s)
+in units of x.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">float</p>
+<blockquote class="last">
+<div><p>The totals integrated value in same units as <cite>y</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.spectroscopy.integrate_ROI_spectrum">
+<tt class="descclassname">nsls2.spectroscopy.</tt><tt class="descname">integrate_ROI_spectrum</tt><big>(</big><em>bin_edges</em>, <em>counts</em>, <em>x_min</em>, <em>x_max</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#integrate_ROI_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.integrate_ROI_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrate region(s) of histogram.</p>
+<p>If <cite>x_min</cite> and <cite>x_max</cite> are arrays/lists they must be equal in
+length. The values contained in the &#8216;x_value_array&#8217; must be
+monotonic (up or down).  The returned value is the sum of all the
+regions and a single scalar value is returned.  Each region is
+computed independently, if regions overlap the overlapped area will
+be included multiple times in the final sum.</p>
+<p><cite>bin_edges</cite> is an array of the left edges and the final right
+edges of the bins.  <cite>counts</cite> is the value in each of those bins.</p>
+<p>The bins who&#8217;s centers fall with in the integration limits are
+included in the sum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>bin_edges</strong> : array</p>
+<blockquote>
+<div><p>Independent variable, any unit.</p>
+<p>Must be one longer in length than counts</p>
+</div></blockquote>
+<p><strong>counts</strong> : array</p>
+<blockquote>
+<div><p>Dependent variable, any units</p>
+</div></blockquote>
+<p><strong>x_min</strong> : float or array</p>
+<blockquote>
+<div><p>The lower edge of the integration region(s).</p>
+</div></blockquote>
+<p><strong>x_max</strong> : float or array</p>
+<blockquote>
+<div><p>The upper edge of the integration region(s).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">float</p>
+<blockquote class="last">
+<div><p>The totals integrated value in same units as <cite>counts</cite></p>
 </div></blockquote>
 </td>
 </tr>
