@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="next" title="Git workflow" href="workflow.html" />
     <link rel="prev" title="Development Guide" href="index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -38,6 +38,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="workflow.html" title="Git workflow"
@@ -53,15 +56,15 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="introduction-to-git">
 <span id="git-guide"></span><h1>Introduction to Git<a class="headerlink" href="#introduction-to-git" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="configuring-git">
 <h2>Configuring git<a class="headerlink" href="#configuring-git" title="Permalink to this headline">¶</a></h2>
 <p>There are many resources on the web for how to use and configure
-<cite>git</cite>, this is a streamlined reference for use at NSLS-II.  There
-is a variety of gui front ends for <cite>git</cite>, this will demonstrate the
+<em class="xref py py-obj">git</em>, this is a streamlined reference for use at NSLS-II.  There
+is a variety of gui front ends for <em class="xref py py-obj">git</em>, this will demonstrate the
 command line usage as the lowest-common-denominator.  On windows and
 OSX the github applications seems pretty slick and integrates well with
 the website.</p>
@@ -70,9 +73,9 @@ is best to generate an ssh key pair which will allow see
 <a class="reference external" href="https://help.github.com/articles/generating-ssh-keys">https://help.github.com/articles/generating-ssh-keys</a> for a
 guide of how to generate and upload the keys to github.  If you are
 working on a computer on the controls network ssh will not work.</p>
-<p>The global behavior of <cite>git</cite> in controlled through <cite>~/.gitconfig</cite>
-(<cite>C:UsersMyLogin.gitconfig</cite> on Windows), which can edited either
-directly, or through the command line (<cite>git config &#8211;global ...</cite>).
+<p>The global behavior of <em class="xref py py-obj">git</em> in controlled through <em class="xref py py-obj">gitconfig</em>
+(<em class="xref py py-obj">C:UsersMyLogin.gitconfig</em> on Windows), which can edited either
+directly, or through the command line (<em class="xref py py-obj">git config &#8211;global ...</em>).
 This is as sugested global configuration file</p>
 <div class="highlight-python"><div class="highlight"><pre>[user]
      name = Your Name
@@ -105,7 +108,7 @@ cd ~/my_source     # but this is the scheme I use
 git clone git@github.com:github_user_name/repository_name.git
 </pre></div>
 </div>
-<p>where <cite>github_user_name</cite> is replaced with your user name.  You may be
+<p>where <em class="xref py py-obj">github_user_name</em> is replaced with your user name.  You may be
 asked to unlock your sshkey or authenticate in some way and to accept
 the RSA key of the remote host (say yes).  Once you have done this you
 should have a directory in your current directory which contains the
@@ -113,7 +116,7 @@ most up-to-date version of the code.</p>
 </div>
 <div class="section" id="branching-and-committing">
 <h2>Branching and committing<a class="headerlink" href="#branching-and-committing" title="Permalink to this headline">¶</a></h2>
-<p><cite>git</cite> stores the history of code as a series of &#8216;snapshots&#8217; of the
+<p><em class="xref py py-obj">git</em> stores the history of code as a series of &#8216;snapshots&#8217; of the
 project, <strong>commit</strong>s, in a tree.  Each <strong>commit</strong> has a unique
 identifier generated from it&#8217;s contents.  A <strong>branch</strong> points to a
 single commit and provides a human-readable label for a &#8216;snapshot&#8217; in
@@ -237,13 +240,13 @@ Added text about basic git usage.
 </div>
 <div class="section" id="changing-branches">
 <h3>Changing Branches<a class="headerlink" href="#changing-branches" title="Permalink to this headline">¶</a></h3>
-<p>The files in the repository directory are what <cite>git</cite> refers to as you
-<strong>working copy</strong>.  When you switch <strong>branch</strong>es <cite>git</cite> will make your
+<p>The files in the repository directory are what <em class="xref py py-obj">git</em> refers to as you
+<strong>working copy</strong>.  When you switch <strong>branch</strong>es <em class="xref py py-obj">git</em> will make your
 working copy look exactly like the snapshot saved in the <strong>commit</strong>
 the <strong>branch</strong> points to.  For example say you are working on
 <strong>branch</strong> <em>new_feature</em> and you notice an un-related bug.  You should
 <strong>commit</strong> all of your feature work (or use <strong>stash</strong>) and then switch back
-to the <cite>master</cite> branch</p>
+to the <em class="xref py py-obj">master</em> branch</p>
 <div class="highlight-python"><div class="highlight"><pre>git checkout master
 </pre></div>
 </div>
@@ -267,7 +270,7 @@ a single file</p>
 <div class="highlight-python"><div class="highlight"><pre>git checkout -- file_name
 </pre></div>
 </div>
-<p>(the space between <cite>&#8211;</cite> and <cite>file_name</cite> is important) will reset the
+<p>(the space between <em class="xref py py-obj">&#8211;</em> and <em class="xref py py-obj">file_name</em> is important) will reset the
 file to what it looks like on the current branch.  To throw out
 <em>all</em> of your changes and reset your working directory to the last
 commit on your branch</p>
@@ -284,10 +287,10 @@ commit on your branch</p>
 clones of a repository are <em>technically</em> equivolent.  However, for
 organizational reasons we desigante one to be the &#8216;canonical&#8217;
 repository, in this case the repository associated with the
-<tt class="docutils literal"><span class="pre">NSLS-II</span></tt> group on github.</p>
+<code class="docutils literal"><span class="pre">NSLS-II</span></code> group on github.</p>
 <p>In order to get the lastest code from github to your local machine you
-need to tell <tt class="docutils literal"><span class="pre">git</span></tt> where the other code is.  These locations are, in
-the langague of <tt class="docutils literal"><span class="pre">git</span></tt>, <strong>remotes</strong>.  The first remote we will want to
+need to tell <code class="docutils literal"><span class="pre">git</span></code> where the other code is.  These locations are, in
+the langague of <code class="docutils literal"><span class="pre">git</span></code>, <strong>remotes</strong>.  The first remote we will want to
 add in the canonical repository:</p>
 <div class="highlight-python"><div class="highlight"><pre># make sure you are in the working directory of your local repo
 cd ~/my_source/repo_name
@@ -309,7 +312,7 @@ upstream        git@github.com:NSLS-II/pyRafters.git (push)
 </pre></div>
 </div>
 <p>which shows two remotes (origin and upstream).  It is recommended to
-re-name <tt class="docutils literal"><span class="pre">origin</span></tt> -&gt; your github username</p>
+re-name <code class="docutils literal"><span class="pre">origin</span></code> -&gt; your github username</p>
 <div class="highlight-python"><div class="highlight"><pre>git remote rename origin gh_username
 </pre></div>
 </div>
@@ -329,7 +332,7 @@ to <strong>fetch</strong> from as a <strong>remote</strong></p>
 </div>
 <p>which will copy all of the commits in the <strong>remote</strong> repository that
 are not already in your local repository.   This does not change your
-<strong>working copy</strong>, only updates what <strong>commit</strong>s <cite>git</cite> knows about.</p>
+<strong>working copy</strong>, only updates what <strong>commit</strong>s <em class="xref py py-obj">git</em> knows about.</p>
 <p>To checkout a local copy of a remote <strong>branch</strong></p>
 <div class="highlight-python"><div class="highlight"><pre>git checkout -t remote_name/remote_branch
 </pre></div>
@@ -339,7 +342,7 @@ are not already in your local repository.   This does not change your
 <div class="section" id="push">
 <h4>Push<a class="headerlink" href="#push" title="Permalink to this headline">¶</a></h4>
 <p><strong>push</strong> is the symmetric operation to <strong>fetch</strong> as ships commits <em>to</em>
-a remote.   The first time you <strong>push</strong> a <strong>branch</strong> you need to tell <cite>git</cite>
+a remote.   The first time you <strong>push</strong> a <strong>branch</strong> you need to tell <em class="xref py py-obj">git</em>
 which branch on the <strong>remote</strong> to push to:</p>
 <div class="highlight-python"><div class="highlight"><pre>git push --set-upstream a_remote branch_name
 </pre></div>
@@ -360,7 +363,7 @@ can <strong>fetch</strong> them and begin to work with them.</p>
 </div>
 <p>If your current branch has no commits that are not in <em>merge_source</em>
 it is called a &#8216;fast-forward&#8217; merge and will always succeed.  If your
-local branch has commits that are not in <cite>merge_source</cite> the merge can
+local branch has commits that are not in <em class="xref py py-obj">merge_source</em> the merge can
 generate conflicts which will need to resolved by hand.</p>
 </div>
 <div class="section" id="pull">
@@ -386,7 +389,7 @@ generate conflicts which will need to resolved by hand.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
@@ -422,12 +425,14 @@ generate conflicts which will need to resolved by hand.</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="workflow.html"
                         title="next chapter">Git workflow</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/resource/dev_guide/git_guide.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/resource/dev_guide/git_guide.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -444,7 +449,7 @@ generate conflicts which will need to resolved by hand.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -452,6 +457,9 @@ generate conflicts which will need to resolved by hand.</p>
              >index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="workflow.html" title="Git workflow"
@@ -463,9 +471,9 @@ generate conflicts which will need to resolved by hand.</p>
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

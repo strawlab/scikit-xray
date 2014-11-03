@@ -1,0 +1,6 @@
+nsls2.constants.Element.jump_factor
+===================================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: Element.jump_factor

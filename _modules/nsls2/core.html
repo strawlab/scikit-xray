@@ -23,12 +23,12 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,6 +36,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
@@ -45,9 +48,10 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for nsls2.core</h1><div class="highlight"><pre>
+<span class="c">#! encoding: utf-8</span>
 <span class="c"># ######################################################################</span>
 <span class="c"># Copyright (c) 2014, Brookhaven Science Associates, Brookhaven        #</span>
 <span class="c"># National Laboratory. All rights reserved.                            #</span>
@@ -89,95 +93,42 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
                         <span class="n">unicode_literals</span><span class="p">)</span>
-
 <span class="kn">import</span> <span class="nn">six</span>
+
 <span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="nb">zip</span>
 <span class="kn">from</span> <span class="nn">six</span> <span class="kn">import</span> <span class="n">string_types</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">MutableMapping</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">tee</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">deque</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">tee</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">src.ctrans</span> <span class="kn">as</span> <span class="nn">ctrans</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">ctrans</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">ctrans</span> <span class="o">=</span> <span class="bp">None</span>
+
 
 <span class="n">md_value</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;md_value&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">])</span>
 
 
 <span class="n">_defaults</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&quot;bins&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s">&#39;nx&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s">&#39;ny&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s">&#39;nz&#39;</span><span class="p">:</span> <span class="mi">100</span>
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="XR_data"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.XR_data">[docs]</a><span class="k">class</span> <span class="nc">XR_data</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for wrapping up and carrying around data + unrelated</span>
-<span class="sd">    meta data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">md</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">mutable</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        data : object</span>
-<span class="sd">            The &#39;data&#39; object to be carried around</span>
-
-<span class="sd">        md : dict</span>
-<span class="sd">            The meta-data object, needs to support [] access</span>
-
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">if</span> <span class="n">md</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">md</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_md</span> <span class="o">=</span> <span class="n">md</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mutable</span> <span class="o">=</span> <span class="n">mutable</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Access to the data object we are carrying around</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
-
-    <span class="nd">@data.setter</span>
-<div class="viewcode-block" id="XR_data.data"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.XR_data.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutable</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Can&#39;t set data on immutable instance&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">new_data</span>
-</div>
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Over-ride the [] infrastructure to access the meta-data</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        key : hashable object</span>
-<span class="sd">            The meta-data key to retrive</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_md</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Over-ride the [] infrastructure to access the meta-data</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        key : hashable object</span>
-<span class="sd">            The meta-data key to set</span>
-
-<span class="sd">        val : object</span>
-<span class="sd">            The new meta-data value to set</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutable</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Can&#39;t set meta-data on immutable instance&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_md</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-
-<div class="viewcode-block" id="XR_data.meta_data_keys"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.XR_data.meta_data_keys">[docs]</a>    <span class="k">def</span> <span class="nf">meta_data_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get a list of the meta-data keys that this object knows about</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_md</span><span class="p">))</span>
-
-</div></div>
-<div class="viewcode-block" id="MD_dict"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.MD_dict">[docs]</a><span class="k">class</span> <span class="nc">MD_dict</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">):</span>
+<div class="viewcode-block" id="MD_dict"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.MD_dict.html#nsls2.core.MD_dict">[docs]</a><span class="k">class</span> <span class="nc">MD_dict</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to make dealing with the meta-data scheme for DataExchange easier</span>
 
@@ -293,6 +244,149 @@
                 <span class="k">yield</span> <span class="n">inner_v</span>
 
 
+<div class="viewcode-block" id="verbosedict"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.verbosedict.html#nsls2.core.verbosedict">[docs]</a><span class="k">class</span> <span class="nc">verbosedict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A sub-class of dict which raises more verbose errors if</span>
+<span class="sd">    a key is not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">25</span><span class="p">:</span>
+                <span class="n">new_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;You tried to access the key &#39;{key}&#39; &quot;</span>
+                           <span class="s">&quot;which does not exist.  The &quot;</span>
+                           <span class="s">&quot;extant keys are: {valid_keys}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                               <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">valid_keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;You tried to access the key &#39;{key}&#39; &quot;</span>
+                           <span class="s">&quot;which does not exist.  There &quot;</span>
+                           <span class="s">&quot;are {num} extant keys, which is too many to &quot;</span>
+                           <span class="s">&quot;show you&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                               <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+            <span class="n">six</span><span class="o">.</span><span class="n">reraise</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">new_msg</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+</div>
+<div class="viewcode-block" id="RCParamDict"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.RCParamDict.html#nsls2.core.RCParamDict">[docs]</a><span class="k">class</span> <span class="nc">RCParamDict</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class to make dealing with storing default values easier.</span>
+
+<span class="sd">    RC params is a hold- over from the UNIX days where configuration</span>
+<span class="sd">    files are &#39;rc&#39; files.  See</span>
+<span class="sd">    http://en.wikipedia.org/wiki/Configuration_file</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Getting and setting data by path is possible</span>
+
+<span class="sd">    &gt;&gt;&gt; tt = RCParamDict()</span>
+<span class="sd">    &gt;&gt;&gt; tt[&#39;name&#39;] = &#39;test&#39;</span>
+<span class="sd">    &gt;&gt;&gt; tt[&#39;nested.a&#39;] = 2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_delim</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># the dict to hold the keys at this level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="c"># the defaultdict (defaults to just accepting it) of</span>
+        <span class="c"># validator functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validators</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">True</span><span class="p">)</span>
+
+    <span class="c"># overload __setitem__ so dotted paths work</span>
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="c"># try to split the key</span>
+        <span class="n">splt_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_delim</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c"># if more than one part, recurse</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splt_key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">splt_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">RCParamDict</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">splt_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tmp</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">RCParamDict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&quot;name space is borked&quot;</span><span class="p">)</span>
+
+            <span class="n">tmp</span><span class="p">[</span><span class="n">splt_key</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validators</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                <span class="c"># TODO improve the validation error</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;fails to validate, improve this&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="c"># try to split the key</span>
+        <span class="n">splt_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_delim</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splt_key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">splt_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">splt_key</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">splt_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_delim</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splt_key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">splt_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">__delitem__</span><span class="p">(</span><span class="n">splt_key</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_helper</span><span class="p">([])</span>
+
+    <span class="k">def</span> <span class="nf">_iter_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursively walk the tree and return the names of the leaves</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">RCParamDict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">_iter_helper</span><span class="p">(</span><span class="n">path_list</span> <span class="o">+</span> <span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="p">]):</span>
+                    <span class="k">yield</span> <span class="n">k</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delim</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_list</span> <span class="o">+</span> <span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># recursively get the formatted list of strings</span>
+        <span class="n">str_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr_helper</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c"># return as a single string</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">str_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_repr_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tab_level</span><span class="p">):</span>
+        <span class="c"># to accumulate the strings into</span>
+        <span class="n">str_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c"># list of the elements at this level</span>
+        <span class="n">elm_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c"># list of sub-levels</span>
+        <span class="n">nested_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c"># loop over the local _dict and sort out which</span>
+        <span class="c"># keys are nested and which are this level</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">RCParamDict</span><span class="p">):</span>
+                <span class="n">nested_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">elm_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="c"># sort the keys in both lists</span>
+        <span class="n">elm_list</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">nested_list</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="c"># loop over and format the keys/vals at this level</span>
+        <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">elm_list</span><span class="p">:</span>
+            <span class="n">str_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;    &quot;</span> <span class="o">*</span> <span class="n">tab_level</span> <span class="o">+</span>
+                            <span class="s">&quot;{key}: {val}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">key</span><span class="o">=</span><span class="n">elm</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">elm</span><span class="p">]))</span>
+        <span class="c"># deal with the nested groups</span>
+        <span class="k">for</span> <span class="n">nested</span> <span class="ow">in</span> <span class="n">nested_list</span><span class="p">:</span>
+            <span class="c"># add the label for the group name</span>
+            <span class="n">str_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;    &quot;</span> <span class="o">*</span> <span class="n">tab_level</span> <span class="o">+</span>
+                            <span class="s">&quot;{key}:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">nested</span><span class="p">))</span>
+            <span class="c"># add the strings from _all_ the nested groups</span>
+            <span class="n">str_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">nested</span><span class="p">]</span><span class="o">.</span><span class="n">_repr_helper</span><span class="p">(</span><span class="n">tab_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">str_list</span>
+
+</div>
 <span class="n">keys_core</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&quot;pixel_size&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;2 element tuple defining the (x y) dimensions of the &quot;</span>
@@ -301,10 +395,10 @@
         <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s">&quot;voxel_size&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;3 element tuple defining the (x y z) dimensions of &quot;</span>
-                        <span class="s">&quot;the voxel&quot;</span><span class="p">),</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;3 element tuple defining the (x y z) dimensions of the &quot;</span>
+                         <span class="s">&quot;voxel&quot;</span><span class="p">),</span>
         <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span>
     <span class="p">},</span>
     <span class="s">&quot;calibrated_center&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;2 element tuple defining the (x y) center of the &quot;</span>
@@ -337,10 +431,68 @@
         <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;UB matrix(orientation matrix) 3x3 array&quot;</span><span class="p">,</span>
         <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;ndarray&quot;</span><span class="p">,</span>
     <span class="p">},</span>
+    <span class="s">&quot;energy&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;scanning energy for data collection&quot;</span><span class="p">,</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;keV&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;array_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;axial lengths of the array (Pixels)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;x_dimension&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;x-axis array length as int&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;pixels&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;y_dimension&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;y-axis array length as int&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;pixels&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;z_dimension&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;z-axis array length as int&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;pixels&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;bounding_box&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;physical extents of the array: useful for &quot;</span> <span class="o">+</span>
+                        <span class="s">&quot;volume alignment, transformation, merge and &quot;</span> <span class="o">+</span>
+                         <span class="s">&quot;spatial comparison of multiple volumes&quot;</span><span class="p">),</span>
+        <span class="s">&quot;x_min&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;minimum spatial coordinate along the x-axis&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;x_max&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;maximum spatial coordinate along the x-axis&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;y_min&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;minimum spatial coordinate along the y-axis&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;y_max&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;maximum spatial coordinate along the y-axis&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;z_min&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;minimum spatial coordinate along the z-axis&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&quot;z_max&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;maximum spatial coordinate along the z-axis&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">:</span> <span class="s">&quot;um&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="img_subtraction_pre"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.img_subtraction_pre">[docs]</a><span class="k">def</span> <span class="nf">img_subtraction_pre</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="n">is_reference</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">subtract_reference_images</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">is_reference</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to subtract a series of measured images from</span>
 <span class="sd">    background/dark current/reference images.  The nearest reference</span>
@@ -349,7 +501,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    img_arr : numpy.ndarray</span>
+<span class="sd">    imgs : numpy.ndarray</span>
 <span class="sd">        Array of 2-D images</span>
 
 <span class="sd">    is_reference : 1-D boolean array</span>
@@ -376,31 +528,25 @@
         <span class="c"># use ValueError because the user passed in invalid data</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The first image is not a reference image&quot;</span><span class="p">)</span>
     <span class="c"># grab the first image</span>
-    <span class="n">ref_imge</span> <span class="o">=</span> <span class="n">img_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ref_imge</span> <span class="o">=</span> <span class="n">imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="c"># just sum the bool array to get count</span>
     <span class="n">ref_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">is_reference</span><span class="p">)</span>
     <span class="c"># make an array of zeros of the correct type</span>
-    <span class="n">corrected_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">img_arr</span><span class="p">)</span> <span class="o">-</span> <span class="n">ref_count</span><span class="p">,)</span> <span class="o">+</span> <span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
-        <span class="n">dtype</span><span class="o">=</span><span class="n">img_arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="c"># local loop counter</span>
-    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">corrected_image</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
     <span class="c"># zip together (lazy like this is really izip), images and flags</span>
-    <span class="k">for</span> <span class="n">img</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">img_arr</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">is_reference</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="k">for</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">imgs</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">is_reference</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
         <span class="c"># if this is a ref image, save it and move on</span>
         <span class="k">if</span> <span class="n">ref</span><span class="p">:</span>
-            <span class="n">ref_imge</span> <span class="o">=</span> <span class="n">img</span>
+            <span class="n">ref_imge</span> <span class="o">=</span> <span class="n">imgs</span>
             <span class="k">continue</span>
         <span class="c"># else, do the subtraction</span>
-        <span class="n">corrected_image</span><span class="p">[</span><span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span> <span class="o">-</span> <span class="n">ref_imge</span>
-        <span class="c"># and increment the counter</span>
-        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">corrected_image</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imgs</span> <span class="o">-</span> <span class="n">ref_imge</span><span class="p">)</span>
 
-    <span class="c"># return the output</span>
-    <span class="k">return</span> <span class="n">corrected_image</span>
+    <span class="c"># return the output as a list</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">corrected_image</span><span class="p">)</span>
 
-</div>
-<div class="viewcode-block" id="detector2D_to_1D"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.detector2D_to_1D">[docs]</a><span class="k">def</span> <span class="nf">detector2D_to_1D</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">detector_center</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">img_to_relative_xyi</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">pixel_size_x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pixel_size_y</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert the 2D image to a list of x y I coordinates where</span>
 <span class="sd">    x == x_img - detector_center[0] and</span>
@@ -408,60 +554,80 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    img: ndarray</span>
-<span class="sd">        2D detector image</span>
-<span class="sd">    detector_center: 2 element array</span>
-<span class="sd">        see keys_core[&quot;detector_center&quot;][&quot;description&quot;]</span>
+<span class="sd">    img: `ndarray`</span>
+<span class="sd">        2D image</span>
+<span class="sd">    cx : float</span>
+<span class="sd">        Image center in the x direction</span>
+<span class="sd">    cy : float</span>
+<span class="sd">        Image center in the y direction</span>
+<span class="sd">    pixel_size_x : float, optional</span>
+<span class="sd">        Pixel size in x</span>
+<span class="sd">    pixel_size_y : float, optional</span>
+<span class="sd">        Pixel size in y</span>
 <span class="sd">    **kwargs: dict</span>
 <span class="sd">        Bucket for extra parameters in an unpacked dictionary</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    X : numpy.ndarray</span>
-<span class="sd">        1 x N</span>
-<span class="sd">        x-coordinate of pixel</span>
-<span class="sd">    Y : numpy.ndarray</span>
-<span class="sd">        1 x N</span>
-<span class="sd">        y-coordinate of pixel</span>
-<span class="sd">    I : numpy.ndarray</span>
-<span class="sd">        1 x N</span>
-<span class="sd">        intensity of pixel</span>
+<span class="sd">    x : `ndarray`</span>
+<span class="sd">        x-coordinate of pixel. shape (N, )</span>
+<span class="sd">    y : `ndarray`</span>
+<span class="sd">        y-coordinate of pixel. shape (N, )</span>
+<span class="sd">    I : `ndarray`</span>
+<span class="sd">        intensity of pixel. shape (N, )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pixel_size_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">pixel_size_y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pixel_size_x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Input parameter pixel_size_x must be greater &#39;</span>
+                             <span class="s">&#39;than 0. Your value was &#39;</span> <span class="o">+</span>
+                             <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">pixel_size_x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">pixel_size_y</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Input parameter pixel_size_y must be greater &#39;</span>
+                             <span class="s">&#39;than 0. Your value was &#39;</span> <span class="o">+</span>
+                             <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">pixel_size_y</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">pixel_size_x</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">pixel_size_y</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pixel_size_x</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">pixel_size_y</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;pixel_size_x and pixel_size_y must both be None or &#39;</span>
+                         <span class="s">&#39;greater than zero. You passed in values for &#39;</span>
+                         <span class="s">&#39;pixel_size_x of {0} and pixel_size_y of {1]&#39;</span>
+                         <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pixel_size_x</span><span class="p">,</span> <span class="n">pixel_size_y</span><span class="p">))</span>
 
     <span class="c"># Caswell&#39;s incredible terse rewrite</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">detector_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                        <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">detector_center</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">pixel_size_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">cx</span><span class="p">),</span>
+                       <span class="n">pixel_size_y</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">cy</span><span class="p">))</span>
 
-    <span class="c"># return the x, y and z coordinates (as a tuple? or is this a list?)</span>
-    <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">Y</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">img</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="c"># return x, y and intensity as 1D arrays</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">img</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
-</div>
-<div class="viewcode-block" id="bin_1D"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.bin_1D">[docs]</a><span class="k">def</span> <span class="nf">bin_1D</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">min_x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_x</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="bin_1D"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.bin_1D.html#nsls2.core.bin_1D">[docs]</a><span class="k">def</span> <span class="nf">bin_1D</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">min_x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_x</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Bin the values in y based on their x-coordinates</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    x : 1D array-like</span>
+<span class="sd">    x : array</span>
 <span class="sd">        position</span>
-<span class="sd">    y : 1D array-like</span>
+<span class="sd">    y : array</span>
 <span class="sd">        intensity</span>
-<span class="sd">    nx : integer</span>
+<span class="sd">    nx : integer, optional</span>
 <span class="sd">        number of bins to use</span>
-<span class="sd">    min_x : float</span>
+<span class="sd">    min_x : float, optional</span>
 <span class="sd">        Left edge of first bin</span>
-<span class="sd">    max_x : float</span>
+<span class="sd">    max_x : float, optional</span>
 <span class="sd">        Right edge of last bin</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    edges : 1D array</span>
+<span class="sd">    edges : array</span>
 <span class="sd">        edges of bins, length nx + 1</span>
 
-<span class="sd">    val : 1D array</span>
+<span class="sd">    val : array</span>
 <span class="sd">        sum of values in each bin, length nx</span>
 
-<span class="sd">    count : ID</span>
+<span class="sd">    count : array</span>
 <span class="sd">        The number of counts in each bin, length nx</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -482,15 +648,163 @@
     <span class="k">return</span> <span class="n">bins</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">count</span>
 
 </div>
-<div class="viewcode-block" id="radial_integration"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.radial_integration">[docs]</a><span class="k">def</span> <span class="nf">radial_integration</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">detector_center</span><span class="p">,</span> <span class="n">sample_to_detector_distance</span><span class="p">,</span>
-                       <span class="n">pixel_size</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    docstring!</span>
+<div class="viewcode-block" id="bin_image_to_1D"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.bin_image_to_1D.html#nsls2.core.bin_image_to_1D">[docs]</a><span class="k">def</span> <span class="nf">bin_image_to_1D</span><span class="p">(</span><span class="n">img</span><span class="p">,</span>
+                    <span class="n">calibrated_center</span><span class="p">,</span>
+                    <span class="n">pixel_to_1D_func</span><span class="p">,</span> <span class="n">pixel_to_1D_kwarg</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="n">bin_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bin_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bin_num</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Integrates an image to a 1D curve.</span>
+
+<span class="sd">    The first step is use the `pixel_to_1D_func` to convert</span>
+<span class="sd">    each pixel location to a scalar.  Example of this would be</span>
+<span class="sd">    distance from the center in mm, azimuthal angle, or converting to q.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img : ndarray</span>
+<span class="sd">        The image to integrate</span>
+
+<span class="sd">    calibrated_center : tuple</span>
+<span class="sd">        The center of the image (row, col)</span>
+
+<span class="sd">    pixel_to_1D_func : function</span>
+<span class="sd">        A function that takes in an image shape, calibrated_center</span>
+<span class="sd">        and a dict of kwargs and returns an array of the same shape</span>
+<span class="sd">        filled with a scalar for that pixel position (R2 -&gt; R1 mapping).</span>
+<span class="sd">        The function must have the following signature ::</span>
+
+<span class="sd">            output = func(img.shape, calibrated_center, **pixel_to_1D_kwarg)</span>
+
+<span class="sd">        such that ::</span>
+
+<span class="sd">            output.shape == img.shape</span>
+
+<span class="sd">        and output[i, j] corresponds to img[i, j]</span>
+
+
+<span class="sd">    pixel_to_1D_kwargs : dict, optional</span>
+<span class="sd">        Any additional keyword arguments to pass through to the warp function</span>
+
+<span class="sd">    bin_min : float, optional</span>
+<span class="sd">        The lower limit of the binning</span>
+
+<span class="sd">    bin_max : float, optional</span>
+<span class="sd">        The upper limit of binning</span>
+
+<span class="sd">    bin_num : int, optional</span>
+<span class="sd">        The number of bins</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bin_edges : array</span>
+<span class="sd">        The bin edges, length N+1</span>
+
+<span class="sd">    bin_sum : array</span>
+<span class="sd">        The sum of the pixels that fell in each bin</span>
+
+<span class="sd">    bin_count : array</span>
+<span class="sd">        The number of pixels in each bin</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="k">if</span> <span class="n">pixel_to_1D_kwarg</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pixel_to_1D_kwarg</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">values_1D</span> <span class="o">=</span> <span class="n">pixel_to_1D_func</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">calibrated_center</span><span class="p">,</span>
+                             <span class="o">**</span><span class="n">pixel_to_1D_kwarg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bin_1D</span><span class="p">(</span><span class="n">values_1D</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">img</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">min_x</span><span class="o">=</span><span class="n">bin_min</span><span class="p">,</span>
+                  <span class="n">max_x</span><span class="o">=</span><span class="n">bin_max</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="n">bin_num</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="wedge_integration"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.wedge_integration">[docs]</a><span class="k">def</span> <span class="nf">wedge_integration</span><span class="p">(</span><span class="n">src_data</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">theta_start</span><span class="p">,</span>
+<div class="viewcode-block" id="pixel_to_radius"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.pixel_to_radius.html#nsls2.core.pixel_to_radius">[docs]</a><span class="k">def</span> <span class="nf">pixel_to_radius</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">pixel_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts pixel positions to radius from the calibrated center</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shape : tuple</span>
+<span class="sd">        The shape of the image (nrow, ncol) to warp</span>
+<span class="sd">        the coordinates of</span>
+
+<span class="sd">    calibrated_center : tuple</span>
+<span class="sd">        The center in pixels-units (row, col)</span>
+
+<span class="sd">    pixel_size : tuple, optional</span>
+<span class="sd">        The size of a pixel (really the pitch) in real units. (height, width).</span>
+
+<span class="sd">        Defaults to 1 pixel/pixel if not specified.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    R : array</span>
+<span class="sd">        The L2 norm of the distance of each pixel from the calibrated center.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">pixel_size</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pixel_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">pixel_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span>
+                                        <span class="n">calibrated_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                       <span class="n">pixel_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span>
+                                        <span class="n">calibrated_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">*</span><span class="n">X</span> <span class="o">+</span> <span class="n">Y</span><span class="o">*</span><span class="n">Y</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="pixel_to_phi"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.pixel_to_phi.html#nsls2.core.pixel_to_phi">[docs]</a><span class="k">def</span> <span class="nf">pixel_to_phi</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">pixel_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts pixel positions to :math:`\\phi`, the angle from vertical.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shape : tuple</span>
+<span class="sd">        The shape of the image (nrow, ncol) to warp</span>
+<span class="sd">        the coordinates of</span>
+
+<span class="sd">    calibrated_center : tuple</span>
+<span class="sd">        The center in pixels-units (row, col)</span>
+
+<span class="sd">    pixel_size : tuple, optional</span>
+<span class="sd">        The size of a pixel (really the pitch) in real units. (height, width).</span>
+
+<span class="sd">        Defaults to 1 pixel/pixel if not specified.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    phi : array</span>
+<span class="sd">        :math:`\\phi`, the angle from the vertical axis.</span>
+<span class="sd">        :math:`\\phi \\el [-\pi, \pi]`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">pixel_size</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pixel_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">pixel_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span>
+                                        <span class="n">calibrated_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                       <span class="n">pixel_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span>
+                                        <span class="n">calibrated_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">radius_to_twotheta</span><span class="p">(</span><span class="n">dist_sample</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts radius from the calibrated center to scattering angle</span>
+<span class="sd">    (2:math:`2\\theta`) with known detector to sample distance.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dist_sample : float</span>
+<span class="sd">        distance from the sample to the detector (mm)</span>
+
+<span class="sd">    radius : array</span>
+<span class="sd">        The L2 norm of the distance of each pixel from the calibrated center.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    two_theta : array</span>
+<span class="sd">        An array of :math:`2\\theta` values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">radius</span> <span class="o">/</span> <span class="n">dist_sample</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="wedge_integration"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.wedge_integration.html#nsls2.core.wedge_integration">[docs]</a><span class="k">def</span> <span class="nf">wedge_integration</span><span class="p">(</span><span class="n">src_data</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">theta_start</span><span class="p">,</span>
                       <span class="n">delta_theta</span><span class="p">,</span> <span class="n">r_inner</span><span class="p">,</span> <span class="n">delta_r</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implementation of caking.</span>
@@ -523,10 +837,10 @@
 <span class="sd">    float</span>
 <span class="sd">        The integrated intensity under the wedge</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="bin_edges"><a class="viewcode-back" href="../../resource/api/core.html#nsls2.core.bin_edges">[docs]</a><span class="k">def</span> <span class="nf">bin_edges</span><span class="p">(</span><span class="n">range_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">range_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="bin_edges"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.bin_edges.html#nsls2.core.bin_edges">[docs]</a><span class="k">def</span> <span class="nf">bin_edges</span><span class="p">(</span><span class="n">range_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">range_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate bin edges.  The last value is the returned array is</span>
 <span class="sd">    the right edge of the last bin, the rest of the values are the</span>
@@ -624,15 +938,419 @@
 
     <span class="c"># in this case we got range_max, nbins, step</span>
     <span class="k">if</span> <span class="n">range_min</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">range_max</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">step</span></div>
+        <span class="k">return</span> <span class="n">range_max</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">step</span>
+
+</div>
+<div class="viewcode-block" id="grid3d"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.grid3d.html#nsls2.core.grid3d">[docs]</a><span class="k">def</span> <span class="nf">grid3d</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">img_stack</span><span class="p">,</span>
+           <span class="n">nx</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nz</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+           <span class="n">xmin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+           <span class="n">ymax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">zmin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+           <span class="n">binary_mask</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Grid irregularly spaced data points onto a regular grid via histogramming</span>
+
+<span class="sd">    This function will process the set of reciprocal space values (q), the</span>
+<span class="sd">    image stack (img_stack) and grid the image data based on the bounds</span>
+<span class="sd">    provided, using defaults if none are provided.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : ndarray</span>
+<span class="sd">        (Qx, Qy, Qz) - HKL values - Nx3 array</span>
+<span class="sd">    img_stack : ndarray</span>
+<span class="sd">        Intensity array of the images</span>
+<span class="sd">        dimensions are: [num_img][num_rows][num_cols]</span>
+<span class="sd">    nx : int, optional</span>
+<span class="sd">        Number of voxels along x</span>
+<span class="sd">    ny : int, optional</span>
+<span class="sd">        Number of voxels along y</span>
+<span class="sd">    nz : int, optional</span>
+<span class="sd">        Number of voxels along z</span>
+<span class="sd">    xmin : float, optional</span>
+<span class="sd">        Minimum value along x. Defaults to smallest x value in q</span>
+<span class="sd">    ymin : float, optional</span>
+<span class="sd">        Minimum value along y. Defaults to smallest y value in q</span>
+<span class="sd">    zmin : float, optional</span>
+<span class="sd">        Minimum value along z. Defaults to smallest z value in q</span>
+<span class="sd">    xmax : float, optional</span>
+<span class="sd">        Maximum value along x. Defaults to largest x value in q</span>
+<span class="sd">    ymax : float, optional</span>
+<span class="sd">        Maximum value along y. Defaults to largest y value in q</span>
+<span class="sd">    zmax : float, optional</span>
+<span class="sd">        Maximum value along z. Defaults to largest z value in q</span>
+<span class="sd">    binary_mask : ndarray, optional</span>
+<span class="sd">        The binary mask provides a mechanism to remove unwanted pixels</span>
+<span class="sd">        from the images.</span>
+<span class="sd">        Binary mask can be two different shapes.</span>
+<span class="sd">        - 1: 2-D with binary_mask.shape == np.asarray(img_stack[0]).shape</span>
+<span class="sd">        - 2: 3-D with binary_mask.shape == np.asarray(img_stack).shape</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mean : ndarray</span>
+<span class="sd">        intensity grid.  The values in this grid are the</span>
+<span class="sd">        mean of the values that fill with in the grid.</span>
+<span class="sd">    occupancy : ndarray</span>
+<span class="sd">        The number of data points that fell in the grid.</span>
+<span class="sd">    std_err : ndarray</span>
+<span class="sd">        This is the standard error of the value in the</span>
+<span class="sd">        grid box.</span>
+<span class="sd">    oob : int</span>
+<span class="sd">        Out Of Bounds. Number of data points that are outside of</span>
+<span class="sd">        the gridded region.</span>
+<span class="sd">    bounds : list</span>
+<span class="sd">        tuple of (min, max, step) for x, y, z in order: [x_bounds,</span>
+<span class="sd">        y_bounds, z_bounds]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># validate input</span>
+    <span class="n">img_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img_stack</span><span class="p">)</span>
+    <span class="c"># todo determine if we&#39;re going to support masked arrays</span>
+    <span class="c"># todo masked arrays seemed to have been punted to `process_to_q`</span>
+
+    <span class="c"># check to see if the binary mask and the image stack are identical shapes</span>
+    <span class="k">if</span> <span class="n">binary_mask</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">binary_mask</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">img_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="c"># do a dance :)</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">binary_mask</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">img_stack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="c"># this is still a valid mask, so make it the same dimensions</span>
+        <span class="c"># as img_stack.</span>
+        <span class="c"># should probably change this to use something similar to:</span>
+        <span class="c"># todo http://stackoverflow.com/questions/5564098/</span>
+        <span class="n">binary_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">binary_mask</span><span class="p">),</span> <span class="n">img_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The binary mask must be the same shape as the&quot;</span>
+                         <span class="s">&quot;img_stack ({0}) or a single image in the image &quot;</span>
+                         <span class="s">&quot;stack ({1}).  The input binary mask is shaped ({2})&quot;</span>
+                         <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">img_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">img_stack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                                   <span class="n">binary_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">q</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;q.ndim must be a 2-D array of shape Nx3 array. &quot;</span>
+                         <span class="s">&quot;You provided an array with {0} dimensions.&quot;</span>
+                         <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The shape of q must be an Nx3 array, not {0}X{1}&quot;</span>
+                         <span class="s">&quot; which you provided.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">q</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="c"># set defaults for qmin, qmax, dq</span>
+    <span class="n">qmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">qmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dqn</span> <span class="o">=</span> <span class="p">[</span><span class="n">_defaults</span><span class="p">[</span><span class="s">&#39;nx&#39;</span><span class="p">],</span> <span class="n">_defaults</span><span class="p">[</span><span class="s">&#39;ny&#39;</span><span class="p">],</span> <span class="n">_defaults</span><span class="p">[</span><span class="s">&#39;nz&#39;</span><span class="p">]]</span>
+
+    <span class="c"># pad the upper edge by just enough to ensure that all of the</span>
+    <span class="c"># points are in-bounds with the binning rules: lo &lt;= val &lt; hi</span>
+    <span class="n">qmax</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">spacing</span><span class="p">(</span><span class="n">qmax</span><span class="p">)</span>
+
+    <span class="c"># check for non-default input</span>
+    <span class="k">for</span> <span class="n">target</span><span class="p">,</span> <span class="n">input_vals</span> <span class="ow">in</span> <span class="p">((</span><span class="n">dqn</span><span class="p">,</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">)),</span>
+                               <span class="p">(</span><span class="n">qmin</span><span class="p">,</span> <span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">zmin</span><span class="p">)),</span>
+                               <span class="p">(</span><span class="n">qmax</span><span class="p">,</span> <span class="p">(</span><span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">zmax</span><span class="p">))):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">in_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_vals</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">in_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">target</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">in_val</span>
+
+    <span class="c"># format bounds</span>
+    <span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qmin</span><span class="p">,</span> <span class="n">qmax</span><span class="p">,</span> <span class="n">dqn</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c"># creating (Qx, Qy, Qz, I) Nx4 array - HKL values and Intensity</span>
+    <span class="c"># getting the intensity value for each pixel</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">img_stack</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">binary_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">binary_mask</span><span class="p">)]</span>
+
+    <span class="c">#            3D grid of the data set</span>
+    <span class="c"># starting time for gridding</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="c"># call the c library</span>
+    <span class="n">mean</span><span class="p">,</span> <span class="n">occupancy</span><span class="p">,</span> <span class="n">std_err</span><span class="p">,</span> <span class="n">oob</span> <span class="o">=</span> <span class="n">ctrans</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">qmin</span><span class="p">,</span> <span class="n">qmax</span><span class="p">,</span> <span class="n">dqn</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># ending time for the gridding</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Done processed in {0} seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">))</span>
+
+    <span class="c"># No. of values zero in the grid</span>
+    <span class="n">empt_nb</span> <span class="o">=</span> <span class="p">(</span><span class="n">occupancy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c"># log some information about the grid at the debug level</span>
+    <span class="k">if</span> <span class="n">oob</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;There are </span><span class="si">%.2e</span><span class="s"> points outside the grid {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">oob</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;There are </span><span class="si">%2e</span><span class="s"> bins in the grid {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mean</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">empt_nb</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;There are </span><span class="si">%.2e</span><span class="s"> values zero in the grid {0}&quot;</span>
+                     <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">empt_nb</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">occupancy</span><span class="p">,</span> <span class="n">std_err</span><span class="p">,</span> <span class="n">oob</span><span class="p">,</span> <span class="n">bounds</span>
+
+</div>
+<div class="viewcode-block" id="bin_edges_to_centers"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.bin_edges_to_centers.html#nsls2.core.bin_edges_to_centers">[docs]</a><span class="k">def</span> <span class="nf">bin_edges_to_centers</span><span class="p">(</span><span class="n">input_edges</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function for turning a array of bin edges into</span>
+<span class="sd">    an array of bin centers</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_edges : array-like</span>
+<span class="sd">        N + 1 values which are the left edges of N bins</span>
+<span class="sd">        and the right edge of the last bin</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        A length N array giving the centers of the bins</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">input_edges</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">input_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">input_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">*</span> <span class="mf">0.5</span>
+
+
+<span class="c"># https://docs.python.org/2/library/itertools.html#recipes</span></div>
+<div class="viewcode-block" id="pairwise"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.pairwise.html#nsls2.core.pairwise">[docs]</a><span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
+    <span class="s">&quot;s -&gt; (s0,s1), (s1,s2), (s2, s3), ...&quot;</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tee</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="q_to_d"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.q_to_d.html#nsls2.core.q_to_d">[docs]</a><span class="k">def</span> <span class="nf">q_to_d</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to convert :math:`d` to :math:`q`.  The point</span>
+<span class="sd">    of this function is to prevent fat-fingered typos.</span>
+
+<span class="sd">    By definition the relationship is:</span>
+
+<span class="sd">    ..math ::</span>
+
+<span class="sd">        q = \\frac{2 \pi}{d}</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : array</span>
+<span class="sd">        An array of q values</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    d : array</span>
+<span class="sd">       An array of d (plane) spacing</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="d_to_q"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.d_to_q.html#nsls2.core.d_to_q">[docs]</a><span class="k">def</span> <span class="nf">d_to_q</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to convert :math:`d` to :math:`q`.</span>
+<span class="sd">    The point of this function is to prevent fat-fingered typos.</span>
+
+<span class="sd">    By definition the relationship is:</span>
+
+<span class="sd">    ..math ::</span>
+
+<span class="sd">        d = \\frac{2 \pi}{q}</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : array</span>
+<span class="sd">       An array of d (plane) spacing</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    q : array</span>
+<span class="sd">        An array of q values</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="q_to_twotheta"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.q_to_twotheta.html#nsls2.core.q_to_twotheta">[docs]</a><span class="k">def</span> <span class="nf">q_to_twotheta</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to convert :math:`q` + :math:`\\lambda` to :math:`2\\theta`.</span>
+<span class="sd">    The point of this function is to prevent fat-fingered typos.</span>
+
+<span class="sd">    By definition the relationship is:</span>
+
+<span class="sd">    ..math ::</span>
+
+<span class="sd">        \\sin\\left(\\frac{2\\theta}{2}\right) = \\frac{\\lambda q}{4 \\pi}</span>
+
+<span class="sd">    thus</span>
+
+<span class="sd">    ..math ::</span>
+
+<span class="sd">        2\\theta_n = 2 \\arcsin\\left(\\frac{\\lambda q}{4 \\pi}\\right</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : array</span>
+<span class="sd">        An array of :math:`q` values</span>
+
+<span class="sd">    wavelength : float</span>
+<span class="sd">        Wavelength of the incoming x-rays</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    two_theta : array</span>
+<span class="sd">        An array of :math:`2\\theta` values</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="n">wavelength</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+    <span class="n">pre_factor</span> <span class="o">=</span> <span class="n">wavelength</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="n">pre_factor</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="twotheta_to_q"><a class="viewcode-back" href="../../resource/api/generated/nsls2.core.twotheta_to_q.html#nsls2.core.twotheta_to_q">[docs]</a><span class="k">def</span> <span class="nf">twotheta_to_q</span><span class="p">(</span><span class="n">two_theta</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to convert :math:`2\\theta` + :math:`\\lambda` to :math:`q`.</span>
+<span class="sd">    The point of this function is to prevent fat-fingered typos.</span>
+
+<span class="sd">    By definition the relationship is:</span>
+
+<span class="sd">    ..math ::</span>
+
+<span class="sd">        \\sin\\left(\\frac{2\\theta}{2}\right) = \\frac{\\lambda q}{4 \\pi}</span>
+
+<span class="sd">    thus</span>
+
+<span class="sd">    ..math ::</span>
+
+<span class="sd">        q = \\frac{4 \\pi \\sin\\left(\\frac{2\\theta}{2}\right)}{\\lambda}</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    two_theta : array</span>
+<span class="sd">        An array of :math:`2\\theta` values</span>
+
+<span class="sd">    wavelength : float</span>
+<span class="sd">        Wavelength of the incoming x-rays</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    q : array</span>
+<span class="sd">        An array of :math:`q` values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">two_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">two_theta</span><span class="p">)</span>
+    <span class="n">wavelength</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+    <span class="n">pre_factor</span> <span class="o">=</span> <span class="p">((</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">wavelength</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pre_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">two_theta</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">multi_tau_lags</span><span class="p">(</span><span class="n">multitau_levels</span><span class="p">,</span> <span class="n">multitau_channels</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Standard multiple-tau algorithm for finding the lag times (delay</span>
+<span class="sd">    times).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    multitau_levels : int</span>
+<span class="sd">        number of levels of multiple-taus</span>
+
+<span class="sd">    multitau_channels : int</span>
+<span class="sd">        number of channels or number of buffers in auto-correlators</span>
+<span class="sd">        normalizations (must be even)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    total_channels : int</span>
+<span class="sd">        total number of channels ( or total number of delay times)</span>
+
+<span class="sd">    lag_steps : ndarray</span>
+<span class="sd">        delay or lag steps for the multiple tau analysis</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The multi-tau correlation scheme was used for finding the lag times</span>
+<span class="sd">    (delay times).</span>
+
+<span class="sd">    References: text [1]_</span>
+
+<span class="sd">    .. [1] K. Schätzela, M. Drewela and  S. Stimaca, &quot;Photon correlation</span>
+<span class="sd">       measurements at large lag times: Improving statistical accuracy,&quot;</span>
+<span class="sd">       J. Mod. Opt., vol 35, p 711–718, 1988.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">multitau_channels</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Number of  multiple tau channels(buffers)&quot;</span>
+                         <span class="s">&quot; must be even. You provided {0} &quot;</span>
+                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">multitau_channels</span><span class="p">))</span>
+
+    <span class="c"># total number of channels ( or total number of delay times)</span>
+    <span class="n">tot_channels</span> <span class="o">=</span> <span class="p">(</span><span class="n">multitau_levels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">multitau_channels</span><span class="o">//</span><span class="mi">2</span>
+
+    <span class="n">lag</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lag_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">multitau_channels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">multitau_levels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">multitau_channels</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">lag</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">multitau_channels</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+
+    <span class="n">lag_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lag_steps</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lag</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">tot_channels</span><span class="p">,</span> <span class="n">lag_steps</span>
+
+
+<span class="k">def</span> <span class="nf">roi_rectangles</span><span class="p">(</span><span class="n">num_rois</span><span class="p">,</span> <span class="n">roi_data</span><span class="p">,</span> <span class="n">detector_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_rois: int</span>
+<span class="sd">        number of region of interests(roi)</span>
+
+<span class="sd">    roi_data: ndarray</span>
+<span class="sd">        upper left co-ordinates of roi&#39;s and the, length and width of roi&#39;s</span>
+<span class="sd">        from those co-ordinates</span>
+<span class="sd">        shape is [num_rois][4]</span>
+
+<span class="sd">    detector_size : tuple</span>
+<span class="sd">        2 element tuple defining the number of pixels in the detector.</span>
+<span class="sd">        Order is (num_rows, num_columns)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    q_inds : ndarray</span>
+<span class="sd">        indices of the Q values for the required shape</span>
+<span class="sd">        shape [detector_size[0]*detector_size[1]][1]</span>
+
+<span class="sd">    num_pixels : ndarray</span>
+<span class="sd">        number of pixels in certain rectangle shape</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">detector_size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+    <span class="n">num_pixels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c"># for i in range(0, num_rois):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">col_coor</span><span class="p">,</span> <span class="n">row_coor</span><span class="p">,</span> <span class="n">col_val</span><span class="p">,</span> <span class="n">row_val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">roi_data</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">col_coor</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">col_coor</span> <span class="o">+</span> <span class="n">col_val</span><span class="p">,</span>
+                                                     <span class="n">detector_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">row_coor</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">row_coor</span> <span class="o">+</span> <span class="n">row_val</span><span class="p">,</span>
+                                                     <span class="n">detector_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+        <span class="n">area</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">top</span><span class="p">)</span>
+
+        <span class="c"># find the number of pixels in each roi</span>
+        <span class="n">num_pixels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">area</span><span class="p">)</span>
+
+        <span class="n">slc1</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">slc2</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span>
+
+        <span class="c"># assign a different scalar for each roi</span>
+        <span class="n">mesh</span><span class="p">[</span><span class="n">slc1</span><span class="p">,</span> <span class="n">slc2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">q_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">q_inds</span><span class="p">,</span> <span class="n">num_pixels</span>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -649,7 +1367,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -658,13 +1376,16 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

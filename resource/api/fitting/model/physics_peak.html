@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>fitting.model.physics_peak Module &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Fitting API" href="../index.html" />
+    <link rel="next" title="constants Module" href="../../constants.html" />
+    <link rel="prev" title="fitting.model.background Module" href="background.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../constants.html" title="constants Module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="background.html" title="fitting.model.background Module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >API</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Fitting API</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-nsls2.fitting.model.physics_peak">
+<span id="fitting-model-physics-peak-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">fitting.model.physics_peak</span></code> Module<a class="headerlink" href="#module-nsls2.fitting.model.physics_peak" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="nsls2.fitting.model.physics_peak.compton_peak">
+<code class="descclassname">nsls2.fitting.model.physics_peak.</code><code class="descname">compton_peak</code><span class="sig-paren">(</span><em>x</em>, <em>coherent_sct_energy</em>, <em>fwhm_offset</em>, <em>fwhm_fanoprime</em>, <em>compton_angle</em>, <em>compton_fwhm_corr</em>, <em>compton_amplitude</em>, <em>compton_f_step</em>, <em>compton_f_tail</em>, <em>compton_gamma</em>, <em>compton_hi_f_tail</em>, <em>compton_hi_gamma</em>, <em>epsilon=2.96</em>, <em>matrix=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/nsls2/fitting/model/physics_peak.html#compton_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.fitting.model.physics_peak.compton_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model compton peak, which is generated as an inelastic peak and always
+stays to the left of elastic peak on the spectrum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>energy value</p>
+</div></blockquote>
+<p><strong>coherent_sct_energy</strong> : float</p>
+<blockquote>
+<div><p>incident energy</p>
+</div></blockquote>
+<p><strong>fwhm_offset</strong> : float</p>
+<blockquote>
+<div><p>global fitting parameter for peak width</p>
+</div></blockquote>
+<p><strong>fwhm_fanoprime</strong> : float</p>
+<blockquote>
+<div><p>global fitting parameter for peak width</p>
+</div></blockquote>
+<p><strong>compton_angle</strong> : float</p>
+<blockquote>
+<div><p>compton angle in degree</p>
+</div></blockquote>
+<p><strong>compton_fwhm_corr</strong> : float</p>
+<blockquote>
+<div><p>correction factor on peak width</p>
+</div></blockquote>
+<p><strong>compton_amplitude</strong> : float</p>
+<blockquote>
+<div><p>area for gaussian peak, gaussian step and gaussian tail functions</p>
+</div></blockquote>
+<p><strong>compton_f_step</strong> : float</p>
+<blockquote>
+<div><p>weight factor of the gaussian step function</p>
+</div></blockquote>
+<p><strong>compton_f_tail</strong> : float</p>
+<blockquote>
+<div><p>weight factor of gaussian tail on lower side</p>
+</div></blockquote>
+<p><strong>compton_gamma</strong> : float</p>
+<blockquote>
+<div><p>normalization factor of gaussian tail on lower side</p>
+</div></blockquote>
+<p><strong>compton_hi_f_tail</strong> : float</p>
+<blockquote>
+<div><p>weight factor of gaussian tail on higher side</p>
+</div></blockquote>
+<p><strong>compton_hi_gamma</strong> : float</p>
+<blockquote>
+<div><p>normalization factor of gaussian tail on higher side</p>
+</div></blockquote>
+<p><strong>epsilon</strong> : float</p>
+<blockquote>
+<div><p>energy to create a hole-electron pair
+for Ge 2.96, for Si 3.61 at 300K
+needs to double check this value</p>
+</div></blockquote>
+<p><strong>matrix</strong> : bool</p>
+<blockquote>
+<div><p>to be updated</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>counts</strong> : array</p>
+<blockquote class="last">
+<div><p>compton peak</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="r2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[R2]</a></td><td>M. Van Gysel etc, &#8220;Description of Compton peaks in energy-dispersive x-ray fluorescence spectra&#8221;,
+X-Ray Spectrometry, vol. 32, pp. 139-147, 2003.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.fitting.model.physics_peak.elastic_peak">
+<code class="descclassname">nsls2.fitting.model.physics_peak.</code><code class="descname">elastic_peak</code><span class="sig-paren">(</span><em>x</em>, <em>coherent_sct_energy</em>, <em>fwhm_offset</em>, <em>fwhm_fanoprime</em>, <em>coherent_sct_amplitude</em>, <em>epsilon=2.96</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/nsls2/fitting/model/physics_peak.html#elastic_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.fitting.model.physics_peak.elastic_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use gaussian function to model elastic peak</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>energy value</p>
+</div></blockquote>
+<p><strong>coherent_sct_energy</strong> : float</p>
+<blockquote>
+<div><p>incident energy</p>
+</div></blockquote>
+<p><strong>fwhm_offset</strong> : float</p>
+<blockquote>
+<div><p>global fitting parameter for peak width</p>
+</div></blockquote>
+<p><strong>fwhm_fanoprime</strong> : float</p>
+<blockquote>
+<div><p>global fitting parameter for peak width</p>
+</div></blockquote>
+<p><strong>coherent_sct_amplitude</strong> : float</p>
+<blockquote>
+<div><p>area of gaussian peak</p>
+</div></blockquote>
+<p><strong>epsilon</strong> : float</p>
+<blockquote>
+<div><p>energy to create a hole-electron pair
+for Ge 2.96, for Si 3.61 at 300K
+needs to double check this value</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>value</strong> : array</p>
+<blockquote class="last">
+<div><p>elastic peak</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.fitting.model.physics_peak.gauss_step">
+<code class="descclassname">nsls2.fitting.model.physics_peak.</code><code class="descname">gauss_step</code><span class="sig-paren">(</span><em>x</em>, <em>area</em>, <em>center</em>, <em>sigma</em>, <em>peak_e</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/nsls2/fitting/model/physics_peak.html#gauss_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.fitting.model.physics_peak.gauss_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gauss step function is an important component in modeling compton peak.
+Use scipy erfc function. Please note erfc = 1-erf.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>data in x coordinate</p>
+</div></blockquote>
+<p><strong>area</strong> : float</p>
+<blockquote>
+<div><p>area of gauss step function</p>
+</div></blockquote>
+<p><strong>center</strong> : float</p>
+<blockquote>
+<div><p>center position</p>
+</div></blockquote>
+<p><strong>sigma</strong> : float</p>
+<blockquote>
+<div><p>standard deviation</p>
+</div></blockquote>
+<p><strong>peak_e</strong> : float</p>
+<blockquote>
+<div><p>emission energy</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>counts</strong> : array</p>
+<blockquote class="last">
+<div><p>gaussian step peak</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="r3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[R3]</a></td><td>Rene Van Grieken, &#8220;Handbook of X-Ray Spectrometry, Second Edition,
+(Practical Spectroscopy)&#8221;, CRC Press, 2 edition, pp. 182, 2007.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.fitting.model.physics_peak.gauss_tail">
+<code class="descclassname">nsls2.fitting.model.physics_peak.</code><code class="descname">gauss_tail</code><span class="sig-paren">(</span><em>x</em>, <em>area</em>, <em>center</em>, <em>sigma</em>, <em>gamma</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/nsls2/fitting/model/physics_peak.html#gauss_tail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.fitting.model.physics_peak.gauss_tail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a gaussian tail function to simulate compton peak</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>data in x coordinate</p>
+</div></blockquote>
+<p><strong>area</strong> : float</p>
+<blockquote>
+<div><p>area of gauss tail function
+If area is set as 1, the integral is unity.</p>
+</div></blockquote>
+<p><strong>center</strong> : float</p>
+<blockquote>
+<div><p>center position</p>
+</div></blockquote>
+<p><strong>sigma</strong> : float</p>
+<blockquote>
+<div><p>control peak width</p>
+</div></blockquote>
+<p><strong>gamma</strong> : float</p>
+<blockquote>
+<div><p>normalization factor</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>counts</strong> : array</p>
+<blockquote class="last">
+<div><p>gaussian tail peak</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="r4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[R4]</a></td><td>Rene Van Grieken, &#8220;Handbook of X-Ray Spectrometry, Second Edition,
+(Practical Spectroscopy)&#8221;, CRC Press, 2 edition, pp. 182, 2007.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.fitting.model.physics_peak.lorentzian_squared_peak">
+<code class="descclassname">nsls2.fitting.model.physics_peak.</code><code class="descname">lorentzian_squared_peak</code><span class="sig-paren">(</span><em>x</em>, <em>area</em>, <em>center</em>, <em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/nsls2/fitting/model/physics_peak.html#lorentzian_squared_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.fitting.model.physics_peak.lorentzian_squared_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>1-d lorentzian squared profile</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>independent variable</p>
+</div></blockquote>
+<p><strong>area</strong> : float</p>
+<blockquote>
+<div><p>area of lorentzian peak,
+If area is set as 1, the integral is unity.</p>
+</div></blockquote>
+<p><strong>center</strong> : float</p>
+<blockquote>
+<div><p>center position</p>
+</div></blockquote>
+<p><strong>sigma</strong> : float</p>
+<blockquote class="last">
+<div><p>standard deviation</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.fitting.model.physics_peak.pvoigt_peak">
+<code class="descclassname">nsls2.fitting.model.physics_peak.</code><code class="descname">pvoigt_peak</code><span class="sig-paren">(</span><em>x</em>, <em>area</em>, <em>center</em>, <em>sigma</em>, <em>fraction</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/nsls2/fitting/model/physics_peak.html#pvoigt_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.fitting.model.physics_peak.pvoigt_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 dimensional pseudo-voigt, linear combination of gaussian and lorentzian curve.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>independent variable</p>
+</div></blockquote>
+<p><strong>area</strong> : float</p>
+<blockquote>
+<div><p>area of pvoigt peak</p>
+</div></blockquote>
+<p><strong>center</strong> : float</p>
+<blockquote>
+<div><p>center position</p>
+</div></blockquote>
+<p><strong>sigma</strong> : float</p>
+<blockquote>
+<div><p>standard deviation</p>
+</div></blockquote>
+<p><strong>fraction</strong> : float</p>
+<blockquote class="last">
+<div><p>weight for lorentzian peak in the linear combination, and (1-fraction) is the weight
+for gaussian peak.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nsls2.fitting.model.physics_peak.voigt_peak">
+<code class="descclassname">nsls2.fitting.model.physics_peak.</code><code class="descname">voigt_peak</code><span class="sig-paren">(</span><em>x</em>, <em>area</em>, <em>center</em>, <em>sigma</em>, <em>gamma</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/nsls2/fitting/model/physics_peak.html#voigt_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.fitting.model.physics_peak.voigt_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 dimensional voigt function, the convolution between gaussian and lorentzian curve.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>independent variable</p>
+</div></blockquote>
+<p><strong>area</strong> : float</p>
+<blockquote>
+<div><p>area of voigt peak</p>
+</div></blockquote>
+<p><strong>center</strong> : float</p>
+<blockquote>
+<div><p>center position</p>
+</div></blockquote>
+<p><strong>sigma</strong> : float</p>
+<blockquote>
+<div><p>standard deviation</p>
+</div></blockquote>
+<p><strong>gamma</strong> : float</p>
+<blockquote class="last">
+<div><p>half width at half maximum of lorentzian</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="background.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">fitting.model.background</span></code> Module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../constants.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">constants</span></code> Module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/resource/api/fitting/model/physics_peak.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../constants.html" title="constants Module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="background.html" title="fitting.model.background Module"
+             >previous</a> |</li>
+        <li><a href="../../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >API</a> &raquo;</li>
+          <li><a href="../index.html" >Fitting API</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+nsls2.constants.PowderStandard.from_lambda_2theta_hkl
+=====================================================
+
+.. currentmodule:: nsls2.constants
+
+.. automethod:: PowderStandard.from_lambda_2theta_hkl

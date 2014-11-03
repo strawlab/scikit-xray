@@ -1,0 +1,6 @@
+nsls2.constants.Element.density
+===============================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: Element.density

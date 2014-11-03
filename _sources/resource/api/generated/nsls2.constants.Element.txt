@@ -1,0 +1,33 @@
+nsls2.constants.Element
+=======================
+
+.. currentmodule:: nsls2.constants
+
+.. autoclass:: Element
+
+   
+
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Element.line_near
+
+
+
+   
+
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Element.Z
+         Element.bind_energy
+         Element.cs
+         Element.density
+         Element.emission_line
+         Element.fluor_yield
+         Element.jump_factor
+         Element.mass
+         Element.name
+

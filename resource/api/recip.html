@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="API" href="index.html" />
-    <link rel="next" title="rcparams Module" href="rcparams.html" />
+    <link rel="next" title="spectroscopy Module" href="spectroscopy.html" />
     <link rel="prev" title="image Module" href="image.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -40,7 +40,10 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="rcparams.html" title="rcparams Module"
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="spectroscopy.html" title="spectroscopy Module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="image.html" title="image Module"
@@ -53,60 +56,32 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-nsls2.recip">
-<span id="recip-module"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">recip</span></tt> Module<a class="headerlink" href="#module-nsls2.recip" title="Permalink to this headline">¶</a></h1>
+<span id="recip-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">recip</span></code> Module<a class="headerlink" href="#module-nsls2.recip" title="Permalink to this headline">¶</a></h1>
 <p>This module is for functions and classes specific to reciprocal space
 calculations.</p>
 <dl class="function">
-<dt id="nsls2.recip.process_grid">
-<tt class="descclassname">nsls2.recip.</tt><tt class="descname">process_grid</tt><big>(</big><em>tot_set</em>, <em>i_stack</em>, <em>q_min=None</em>, <em>q_max=None</em>, <em>dqn=None</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/recip.html#process_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.process_grid" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function will process the set of HKL
-values and the image stack and grid the image data</p>
-<dl class="docutils">
-<dt>tot_set <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>(Qx, Qy, Qz) - HKL values - Nx3 array</dd>
-<dt>istack <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>intensity array of the images - Nx1 array</dd>
-<dt>q_min <span class="classifier-delimiter">:</span> <span class="classifier">ndarray, optional</span></dt>
-<dd>minimum values of the voxel [Qx, Qy, Qz]_min</dd>
-<dt>q_max <span class="classifier-delimiter">:</span> <span class="classifier">ndarray, optional</span></dt>
-<dd>maximum values of the voxel [Qx, Qy, Qz]_max</dd>
-<dt>dqn <span class="classifier-delimiter">:</span> <span class="classifier">ndarray, optional</span></dt>
-<dd>No. of grid parts (bins) [Nqx, Nqy, Nqz]</dd>
-</dl>
+<dt id="nsls2.recip.hkl_to_q">
+<code class="descclassname">nsls2.recip.</code><code class="descname">hkl_to_q</code><span class="sig-paren">(</span><em>hkl_arr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/recip.html#hkl_to_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.hkl_to_q" title="Permalink to this definition">¶</a></dt>
+<dd><p>This module compute the reciprocal space (q) values from known HKL array
+for each pixel of the detector for all the images</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>grid_mean</strong> : ndarray</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>hkl_arr</strong> : ndarray</p>
 <blockquote>
-<div><p>intensity grid.  The values in this grid are the
-mean of the values that fill with in the grid.</p>
-</div></blockquote>
-<p><strong>grid_error</strong> : ndarray</p>
-<blockquote>
-<div><p>This is the standard error of the value in the
-grid box.</p>
-</div></blockquote>
-<p><strong>grid_occu</strong> : ndarray</p>
-<blockquote>
-<div><p>The number of data points that fell in the grid.</p>
-</div></blockquote>
-<p><strong>n_out_of_bounds</strong> : int</p>
-<blockquote>
-<div><p>No. of data points that were outside of the gridded region.</p>
+<div><p>(Qx, Qy, Qz) - HKL array
+shape is [num_images * num_rows * num_columns][3]</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValueError</strong></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>q_val</strong> : ndarray</p>
 <blockquote class="last">
-<div><dl class="docutils">
-<dt>Possible causes:</dt>
-<dd><p class="first last">Raised when the HKL values are not provided</p>
-</dd>
-</dl>
+<div><p>Reciprocal values for each pixel for all images
+shape is [num_images * num_rows * num_columns]</p>
 </div></blockquote>
 </td>
 </tr>
@@ -116,136 +91,88 @@ grid box.</p>
 
 <dl class="function">
 <dt id="nsls2.recip.process_to_q">
-<tt class="descclassname">nsls2.recip.</tt><tt class="descname">process_to_q</tt><big>(</big><em>setting_angles</em>, <em>detector_size</em>, <em>pixel_size</em>, <em>calibrated_center</em>, <em>dist_sample</em>, <em>wavelength</em>, <em>ub_mat</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/recip.html#process_to_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.process_to_q" title="Permalink to this definition">¶</a></dt>
-<dd><p>This will procees the given images (certain scan) of
-the full set into receiprocal(Q) space, (Qx, Qy, Qz)</p>
+<code class="descclassname">nsls2.recip.</code><code class="descname">process_to_q</code><span class="sig-paren">(</span><em>setting_angles</em>, <em>detector_size</em>, <em>pixel_size</em>, <em>calibrated_center</em>, <em>dist_sample</em>, <em>wavelength</em>, <em>ub</em>, <em>frame_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/recip.html#process_to_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.process_to_q" title="Permalink to this definition">¶</a></dt>
+<dd><p>This will compute the hkl values for all pixels in a shape specified by
+detector_size.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>setting_angles</strong> : ndarray</p>
 <blockquote>
-<div><p>six angles of all the images - Nx6 array
-delta, theta, chi, phi, mu, gamma (degrees)</p>
+<div><p>six angles of all the images - Required shape is [num_images][6] and
+required type is something that can be cast to a 2D numpy array
+Angle order: delta, theta, chi, phi, mu, gamma (degrees)</p>
 </div></blockquote>
 <p><strong>detector_size</strong> : tuple</p>
 <blockquote>
-<div><p>2 element tuple defining no. of pixels(size) in the
-detector X and Y direction(mm)</p>
+<div><p>2 element tuple defining the number of pixels in the detector. Order is
+(num_columns, num_rows)</p>
 </div></blockquote>
 <p><strong>pixel_size</strong> : tuple</p>
 <blockquote>
-<div><p>2 element tuple defining the (x y) dimensions of the
-pixel (mm)</p>
+<div><p>2 element tuple defining the size of each pixel in mm. Order is
+(column_pixel_size, row_pixel_size).  If not in mm, must be in the same
+units as <em class="xref py py-obj">dist_sample</em></p>
 </div></blockquote>
 <p><strong>calibrated_center</strong> : tuple</p>
 <blockquote>
-<div><p>2 element tuple defining the (x y) center of the
-detector (mm)</p>
+<div><p>2 element tuple defining the center of the detector in pixels. Order
+is (column_center, row_center)(x y)</p>
 </div></blockquote>
 <p><strong>dist_sample</strong> : float</p>
 <blockquote>
-<div><p>distance from the sample to the detector (mm)</p>
+<div><p>distance from the sample to the detector (mm). If not in mm, must be
+in the same units as <em class="xref py py-obj">pixel_size</em></p>
 </div></blockquote>
 <p><strong>wavelength</strong> : float</p>
 <blockquote>
 <div><p>wavelength of incident radiation (Angstroms)</p>
 </div></blockquote>
-<p><strong>ub_mat</strong> :  ndarray</p>
+<p><strong>ub</strong> : ndarray</p>
 <blockquote>
 <div><p>UB matrix (orientation matrix) 3x3 matrix</p>
 </div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>tot_set</strong> : ndarray</p>
+<p><strong>frame_mode</strong> : str, optional</p>
 <blockquote>
-<div><p>(Qx, Qy, Qz) - HKL values - Nx3 matrix</p>
+<div><p>Frame mode defines the data collection mode and thus the desired
+output from this function. Defaults to hkl mode (frame_mode=4)
+&#8216;theta&#8217;    : Theta axis frame.
+&#8216;phi&#8217;      : Phi axis frame.
+&#8216;cart&#8217;     : Crystal cartesian frame.
+&#8216;hkl&#8217;      : Reciprocal lattice units frame.
+See the <code class="xref py py-obj docutils literal"><span class="pre">process_to_q.frame_mode</span></code> attribute for an exact list of
+valid options.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValueError</strong></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>hkl</strong> : ndarray</p>
 <blockquote class="last">
-<div><dl class="docutils">
-<dt>Possible causes:</dt>
-<dd><p class="first last">Raised when the diffractometer six angles of
-the images are not specified</p>
-</dd>
-</dl>
+<div><p>(Qx, Qy, Qz) - HKL values
+shape is [num_images * num_rows * num_columns][3]</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="nsls2.recip.project_to_sphere">
-<tt class="descclassname">nsls2.recip.</tt><tt class="descname">project_to_sphere</tt><big>(</big><em>img</em>, <em>dist_sample</em>, <em>calibrated_center</em>, <em>pixel_size</em>, <em>wavelength</em>, <em>ROI=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/recip.html#project_to_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.project_to_sphere" title="Permalink to this definition">¶</a></dt>
-<dd><p>Project the pixels on the 2D detector to the surface of a sphere.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
+<p class="rubric">Notes</p>
+<p>Six angles of an image: (delta, theta, chi, phi, mu, gamma )
+These axes are defined according to the following references.</p>
+<p>References: text <a class="reference internal" href="#r5" id="id1">[R5]</a>, text <a class="reference internal" href="#r6" id="id2">[R6]</a></p>
+<table class="docutils citation" frame="void" id="r5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>img</strong> : ndarray</p>
-<blockquote>
-<div><p>2D detector image</p>
-</div></blockquote>
-<p><strong>dist_sample</strong> : float</p>
-<blockquote>
-<div><p>see keys_core  (mm)</p>
-</div></blockquote>
-<p><strong>calibrated_center</strong> : 2 element float array</p>
-<blockquote>
-<div><p>see keys_core (pixels)</p>
-</div></blockquote>
-<p><strong>pixel_size</strong> : 2 element float array</p>
-<blockquote>
-<div><p>see keys_core (mm)</p>
-</div></blockquote>
-<p><strong>wavelength</strong> : float</p>
-<blockquote>
-<div><p>see keys_core (Angstroms)</p>
-</div></blockquote>
-<p><strong>ROI</strong> : 4 element int array</p>
-<blockquote>
-<div><p>ROI defines a rectangular ROI for img
-ROI[0] == x_min
-ROI[1] == x_max
-ROI[2] == y_min
-ROI[3] == y_max</p>
-</div></blockquote>
-<p><strong>**kwargs</strong> : dict</p>
-<blockquote>
-<div><p>Bucket for extra parameters from an unpacked dictionary</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Bucket for extra parameters from an unpacked dictionary</p>
-<p><strong>qi</strong> : 4 x N array of the coordinates in Q space (A^-1)</p>
-<blockquote>
-<div><p>Rows correspond to individual pixels
-Columns are (Qx, Qy, Qz, I)</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValueError</strong></p>
-<blockquote>
-<div><dl class="docutils">
-<dt>Possible causes:</dt>
-<dd><p class="first last">Raised when the ROI is not a 4 element array</p>
-</dd>
-</dl>
-</div></blockquote>
-<p><strong>ValueError</strong></p>
-<blockquote class="last">
-<div><dl class="docutils">
-<dt>Possible causes:</dt>
-<dd><p class="first last">Raised when ROI is not specified</p>
-</dd>
-</dl>
-</div></blockquote>
-</td>
-</tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[R5]</a></td><td>M. Lohmeier and E.Vlieg, &#8220;Angle calculations for a six-circle
+surface x-ray diffractometer,&#8221; J. Appl. Cryst., vol 26, pp 706-716,
+1993.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="r6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[R6]</a></td><td>E. Vlieg, &#8220;A (2+3)-Type surface diffractometer: Mergence of the
+z-axis and (2+2)-Type geometries,&#8221; J. Appl. Cryst., vol 31, pp 198-203,
+1998.</td></tr>
 </tbody>
 </table>
 </dd></dl>
@@ -256,20 +183,22 @@ Columns are (Qx, Qy, Qz, I)</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="image.html"
-                        title="previous chapter"><tt class="docutils literal"><span class="pre">image</span></tt> Module</a></p>
+                        title="previous chapter"><code class="docutils literal"><span class="pre">image</span></code> Module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="rcparams.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">rcparams</span></tt> Module</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/resource/api/recip.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <p class="topless"><a href="spectroscopy.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">spectroscopy</span></code> Module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/resource/api/recip.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -286,7 +215,7 @@ Columns are (Qx, Qy, Qz, I)</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -296,7 +225,10 @@ Columns are (Qx, Qy, Qz, I)</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="rcparams.html" title="rcparams Module"
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="spectroscopy.html" title="spectroscopy Module"
              >next</a> |</li>
         <li class="right" >
           <a href="image.html" title="image Module"
@@ -305,9 +237,9 @@ Columns are (Qx, Qy, Qz, I)</p>
           <li><a href="index.html" >API</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

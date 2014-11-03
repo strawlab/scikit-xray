@@ -1,0 +1,32 @@
+nsls2.constants.XrayLibWrap_Energy
+==================================
+
+.. currentmodule:: nsls2.constants
+
+.. autoclass:: XrayLibWrap_Energy
+
+   
+
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         XrayLibWrap_Energy.get
+         XrayLibWrap_Energy.items
+         XrayLibWrap_Energy.iteritems
+         XrayLibWrap_Energy.iterkeys
+         XrayLibWrap_Energy.itervalues
+         XrayLibWrap_Energy.keys
+         XrayLibWrap_Energy.values
+
+
+
+   
+
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         XrayLibWrap_Energy.all
+         XrayLibWrap_Energy.incident_energy
+

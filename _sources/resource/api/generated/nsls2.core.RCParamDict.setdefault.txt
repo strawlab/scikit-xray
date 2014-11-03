@@ -1,0 +1,6 @@
+nsls2.core.RCParamDict.setdefault
+=================================
+
+.. currentmodule:: nsls2.core
+
+.. automethod:: RCParamDict.setdefault

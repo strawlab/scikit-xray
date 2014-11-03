@@ -1,0 +1,6 @@
+nsls2.constants.PowderStandard.from_d
+=====================================
+
+.. currentmodule:: nsls2.constants
+
+.. automethod:: PowderStandard.from_d

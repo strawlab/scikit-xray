@@ -1,0 +1,6 @@
+nsls2.core.twotheta_to_q
+========================
+
+.. currentmodule:: nsls2.core
+
+.. autofunction:: twotheta_to_q

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsls2.calibration &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-nsls2.calibration">
+<span id="nsls2-calibration"></span><h1>nsls2.calibration<a class="headerlink" href="#module-nsls2.calibration" title="Permalink to this headline">¶</a></h1>
+<p>This is the module for calibration functions and data</p>
+<p class="rubric">Functions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">bin_1D</span></code>(x,&nbsp;y[,&nbsp;nx,&nbsp;min_x,&nbsp;max_x])</td>
+<td>Bin the values in y based on their x-coordinates</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">bin_edges_to_centers</span></code>(input_edges)</td>
+<td>Helper function for turning a array of bin edges into</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="nsls2.calibration.estimate_d_blind.html#nsls2.calibration.estimate_d_blind" title="nsls2.calibration.estimate_d_blind"><code class="xref py py-obj docutils literal"><span class="pre">estimate_d_blind</span></code></a>(name,&nbsp;wavelength,&nbsp;...)</td>
+<td>Estimate the sample-detector distance</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">filter_peak_height</span></code>(y,&nbsp;cands,&nbsp;thresh[,&nbsp;window])</td>
+<td>Filter to remove candidate that are too small.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">pairwise</span></code>(iterable)</td>
+<td>s -&gt; (s0,s1), (s1,s2), (s2, s3), ...</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">peak_refinement</span></code>(x,&nbsp;y,&nbsp;cands,&nbsp;window,&nbsp;...[,&nbsp;...])</td>
+<td>Refine candidate locations</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">pixel_to_phi</span></code>(shape,&nbsp;calibrated_center[,&nbsp;...])</td>
+<td>Converts pixel positions to <span class="math">\(\phi\)</span>, the angle from vertical.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">pixel_to_radius</span></code>(shape,&nbsp;calibrated_center[,&nbsp;...])</td>
+<td>Converts pixel positions to radius from the calibrated center</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="nsls2.calibration.refine_center.html#nsls2.calibration.refine_center" title="nsls2.calibration.refine_center"><code class="xref py py-obj docutils literal"><span class="pre">refine_center</span></code></a>(image,&nbsp;calibrated_center,&nbsp;...)</td>
+<td>Refines the location of the center of the beam.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">refine_log_quadratic</span></code>(x,&nbsp;y[,&nbsp;Rval_thresh])</td>
+<td>Attempts to refine the peaks by fitting a quadratic to the log of the y-data.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">deque</span></code></td>
+<td>deque([iterable[, maxlen]]) &#8211;&gt; deque object</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/resource/api/generated/nsls2.calibration.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

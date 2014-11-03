@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsls2.fitting.model.physics_peak &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for nsls2.fitting.model.physics_peak</h1><div class="highlight"><pre>
+<span class="c"># ######################################################################</span>
+<span class="c"># Copyright (c) 2014, Brookhaven Science Associates, Brookhaven        #</span>
+<span class="c"># National Laboratory. All rights reserved.                            #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># @author: Li Li (lili@bnl.gov)                                        #</span>
+<span class="c"># created on 07/10/2014                                                #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># Original code:                                                       #</span>
+<span class="c"># @author: Mirna Lerotic, 2nd Look Consulting                          #</span>
+<span class="c">#         http://www.2ndlookconsulting.com/                            #</span>
+<span class="c"># Copyright (c) 2013, Stefan Vogt, Argonne National Laboratory         #</span>
+<span class="c"># All rights reserved.                                                 #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># Redistribution and use in source and binary forms, with or without   #</span>
+<span class="c"># modification, are permitted provided that the following conditions   #</span>
+<span class="c"># are met:                                                             #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions of source code must retain the above copyright     #</span>
+<span class="c">#   notice, this list of conditions and the following disclaimer.      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions in binary form must reproduce the above copyright  #</span>
+<span class="c">#   notice this list of conditions and the following disclaimer in     #</span>
+<span class="c">#   the documentation and/or other materials provided with the         #</span>
+<span class="c">#   distribution.                                                      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Neither the name of the Brookhaven Science Associates, Brookhaven  #</span>
+<span class="c">#   National Laboratory nor the names of its contributors may be used  #</span>
+<span class="c">#   to endorse or promote products derived from this software without  #</span>
+<span class="c">#   specific prior written permission.                                 #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  #</span>
+<span class="c"># &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    #</span>
+<span class="c"># LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    #</span>
+<span class="c"># FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE       #</span>
+<span class="c"># COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,           #</span>
+<span class="c"># INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES   #</span>
+<span class="c"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR   #</span>
+<span class="c"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)   #</span>
+<span class="c"># HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,  #</span>
+<span class="c"># STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OTHERWISE) ARISING   #</span>
+<span class="c"># IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   #</span>
+<span class="c"># POSSIBILITY OF SUCH DAMAGE.                                          #</span>
+<span class="c">########################################################################</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
+                        <span class="n">unicode_literals</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.special</span>
+
+<span class="kn">from</span> <span class="nn">lmfit.models</span> <span class="kn">import</span> <span class="n">GaussianModel</span><span class="p">,</span> <span class="n">LorentzianModel</span>
+
+<span class="n">gauss_peak</span> <span class="o">=</span> <span class="n">GaussianModel</span><span class="p">()</span><span class="o">.</span><span class="n">func</span>
+<span class="n">lorentzian_peak</span> <span class="o">=</span> <span class="n">LorentzianModel</span><span class="p">()</span><span class="o">.</span><span class="n">func</span>
+
+
+<div class="viewcode-block" id="gauss_step"><a class="viewcode-back" href="../../../../resource/api/fitting/model/physics_peak.html#nsls2.fitting.model.physics_peak.gauss_step">[docs]</a><span class="k">def</span> <span class="nf">gauss_step</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">peak_e</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gauss step function is an important component in modeling compton peak.</span>
+<span class="sd">    Use scipy erfc function. Please note erfc = 1-erf.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        data in x coordinate</span>
+<span class="sd">    area : float</span>
+<span class="sd">        area of gauss step function</span>
+<span class="sd">    center : float</span>
+<span class="sd">        center position</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        standard deviation</span>
+<span class="sd">    peak_e : float</span>
+<span class="sd">        emission energy</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    counts : array</span>
+<span class="sd">        gaussian step peak</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Rene Van Grieken, &quot;Handbook of X-Ray Spectrometry, Second Edition,</span>
+<span class="sd">           (Practical Spectroscopy)&quot;, CRC Press, 2 edition, pp. 182, 2007.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">area</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">/</span> <span class="n">peak_e</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">erfc</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="gauss_tail"><a class="viewcode-back" href="../../../../resource/api/fitting/model/physics_peak.html#nsls2.fitting.model.physics_peak.gauss_tail">[docs]</a><span class="k">def</span> <span class="nf">gauss_tail</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use a gaussian tail function to simulate compton peak</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        data in x coordinate</span>
+<span class="sd">    area : float</span>
+<span class="sd">        area of gauss tail function</span>
+<span class="sd">        If area is set as 1, the integral is unity.</span>
+<span class="sd">    center : float</span>
+<span class="sd">        center position</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        control peak width</span>
+<span class="sd">    gamma : float</span>
+<span class="sd">        normalization factor</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    counts : array</span>
+<span class="sd">        gaussian tail peak</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Rene Van Grieken, &quot;Handbook of X-Ray Spectrometry, Second Edition,</span>
+<span class="sd">           (Practical Spectroscopy)&quot;, CRC Press, 2 edition, pp. 182, 2007.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dx_neg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">center</span>
+    <span class="n">dx_neg</span><span class="p">[</span><span class="n">dx_neg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="n">temp_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">dx_neg</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">))</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">area</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span> <span class="o">*</span> \
+        <span class="n">temp_a</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">erfc</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))))</span>
+
+    <span class="k">return</span> <span class="n">counts</span>
+
+</div>
+<div class="viewcode-block" id="elastic_peak"><a class="viewcode-back" href="../../../../resource/api/fitting/model/physics_peak.html#nsls2.fitting.model.physics_peak.elastic_peak">[docs]</a><span class="k">def</span> <span class="nf">elastic_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coherent_sct_energy</span><span class="p">,</span>
+                 <span class="n">fwhm_offset</span><span class="p">,</span> <span class="n">fwhm_fanoprime</span><span class="p">,</span>
+                 <span class="n">coherent_sct_amplitude</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">2.96</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use gaussian function to model elastic peak</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        energy value</span>
+<span class="sd">    coherent_sct_energy : float</span>
+<span class="sd">        incident energy                         </span>
+<span class="sd">    fwhm_offset : float</span>
+<span class="sd">        global fitting parameter for peak width</span>
+<span class="sd">    fwhm_fanoprime : float</span>
+<span class="sd">        global fitting parameter for peak width</span>
+<span class="sd">    coherent_sct_amplitude : float</span>
+<span class="sd">        area of gaussian peak</span>
+<span class="sd">    epsilon : float</span>
+<span class="sd">        energy to create a hole-electron pair</span>
+<span class="sd">        for Ge 2.96, for Si 3.61 at 300K</span>
+<span class="sd">        needs to double check this value</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    value : array</span>
+<span class="sd">        elastic peak</span>
+<span class="sd">                     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">temp_val</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">fwhm_offset</span> <span class="o">/</span> <span class="n">temp_val</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                    <span class="n">coherent_sct_energy</span> <span class="o">*</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">fwhm_fanoprime</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">gauss_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coherent_sct_amplitude</span><span class="p">,</span> <span class="n">coherent_sct_energy</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">value</span>
+
+</div>
+<div class="viewcode-block" id="compton_peak"><a class="viewcode-back" href="../../../../resource/api/fitting/model/physics_peak.html#nsls2.fitting.model.physics_peak.compton_peak">[docs]</a><span class="k">def</span> <span class="nf">compton_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coherent_sct_energy</span><span class="p">,</span> <span class="n">fwhm_offset</span><span class="p">,</span> <span class="n">fwhm_fanoprime</span><span class="p">,</span>
+                 <span class="n">compton_angle</span><span class="p">,</span> <span class="n">compton_fwhm_corr</span><span class="p">,</span> <span class="n">compton_amplitude</span><span class="p">,</span>
+                 <span class="n">compton_f_step</span><span class="p">,</span> <span class="n">compton_f_tail</span><span class="p">,</span> <span class="n">compton_gamma</span><span class="p">,</span>
+                 <span class="n">compton_hi_f_tail</span><span class="p">,</span> <span class="n">compton_hi_gamma</span><span class="p">,</span>
+                 <span class="n">epsilon</span><span class="o">=</span><span class="mf">2.96</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model compton peak, which is generated as an inelastic peak and always</span>
+<span class="sd">    stays to the left of elastic peak on the spectrum.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        energy value</span>
+<span class="sd">    coherent_sct_energy : float</span>
+<span class="sd">        incident energy                         </span>
+<span class="sd">    fwhm_offset : float</span>
+<span class="sd">        global fitting parameter for peak width</span>
+<span class="sd">    fwhm_fanoprime : float</span>
+<span class="sd">        global fitting parameter for peak width</span>
+<span class="sd">    compton_angle : float</span>
+<span class="sd">        compton angle in degree</span>
+<span class="sd">    compton_fwhm_corr : float </span>
+<span class="sd">        correction factor on peak width</span>
+<span class="sd">    compton_amplitude : float</span>
+<span class="sd">        area for gaussian peak, gaussian step and gaussian tail functions</span>
+<span class="sd">    compton_f_step : float</span>
+<span class="sd">        weight factor of the gaussian step function</span>
+<span class="sd">    compton_f_tail : float</span>
+<span class="sd">        weight factor of gaussian tail on lower side</span>
+<span class="sd">    compton_gamma : float</span>
+<span class="sd">        normalization factor of gaussian tail on lower side</span>
+<span class="sd">    compton_hi_f_tail : float</span>
+<span class="sd">        weight factor of gaussian tail on higher side</span>
+<span class="sd">    compton_hi_gamma : float</span>
+<span class="sd">        normalization factor of gaussian tail on higher side</span>
+<span class="sd">    epsilon : float</span>
+<span class="sd">        energy to create a hole-electron pair</span>
+<span class="sd">        for Ge 2.96, for Si 3.61 at 300K</span>
+<span class="sd">        needs to double check this value</span>
+<span class="sd">    matrix : bool</span>
+<span class="sd">        to be updated</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    counts : array</span>
+<span class="sd">        compton peak</span>
+
+<span class="sd">     References</span>
+<span class="sd">    -----------</span>
+<span class="sd">    .. [1] M. Van Gysel etc, &quot;Description of Compton peaks in energy-dispersive x-ray fluorescence spectra&quot;,</span>
+<span class="sd">           X-Ray Spectrometry, vol. 32, pp. 139-147, 2003.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">compton_e</span> <span class="o">=</span> <span class="n">coherent_sct_energy</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">coherent_sct_energy</span> <span class="o">/</span> <span class="mi">511</span><span class="p">)</span> <span class="o">*</span>
+                                       <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">compton_angle</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)))</span>
+    
+    <span class="n">temp_val</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">fwhm_offset</span> <span class="o">/</span> <span class="n">temp_val</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">compton_e</span> <span class="o">*</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">fwhm_fanoprime</span><span class="p">)</span>
+
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">compton_f_step</span> <span class="o">+</span> <span class="n">compton_f_tail</span> <span class="o">+</span> <span class="n">compton_hi_f_tail</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="p">(</span><span class="mf">10.</span><span class="o">**</span><span class="n">compton_amplitude</span><span class="p">)</span>
+        
+    <span class="n">value</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">gauss_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">compton_amplitude</span><span class="p">,</span> <span class="n">compton_e</span><span class="p">,</span> <span class="n">sigma</span><span class="o">*</span><span class="n">compton_fwhm_corr</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">+=</span> <span class="n">value</span>
+
+    <span class="c"># compton peak, step</span>
+    <span class="k">if</span> <span class="n">compton_f_step</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">compton_f_step</span>
+        <span class="n">value</span> <span class="o">*=</span> <span class="n">gauss_step</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">compton_amplitude</span><span class="p">,</span> <span class="n">compton_e</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">compton_e</span><span class="p">)</span>
+        <span class="n">counts</span> <span class="o">+=</span> <span class="n">value</span>
+    
+    <span class="c"># compton peak, tail on the low side</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">compton_f_tail</span>
+    <span class="n">value</span> <span class="o">*=</span> <span class="n">gauss_tail</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">compton_amplitude</span><span class="p">,</span> <span class="n">compton_e</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">compton_gamma</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">+=</span> <span class="n">value</span>
+
+    <span class="c"># compton peak, tail on the high side</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">compton_hi_f_tail</span>
+    <span class="n">value</span> <span class="o">*=</span> <span class="n">gauss_tail</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">compton_amplitude</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">compton_e</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">compton_hi_gamma</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">+=</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">counts</span>
+
+</div>
+<div class="viewcode-block" id="lorentzian_squared_peak"><a class="viewcode-back" href="../../../../resource/api/fitting/model/physics_peak.html#nsls2.fitting.model.physics_peak.lorentzian_squared_peak">[docs]</a><span class="k">def</span> <span class="nf">lorentzian_squared_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1-d lorentzian squared profile</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        independent variable</span>
+<span class="sd">    area : float</span>
+<span class="sd">        area of lorentzian peak,</span>
+<span class="sd">        If area is set as 1, the integral is unity.</span>
+<span class="sd">    center : float</span>
+<span class="sd">        center position</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        standard deviation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">area</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="voigt_peak"><a class="viewcode-back" href="../../../../resource/api/fitting/model/physics_peak.html#nsls2.fitting.model.physics_peak.voigt_peak">[docs]</a><span class="k">def</span> <span class="nf">voigt_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1 dimensional voigt function, the convolution between gaussian and lorentzian curve.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        independent variable</span>
+<span class="sd">    area : float</span>
+<span class="sd">        area of voigt peak</span>
+<span class="sd">    center : float</span>
+<span class="sd">        center position</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        standard deviation</span>
+<span class="sd">    gamma : float</span>
+<span class="sd">        half width at half maximum of lorentzian</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">center</span> <span class="o">+</span> <span class="mi">1j</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">area</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">wofz</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="pvoigt_peak"><a class="viewcode-back" href="../../../../resource/api/fitting/model/physics_peak.html#nsls2.fitting.model.physics_peak.pvoigt_peak">[docs]</a><span class="k">def</span> <span class="nf">pvoigt_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">fraction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1 dimensional pseudo-voigt, linear combination of gaussian and lorentzian curve.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array</span>
+<span class="sd">        independent variable</span>
+<span class="sd">    area : float</span>
+<span class="sd">        area of pvoigt peak</span>
+<span class="sd">    center : float</span>
+<span class="sd">        center position</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        standard deviation</span>
+<span class="sd">    fraction : float</span>
+<span class="sd">        weight for lorentzian peak in the linear combination, and (1-fraction) is the weight</span>
+<span class="sd">        for gaussian peak.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fraction</span><span class="p">)</span> <span class="o">*</span> <span class="n">gauss_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">fraction</span> <span class="o">*</span> <span class="n">lorentzian_peak</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sigma</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

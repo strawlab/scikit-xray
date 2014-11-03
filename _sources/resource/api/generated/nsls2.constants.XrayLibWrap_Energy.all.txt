@@ -1,0 +1,6 @@
+nsls2.constants.XrayLibWrap_Energy.all
+======================================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: XrayLibWrap_Energy.all

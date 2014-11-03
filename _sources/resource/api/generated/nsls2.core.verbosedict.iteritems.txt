@@ -1,0 +1,6 @@
+nsls2.core.verbosedict.iteritems
+================================
+
+.. currentmodule:: nsls2.core
+
+.. automethod:: verbosedict.iteritems

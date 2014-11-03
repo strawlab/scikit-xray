@@ -1,0 +1,6 @@
+nsls2.calibration.powder_auto_calibrate
+=======================================
+
+.. currentmodule:: nsls2.calibration
+
+.. autofunction:: powder_auto_calibrate

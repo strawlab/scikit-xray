@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="next" title="Documentation" href="doc_doc.html" />
     <link rel="prev" title="Introduction to Git" href="git_guide.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -38,6 +38,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="doc_doc.html" title="Documentation"
@@ -53,33 +56,33 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="git-workflow">
 <span id="workflow"></span><h1>Git workflow<a class="headerlink" href="#git-workflow" title="Permalink to this headline">¶</a></h1>
 <p>The basic workflow is that you develop new code on feature branches in
 your local repository.  When you want your code merged into the main
-repository you push your work to <tt class="docutils literal"><span class="pre">github</span></tt> and create a &#8220;Pull
+repository you push your work to <code class="docutils literal"><span class="pre">github</span></code> and create a &#8220;Pull
 Request&#8221; (PR).  The code is then reviewed and once everyone is happy,
-it will be merged into <tt class="docutils literal"><span class="pre">NLSL-II/master</span></tt>.</p>
+it will be merged into <code class="docutils literal"><span class="pre">NLSL-II/master</span></code>.</p>
 <div class="section" id="rules">
 <h2>Rules<a class="headerlink" href="#rules" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ol class="arabic simple">
 <li>Don&#8217;t work directly on the main repository, push commits to your
 personal github repository</li>
-<li>Never work on <tt class="docutils literal"><span class="pre">master</span></tt>, always work on a feature branch</li>
+<li>Never work on <code class="docutils literal"><span class="pre">master</span></code>, always work on a feature branch</li>
 <li>Don&#8217;t merge your own PR.</li>
-<li>Don&#8217;t merge <tt class="docutils literal"><span class="pre">NSLS-II/master</span></tt> into your feature branch
+<li>Don&#8217;t merge <code class="docutils literal"><span class="pre">NSLS-II/master</span></code> into your feature branch
 as this can make merging back into master tricky.</li>
 <li>Commit messages must be at least one sentence and preferably a short
 paragraph.  They should not be longer than 2 paragraphs (if you need to
 write that much the commit should probably be split up).</li>
 <li>Commit messages should start with a descriptor code (borrowed from numpy
 ), see table below.</li>
-<li>Add a file in <tt class="docutils literal"><span class="pre">changelog</span></tt> describing the propose of this branch
+<li>Add a file in <code class="docutils literal"><span class="pre">changelog</span></code> describing the propose of this branch
 in a sentence.  When we make releases these will be compiled into
-a <tt class="docutils literal"><span class="pre">CHANGELOG</span></tt>.  Doing it this way prevents excessive merge conflicts.</li>
+a <code class="docutils literal"><span class="pre">CHANGELOG</span></code>.  Doing it this way prevents excessive merge conflicts.</li>
 <li>Add a test for every new function you add</li>
 <li>When you fix a bug add a test that used to fail and now passes</li>
 </ol>
@@ -136,7 +139,34 @@ a <tt class="docutils literal"><span class="pre">CHANGELOG</span></tt>.  Doing i
 </tr>
 </tbody>
 </table>
-<p>We should try to conform to pep8.</p>
+</div>
+<div class="section" id="style">
+<h2>Style<a class="headerlink" href="#style" title="Permalink to this headline">¶</a></h2>
+<p>We will conform to the sensible rules in <a class="reference external" href="http://legacy.python.org/dev/peps/pep-0008/">PEP8</a>.</p>
+<p>Some handy tools are :</p>
+<blockquote>
+<div><ul class="simple">
+<li>the <a class="reference external" href="https://pypi.python.org/pypi/pep8">pep8 checker</a> which will
+report and violations in your code.  Most decent editors will have
+a way to run this on the fly and highlight your code (ex emacs, vi, pycharm,
+pydev, kate, and sublime)</li>
+<li>flake8</li>
+</ul>
+</div></blockquote>
+<div class="section" id="if-statements">
+<h3>if-statements<a class="headerlink" href="#if-statements" title="Permalink to this headline">¶</a></h3>
+<p>Don&#8217;t write one-liner if statements as</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">foo</span><span class="p">:</span> <span class="n">bar</span>
+</pre></div>
+</div>
+<p>write them as</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">foo</span><span class="p">:</span>
+    <span class="n">bar</span>
+</pre></div>
+</div>
+<p>Lines are free, but the confusion that can be caused by missing
+logic when scanning code can be expensive.</p>
+</div>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
@@ -169,9 +199,9 @@ git push github
 </pre></div>
 </div>
 <p>Once everyone is happy with the changes, the branch can be merged into
-the main <tt class="docutils literal"><span class="pre">master</span></tt> branch via the web interface.  If there are
-conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> with your work, it is your responsibility to
-<strong>rebase</strong> your branch on to the current <tt class="docutils literal"><span class="pre">master</span></tt>.</p>
+the main <code class="docutils literal"><span class="pre">master</span></code> branch via the web interface.  If there are
+conflicts on <code class="docutils literal"><span class="pre">master</span></code> with your work, it is your responsibility to
+<strong>rebase</strong> your branch on to the current <code class="docutils literal"><span class="pre">master</span></code>.</p>
 </div>
 </div>
 
@@ -179,12 +209,16 @@ conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> w
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Git workflow</a><ul>
 <li><a class="reference internal" href="#rules">Rules</a></li>
+<li><a class="reference internal" href="#style">Style</a><ul>
+<li><a class="reference internal" href="#if-statements">if-statements</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
@@ -196,12 +230,14 @@ conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> w
   <h4>Next topic</h4>
   <p class="topless"><a href="doc_doc.html"
                         title="next chapter">Documentation</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/resource/dev_guide/workflow.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/resource/dev_guide/workflow.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -218,7 +254,7 @@ conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> w
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -226,6 +262,9 @@ conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> w
              >index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="doc_doc.html" title="Documentation"
@@ -237,9 +276,9 @@ conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> w
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

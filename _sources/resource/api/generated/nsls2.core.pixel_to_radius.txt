@@ -1,0 +1,6 @@
+nsls2.core.pixel_to_radius
+==========================
+
+.. currentmodule:: nsls2.core
+
+.. autofunction:: pixel_to_radius

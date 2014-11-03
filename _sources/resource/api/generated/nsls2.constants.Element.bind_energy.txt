@@ -1,0 +1,6 @@
+nsls2.constants.Element.bind_energy
+===================================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: Element.bind_energy

@@ -1,0 +1,6 @@
+nsls2.core.wedge_integration
+============================
+
+.. currentmodule:: nsls2.core
+
+.. autofunction:: wedge_integration

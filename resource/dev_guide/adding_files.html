@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="next" title="Logging" href="logging.html" />
     <link rel="prev" title="Documentation" href="doc_doc.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -38,6 +38,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="logging.html" title="Logging"
@@ -53,27 +56,27 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="new-sub-packages-and-modules">
 <span id="adding-files"></span><h1>New Sub-packages and Modules<a class="headerlink" href="#new-sub-packages-and-modules" title="Permalink to this headline">¶</a></h1>
 <p>When adding new packages and modules (which map to folders and files)
 to the library you are required to update both the build/install
-system (<tt class="file docutils literal"><span class="pre">setup.py</span></tt>) and add files to the documentation folder.</p>
-<p>All python source code must be under the main <tt class="file docutils literal"><span class="pre">nsls2</span></tt> directory.
-Non-python sources goes in the <tt class="file docutils literal"><span class="pre">src</span></tt> directory.</p>
+system (<code class="file docutils literal"><span class="pre">setup.py</span></code>) and add files to the documentation folder.</p>
+<p>All python source code must be under the main <code class="file docutils literal"><span class="pre">nsls2</span></code> directory.
+Non-python sources goes in the <code class="file docutils literal"><span class="pre">src</span></code> directory.</p>
 <div class="section" id="build">
 <h2>Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h2>
 <p>For a folder in the source-tree to be a package it must have an
-<tt class="file docutils literal"><span class="pre">__init__.py</span></tt> file (even if it is empty).  All of the python
-(<tt class="file docutils literal"><span class="pre">*.py</span></tt>) files in that package are then recognized as modules in
+<code class="file docutils literal"><span class="pre">__init__.py</span></code> file (even if it is empty).  All of the python
+(<code class="file docutils literal"><span class="pre">*.py</span></code>) files in that package are then recognized as modules in
 that package which can be imported in other files (See Relative Imports header).</p>
-<p>In order for <a class="reference external" href="http://docs.python.org/library/distutils.html#module-distutils" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">distutils</span></tt></a> to work it must be explicitly told what
+<p>In order for <a class="reference external" href="http://docs.python.org/library/distutils.html#module-distutils" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">distutils</span></code></a> to work it must be explicitly told what
 packages from the source tree to byte-compile and install.  This is
-done via the <tt class="code docutils literal"><span class="pre">packages</span></tt> key word argument (kwarg) to <tt class="xref py py-func docutils literal"><span class="pre">setup()</span></tt> in
-<tt class="file docutils literal"><span class="pre">setup.py</span></tt>.  If you add a package, then it&#8217;s dotted-name must be
+done via the <code class="code docutils literal"><span class="pre">packages</span></code> key word argument (kwarg) to <code class="xref py py-func docutils literal"><span class="pre">setup()</span></code> in
+<code class="file docutils literal"><span class="pre">setup.py</span></code>.  If you add a package, then it&#8217;s dotted-name must be
 added to this list.</p>
-<p>e.g. if you add a new package called <tt class="code docutils literal"><span class="pre">utils</span></tt> to the <tt class="code docutils literal"><span class="pre">nsls2</span></tt> folder,
+<p>e.g. if you add a new package called <code class="code docutils literal"><span class="pre">utils</span></code> to the <code class="code docutils literal"><span class="pre">nsls2</span></code> folder,
 the following setup.py file:</p>
 <div class="highlight-python"><div class="highlight"><pre>setup(
     name=&#39;NSLS2&#39;,
@@ -98,10 +101,10 @@ setup(
 <p>See <a class="reference internal" href="doc_doc.html#doc-doc"><em>Documentation</em></a> for documentation about writing and building
 the documentation.</p>
 <p>Continuing the example from above where a &#8216;utils&#8217; source code package was added,
-a folder called <tt class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></tt> should be added.  Let&#8217;s also
-presume that you&#8217;ve got <tt class="file docutils literal"><span class="pre">fitting.py</span></tt> in the <tt class="file docutils literal"><span class="pre">/nsls2/utils/</span></tt>.  In the
-documentation <tt class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></tt> folder, create a file named
-<tt class="file docutils literal"><span class="pre">index.rst</span></tt> with the contents:</p>
+a folder called <code class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></code> should be added.  Let&#8217;s also
+presume that you&#8217;ve got <code class="file docutils literal"><span class="pre">fitting.py</span></code> in the <code class="file docutils literal"><span class="pre">/nsls2/utils/</span></code>.  In the
+documentation <code class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></code> folder, create a file named
+<code class="file docutils literal"><span class="pre">index.rst</span></code> with the contents:</p>
 <div class="highlight-python"><div class="highlight"><pre>UTILS API
 =========
 
@@ -113,13 +116,13 @@ Contents:
    fitting
 </pre></div>
 </div>
-<p>Also, add the <tt class="file docutils literal"><span class="pre">/doc/resource/api/utils/index.rst</span></tt> to
-<tt class="file docutils literal"><span class="pre">/doc/resource/api/index.rst</span></tt>.  This will tell <a href="#id1"><span class="problematic" id="id2">:prog:`sphinx`</span></a> to include
+<p>Also, add the <code class="file docutils literal"><span class="pre">/doc/resource/api/utils/index.rst</span></code> to
+<code class="file docutils literal"><span class="pre">/doc/resource/api/index.rst</span></code>.  This will tell <a href="#id1"><span class="problematic" id="id2">:prog:`sphinx`</span></a> to include
 the new package in the API documentation.</p>
-<p>Now, let&#8217;s create a module called <tt class="file docutils literal"><span class="pre">fitting.py</span></tt> in the <tt class="file docutils literal"><span class="pre">utils</span></tt>
-package.  When you add <tt class="file docutils literal"><span class="pre">fitting.py</span></tt> you need to add a corresponding file
+<p>Now, let&#8217;s create a module called <code class="file docutils literal"><span class="pre">fitting.py</span></code> in the <code class="file docutils literal"><span class="pre">utils</span></code>
+package.  When you add <code class="file docutils literal"><span class="pre">fitting.py</span></code> you need to add a corresponding file
 in the documentation folder structure:
-<tt class="file docutils literal"><span class="pre">/doc/resource/api/utils/fitting.rst</span></tt>.  In <tt class="file docutils literal"><span class="pre">fitting.rst</span></tt> use the
+<code class="file docutils literal"><span class="pre">/doc/resource/api/utils/fitting.rst</span></code>.  In <code class="file docutils literal"><span class="pre">fitting.rst</span></code> use the
 following template:</p>
 <div class="highlight-python"><div class="highlight"><pre>======================
  :mod:`fitting` Module
@@ -140,12 +143,12 @@ of all the classes and functions in the module.</p>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <p>When you add a new module or package please add the corresponding
-files and folders in the <tt class="file docutils literal"><span class="pre">nsls2/tests</span></tt> folder.  Packages get
-<tt class="file docutils literal"><span class="pre">test_packagename</span></tt> and modules get <tt class="file docutils literal"><span class="pre">test_module_name.py</span></tt>
+files and folders in the <code class="file docutils literal"><span class="pre">nsls2/tests</span></code> folder.  Packages get
+<code class="file docutils literal"><span class="pre">test_packagename</span></code> and modules get <code class="file docutils literal"><span class="pre">test_module_name.py</span></code>
 in the proper directory.</p>
 <p>Using the example above, you would create the directory
-<tt class="file docutils literal"><span class="pre">/nsls2/tests/test_utils/</span></tt> and the file <tt class="file docutils literal"><span class="pre">test_fitting.py</span></tt> in the
-<tt class="file docutils literal"><span class="pre">test_utils</span></tt> folder.</p>
+<code class="file docutils literal"><span class="pre">/nsls2/tests/test_utils/</span></code> and the file <code class="file docutils literal"><span class="pre">test_fitting.py</span></code> in the
+<code class="file docutils literal"><span class="pre">test_utils</span></code> folder.</p>
 <p>Remember: Write a test for all new functionality!!</p>
 </div>
 <div class="section" id="relative-imports">
@@ -158,7 +161,7 @@ in the proper directory.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
@@ -177,12 +180,14 @@ in the proper directory.</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="logging.html"
                         title="next chapter">Logging</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/resource/dev_guide/adding_files.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/resource/dev_guide/adding_files.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -199,7 +204,7 @@ in the proper directory.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -207,6 +212,9 @@ in the proper directory.</p>
              >index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="logging.html" title="Logging"
@@ -218,9 +226,9 @@ in the proper directory.</p>
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

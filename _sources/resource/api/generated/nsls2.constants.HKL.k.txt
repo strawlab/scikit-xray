@@ -1,0 +1,6 @@
+nsls2.constants.HKL.k
+=====================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: HKL.k

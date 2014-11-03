@@ -23,12 +23,12 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,6 +36,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
@@ -45,7 +48,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for nsls2.recip</h1><div class="highlight"><pre>
 <span class="c"># ######################################################################</span>
@@ -95,9 +98,10 @@
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">verbosedict</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">time</span>
-
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">src.ctrans</span> <span class="kn">as</span> <span class="nn">ctrans</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -107,166 +111,60 @@
         <span class="n">ctrans</span> <span class="o">=</span> <span class="bp">None</span>
 
 
-<div class="viewcode-block" id="project_to_sphere"><a class="viewcode-back" href="../../resource/api/recip.html#nsls2.recip.project_to_sphere">[docs]</a><span class="k">def</span> <span class="nf">project_to_sphere</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">dist_sample</span><span class="p">,</span> <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">pixel_size</span><span class="p">,</span>
-                      <span class="n">wavelength</span><span class="p">,</span> <span class="n">ROI</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Project the pixels on the 2D detector to the surface of a sphere.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    img : ndarray</span>
-<span class="sd">        2D detector image</span>
-
-<span class="sd">    dist_sample : float</span>
-<span class="sd">        see keys_core  (mm)</span>
-
-<span class="sd">    calibrated_center : 2 element float array</span>
-<span class="sd">        see keys_core (pixels)</span>
-
-<span class="sd">    pixel_size : 2 element float array</span>
-<span class="sd">        see keys_core (mm)</span>
-
-<span class="sd">    wavelength : float</span>
-<span class="sd">        see keys_core (Angstroms)</span>
-
-<span class="sd">    ROI : 4 element int array</span>
-<span class="sd">        ROI defines a rectangular ROI for img</span>
-<span class="sd">        ROI[0] == x_min</span>
-<span class="sd">        ROI[1] == x_max</span>
-<span class="sd">        ROI[2] == y_min</span>
-<span class="sd">        ROI[3] == y_max</span>
-
-<span class="sd">    **kwargs : dict</span>
-<span class="sd">        Bucket for extra parameters from an unpacked dictionary</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Bucket for extra parameters from an unpacked dictionary</span>
-
-<span class="sd">    qi : 4 x N array of the coordinates in Q space (A^-1)</span>
-<span class="sd">        Rows correspond to individual pixels</span>
-<span class="sd">        Columns are (Qx, Qy, Qz, I)</span>
-
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        Possible causes:</span>
-<span class="sd">            Raised when the ROI is not a 4 element array</span>
-
-<span class="sd">    ValueError</span>
-<span class="sd">        Possible causes:</span>
-<span class="sd">            Raised when ROI is not specified</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="n">ROI</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ROI</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="c"># slice the image based on the desired ROI</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="n">ROI</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">ROI</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">img</span><span class="p">[</span><span class="n">ROI</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">ROI</span><span class="p">[</span><span class="mi">3</span><span class="p">]],</span>
-                              <span class="n">sparse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot; ROI has to be 4 element array : len(ROI) = 4&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot; No ROI is specified &quot;</span><span class="p">)</span>
-
-    <span class="c"># create the array of x indices</span>
-    <span class="n">arr_2d_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">arr_2d_x</span><span class="p">[</span><span class="n">x</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">ROI</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c"># create the array of y indices</span>
-    <span class="n">arr_2d_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">arr_2d_y</span><span class="p">[:,</span> <span class="n">y</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">ROI</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
-    <span class="c"># subtract the detector center</span>
-    <span class="n">arr_2d_x</span> <span class="o">-=</span> <span class="n">calibrated_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">arr_2d_y</span> <span class="o">-=</span> <span class="n">calibrated_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="c"># convert the pixels into real-space dimensions</span>
-    <span class="n">arr_2d_x</span> <span class="o">*=</span> <span class="n">pixel_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">arr_2d_y</span> <span class="o">*=</span> <span class="n">pixel_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="c"># define a new 4 x N array</span>
-    <span class="n">qi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,)</span> <span class="o">+</span> <span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],))</span>
-    <span class="c"># fill in the x coordinates</span>
-    <span class="n">qi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr_2d_x</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-    <span class="c"># fill in the y coordinates</span>
-    <span class="n">qi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr_2d_y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-    <span class="c"># set the z coordinate for all pixels to</span>
-    <span class="c"># the distance from the sample to the detector</span>
-    <span class="n">qi</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">dist_sample</span><span class="p">)</span>
-    <span class="c"># fill in the intensity values of the pixels</span>
-    <span class="n">qi</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-    <span class="c"># convert to an N x 4 array</span>
-    <span class="n">qi</span> <span class="o">=</span> <span class="n">qi</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-    <span class="c"># compute the unit vector of each pixel</span>
-    <span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
-    <span class="c"># convert the pixel positions from real space distances</span>
-    <span class="c"># into the reciprocal space</span>
-    <span class="c"># vector, Q</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">wavelength</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]))</span>
-    <span class="c"># project the pixel coordinates onto the surface of a sphere</span>
-    <span class="c"># of radius dist_sample</span>
-    <span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="n">dist_sample</span>
-    <span class="c"># compute the vector from the center of the detector</span>
-    <span class="c"># (i.e., the zero of reciprocal space) to each pixel</span>
-    <span class="n">qi</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="n">dist_sample</span>
-    <span class="c"># compute the unit vector for each pixels position</span>
-    <span class="c"># relative to the center of the detector,</span>
-    <span class="c">#  but now on the surface of a sphere</span>
-    <span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
-    <span class="c"># convert to reciprocal space</span>
-    <span class="n">qi</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="n">Q</span>
-
-    <span class="k">return</span> <span class="n">qi</span>
-
-</div>
 <div class="viewcode-block" id="process_to_q"><a class="viewcode-back" href="../../resource/api/recip.html#nsls2.recip.process_to_q">[docs]</a><span class="k">def</span> <span class="nf">process_to_q</span><span class="p">(</span><span class="n">setting_angles</span><span class="p">,</span> <span class="n">detector_size</span><span class="p">,</span> <span class="n">pixel_size</span><span class="p">,</span>
-                 <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">dist_sample</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">ub_mat</span><span class="p">):</span>
+                 <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">dist_sample</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span>
+                 <span class="n">frame_mode</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This will procees the given images (certain scan) of</span>
-<span class="sd">    the full set into receiprocal(Q) space, (Qx, Qy, Qz)</span>
+<span class="sd">    This will compute the hkl values for all pixels in a shape specified by</span>
+<span class="sd">    detector_size.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    setting_angles : ndarray</span>
-<span class="sd">        six angles of all the images - Nx6 array</span>
-<span class="sd">        delta, theta, chi, phi, mu, gamma (degrees)</span>
+<span class="sd">        six angles of all the images - Required shape is [num_images][6] and</span>
+<span class="sd">        required type is something that can be cast to a 2D numpy array</span>
+<span class="sd">        Angle order: delta, theta, chi, phi, mu, gamma (degrees)</span>
 
 <span class="sd">    detector_size : tuple</span>
-<span class="sd">        2 element tuple defining no. of pixels(size) in the</span>
-<span class="sd">        detector X and Y direction(mm)</span>
+<span class="sd">        2 element tuple defining the number of pixels in the detector. Order is</span>
+<span class="sd">        (num_columns, num_rows)</span>
 
 <span class="sd">    pixel_size : tuple</span>
-<span class="sd">        2 element tuple defining the (x y) dimensions of the</span>
-<span class="sd">        pixel (mm)</span>
+<span class="sd">        2 element tuple defining the size of each pixel in mm. Order is</span>
+<span class="sd">        (column_pixel_size, row_pixel_size).  If not in mm, must be in the same</span>
+<span class="sd">        units as `dist_sample`</span>
 
 <span class="sd">    calibrated_center : tuple</span>
-<span class="sd">        2 element tuple defining the (x y) center of the</span>
-<span class="sd">        detector (mm)</span>
+<span class="sd">        2 element tuple defining the center of the detector in pixels. Order</span>
+<span class="sd">        is (column_center, row_center)(x y)</span>
 
 <span class="sd">    dist_sample : float</span>
-<span class="sd">        distance from the sample to the detector (mm)</span>
+<span class="sd">        distance from the sample to the detector (mm). If not in mm, must be</span>
+<span class="sd">        in the same units as `pixel_size`</span>
 
 <span class="sd">    wavelength : float</span>
 <span class="sd">        wavelength of incident radiation (Angstroms)</span>
 
-<span class="sd">    ub_mat :  ndarray</span>
+<span class="sd">    ub : ndarray</span>
 <span class="sd">        UB matrix (orientation matrix) 3x3 matrix</span>
+
+<span class="sd">    frame_mode : str, optional</span>
+<span class="sd">        Frame mode defines the data collection mode and thus the desired</span>
+<span class="sd">        output from this function. Defaults to hkl mode (frame_mode=4)</span>
+<span class="sd">        &#39;theta&#39;    : Theta axis frame.</span>
+<span class="sd">        &#39;phi&#39;      : Phi axis frame.</span>
+<span class="sd">        &#39;cart&#39;     : Crystal cartesian frame.</span>
+<span class="sd">        &#39;hkl&#39;      : Reciprocal lattice units frame.</span>
+<span class="sd">        See the `process_to_q.frame_mode` attribute for an exact list of</span>
+<span class="sd">        valid options.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tot_set : ndarray</span>
-<span class="sd">        (Qx, Qy, Qz) - HKL values - Nx3 matrix</span>
+<span class="sd">    hkl : ndarray</span>
+<span class="sd">        (Qx, Qy, Qz) - HKL values</span>
+<span class="sd">        shape is [num_images * num_rows * num_columns][3]</span>
 
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        Possible causes:</span>
-<span class="sd">            Raised when the diffractometer six angles of</span>
-<span class="sd">            the images are not specified</span>
-
-<span class="sd">    Note</span>
+<span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    Six angles of an image: (delta, theta, chi, phi, mu, gamma )</span>
 <span class="sd">    These axes are defined according to the following references.</span>
@@ -282,149 +180,81 @@
 <span class="sd">       1998.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ccdToQkwArgs</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="n">tot_set</span> <span class="o">=</span> <span class="bp">None</span>
-
-    <span class="c"># frame_mode = 1 : &#39;theta&#39;    : Theta axis frame.</span>
-    <span class="c"># frame_mode = 2 : &#39;phi&#39;      : Phi axis frame.</span>
-    <span class="c"># frame_mode = 3 : &#39;cart&#39;     : Crystal cartesian frame.</span>
-    <span class="c"># frame_mode = 4 : &#39;hkl&#39;      : Reciprocal lattice units frame.</span>
-    <span class="n">frame_mode</span> <span class="o">=</span> <span class="mi">4</span>
-
+    <span class="c"># set default frame_mode</span>
+    <span class="k">if</span> <span class="n">frame_mode</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">frame_mode</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">str_to_int</span> <span class="o">=</span> <span class="n">verbosedict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span>
+                                 <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">process_to_q</span><span class="o">.</span><span class="n">frame_mode</span><span class="p">))</span>
+        <span class="n">frame_mode</span> <span class="o">=</span> <span class="n">str_to_int</span><span class="p">[</span><span class="n">frame_mode</span><span class="p">]</span>
+    <span class="c"># ensure the ub matrix is an array</span>
+    <span class="n">ub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ub</span><span class="p">)</span>
+    <span class="c"># ensure setting angles is a 2-D</span>
     <span class="n">setting_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">setting_angles</span><span class="p">)</span>
-    <span class="n">setting_angles</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">if</span> <span class="n">setting_angles</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;setting_angles is expected to be a 2-D array with&#39;</span>
+                         <span class="s">&#39; dimensions [num_images][num_angles]. You provided &#39;</span>
+                         <span class="s">&#39;an array with dimensions {0}&#39;</span>
+                         <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">setting_angles</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">setting_angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
-
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;It is expected that there should be six angles in &#39;</span>
+                         <span class="s">&#39;the setting_angles parameter. You provided {0}&#39;</span>
+                         <span class="s">&#39; angles.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">setting_angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
     <span class="c">#  *********** Converting to Q   **************</span>
 
     <span class="c"># starting time for the process</span>
     <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
     <span class="c"># ctrans - c routines for fast data analysis</span>
-    <span class="n">tot_set</span> <span class="o">=</span> <span class="n">ctrans</span><span class="o">.</span><span class="n">ccdToQ</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="n">setting_angles</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">,</span>
-                            <span class="n">mode</span><span class="o">=</span><span class="n">frame_mode</span><span class="p">,</span>
-                            <span class="n">ccd_size</span><span class="o">=</span><span class="p">(</span><span class="n">detector_size</span><span class="p">),</span>
-                            <span class="n">ccd_pixsize</span><span class="o">=</span><span class="p">(</span><span class="n">pixel_size</span><span class="p">),</span>
-                            <span class="n">ccd_cen</span><span class="o">=</span><span class="p">(</span><span class="n">calibrated_center</span><span class="p">),</span>
-                            <span class="n">dist</span><span class="o">=</span><span class="n">dist_sample</span><span class="p">,</span>
-                            <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
-                            <span class="n">UBinv</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">ub_mat</span><span class="p">)</span><span class="o">.</span><span class="n">I</span><span class="p">,</span>
-                            <span class="o">**</span><span class="n">ccdToQkwArgs</span><span class="p">)</span>
+    <span class="n">hkl</span> <span class="o">=</span> <span class="n">ctrans</span><span class="o">.</span><span class="n">ccdToQ</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="n">setting_angles</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">,</span>
+                        <span class="n">mode</span><span class="o">=</span><span class="n">frame_mode</span><span class="p">,</span>
+                        <span class="n">ccd_size</span><span class="o">=</span><span class="p">(</span><span class="n">detector_size</span><span class="p">),</span>
+                        <span class="n">ccd_pixsize</span><span class="o">=</span><span class="p">(</span><span class="n">pixel_size</span><span class="p">),</span>
+                        <span class="n">ccd_cen</span><span class="o">=</span><span class="p">(</span><span class="n">calibrated_center</span><span class="p">),</span>
+                        <span class="n">dist</span><span class="o">=</span><span class="n">dist_sample</span><span class="p">,</span>
+                        <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+                        <span class="n">UBinv</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">ub</span><span class="p">)</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+                        <span class="c"># **kwargs)</span>
 
     <span class="c"># ending time for the process</span>
     <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;--- Done processed in </span><span class="si">%f</span><span class="s"> seconds&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Processing time for {0} {1} x {2} images took {3} seconds.&quot;</span>
+                <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">setting_angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">detector_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                          <span class="n">detector_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">hkl</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">tot_set</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="c"># Assign frame_mode as an attribute to the process_to_q function so that the</span>
+<span class="c"># autowrapping knows what the valid options are</span></div>
+<span class="n">process_to_q</span><span class="o">.</span><span class="n">frame_mode</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;theta&#39;</span><span class="p">,</span> <span class="s">&#39;phi&#39;</span><span class="p">,</span> <span class="s">&#39;cart&#39;</span><span class="p">,</span> <span class="s">&#39;hkl&#39;</span><span class="p">]</span>
 
-</div>
-<div class="viewcode-block" id="process_grid"><a class="viewcode-back" href="../../resource/api/recip.html#nsls2.recip.process_grid">[docs]</a><span class="k">def</span> <span class="nf">process_grid</span><span class="p">(</span><span class="n">tot_set</span><span class="p">,</span> <span class="n">i_stack</span><span class="p">,</span> <span class="n">q_min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">q_max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dqn</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="hkl_to_q"><a class="viewcode-back" href="../../resource/api/recip.html#nsls2.recip.hkl_to_q">[docs]</a><span class="k">def</span> <span class="nf">hkl_to_q</span><span class="p">(</span><span class="n">hkl_arr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This function will process the set of HKL</span>
-<span class="sd">    values and the image stack and grid the image data</span>
+<span class="sd">    This module compute the reciprocal space (q) values from known HKL array</span>
+<span class="sd">    for each pixel of the detector for all the images</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ---------</span>
-<span class="sd">    tot_set : ndarray</span>
-<span class="sd">        (Qx, Qy, Qz) - HKL values - Nx3 array</span>
-
-<span class="sd">    istack : ndarray</span>
-<span class="sd">        intensity array of the images - Nx1 array</span>
-
-<span class="sd">    q_min : ndarray, optional</span>
-<span class="sd">        minimum values of the voxel [Qx, Qy, Qz]_min</span>
-
-<span class="sd">    q_max : ndarray, optional</span>
-<span class="sd">        maximum values of the voxel [Qx, Qy, Qz]_max</span>
-
-<span class="sd">    dqn : ndarray, optional</span>
-<span class="sd">        No. of grid parts (bins) [Nqx, Nqy, Nqz]</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hkl_arr : ndarray</span>
+<span class="sd">        (Qx, Qy, Qz) - HKL array</span>
+<span class="sd">        shape is [num_images * num_rows * num_columns][3]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    grid_mean : ndarray</span>
-<span class="sd">        intensity grid.  The values in this grid are the</span>
-<span class="sd">        mean of the values that fill with in the grid.</span>
-
-<span class="sd">    grid_error : ndarray</span>
-<span class="sd">        This is the standard error of the value in the</span>
-<span class="sd">        grid box.</span>
-
-<span class="sd">    grid_occu : ndarray</span>
-<span class="sd">        The number of data points that fell in the grid.</span>
-
-<span class="sd">    n_out_of_bounds : int</span>
-<span class="sd">        No. of data points that were outside of the gridded region.</span>
-
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    ValueError</span>
-<span class="sd">        Possible causes:</span>
-<span class="sd">            Raised when the HKL values are not provided</span>
+<span class="sd">    q_val : ndarray</span>
+<span class="sd">        Reciprocal values for each pixel for all images</span>
+<span class="sd">        shape is [num_images * num_rows * num_columns]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">tot_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">tot_set</span><span class="p">)</span>
-    <span class="n">tot_set</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">if</span> <span class="n">tot_set</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s">&quot;The tot_set.nidm must be 2, not {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot_set</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">tot_set</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s">&quot;The shape of tot_set must be Nx3 not &quot;</span>
-            <span class="s">&quot;{}X{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">tot_set</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-
-    <span class="c"># prepare min, max,... from defaults if not set</span>
-    <span class="k">if</span> <span class="n">q_min</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">q_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tot_set</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">q_max</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">q_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tot_set</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">dqn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">dqn</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
-
-    <span class="c"># creating (Qx, Qy, Qz, I) Nx4 array - HKL values and Intensity</span>
-    <span class="c"># getting the intensity value for each pixel</span>
-    <span class="n">tot_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">tot_set</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">i_stack</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="c">#            3D grid of the data set</span>
-    <span class="c">#             *** Gridding Data ****</span>
-
-    <span class="c"># starting time for gridding</span>
-    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-    <span class="c"># ctrans - c routines for fast data analysis</span>
-
-    <span class="p">(</span><span class="n">grid_mean</span><span class="p">,</span> <span class="n">grid_occu</span><span class="p">,</span>
-         <span class="n">grid_error</span><span class="p">,</span> <span class="n">n_out_of_bounds</span><span class="p">)</span> <span class="o">=</span> <span class="n">ctrans</span><span class="o">.</span><span class="n">grid3d</span><span class="p">(</span><span class="n">tot_set</span><span class="p">,</span>
-                                                      <span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="p">,</span> <span class="n">dqn</span><span class="p">,</span>
-                                                      <span class="n">norm</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="c"># ending time for the gridding</span>
-    <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Done processed in </span><span class="si">%f</span><span class="s"> seconds&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">))</span>
-
-    <span class="c"># No. of values zero in the grid</span>
-    <span class="n">empt_nb</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_occu</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">n_out_of_bounds</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;There are </span><span class="si">%.2e</span><span class="s"> points outside the grid &quot;</span><span class="p">,</span>
-                     <span class="n">n_out_of_bounds</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;There are </span><span class="si">%2e</span><span class="s"> bins in the grid &quot;</span><span class="p">,</span> <span class="n">grid_mean</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">empt_nb</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;There are </span><span class="si">%.2e</span><span class="s"> values zero in the grid &quot;</span><span class="p">,</span> <span class="n">empt_nb</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">grid_mean</span><span class="p">,</span> <span class="n">grid_occu</span><span class="p">,</span> <span class="n">grid_error</span><span class="p">,</span> <span class="n">n_out_of_bounds</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">hkl_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -441,7 +271,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -450,13 +280,16 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

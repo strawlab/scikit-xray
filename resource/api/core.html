@@ -23,13 +23,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="API" href="index.html" />
+    <link rel="next" title="nsls2.core.MD_dict" href="generated/nsls2.core.MD_dict.html" />
     <link rel="prev" title="API" href="index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -38,6 +39,12 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="generated/nsls2.core.MD_dict.html" title="nsls2.core.MD_dict"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="API"
              accesskey="P">previous</a> |</li>
@@ -49,443 +56,189 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
-  <div class="section" id="module-nsls2.core">
-<span id="core-module"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">core</span></tt> Module<a class="headerlink" href="#module-nsls2.core" title="Permalink to this headline">¶</a></h1>
-<p>This module is for the &#8216;core&#8217; data types.</p>
-<dl class="class">
-<dt id="nsls2.core.MD_dict">
-<em class="property">class </em><tt class="descclassname">nsls2.core.</tt><tt class="descname">MD_dict</tt><big>(</big><em>md_dict=None</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#MD_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.MD_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">_abcoll.MutableMapping</span></tt></p>
-<p>A class to make dealing with the meta-data scheme for DataExchange easier</p>
-<p class="rubric">Examples</p>
-<p>Getting and setting data by path is possible</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span> <span class="o">=</span> <span class="n">MD_dict</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;test&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;nested.a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;nested.b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">&#39;m&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;nested.a&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-<span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;nested.a&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> <span class="ow">is</span> <span class="bp">None</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-<span class="go">&#39;test&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;nested.b&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
-<span class="go">&#39;m&#39;</span>
-</pre></div>
+  <div class="section" id="core-module">
+<h1><code class="xref py py-mod docutils literal"><span class="pre">core</span></code> Module<a class="headerlink" href="#core-module" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="helper-classes">
+<h2>Helper Classes<a class="headerlink" href="#helper-classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dictionary-like-classes">
+<h3>Dictionary-like classes<a class="headerlink" href="#dictionary-like-classes" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.MD_dict.html#nsls2.core.MD_dict" title="nsls2.core.MD_dict"><code class="xref py py-obj docutils literal"><span class="pre">MD_dict</span></code></a>([md_dict])</td>
+<td>A class to make dealing with the meta-data scheme for DataExchange easier</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.core.verbosedict.html#nsls2.core.verbosedict" title="nsls2.core.verbosedict"><code class="xref py py-obj docutils literal"><span class="pre">verbosedict</span></code></a></td>
+<td>A sub-class of dict which raises more verbose errors if a key is not found.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.RCParamDict.html#nsls2.core.RCParamDict" title="nsls2.core.RCParamDict"><code class="xref py py-obj docutils literal"><span class="pre">RCParamDict</span></code></a>()</td>
+<td>A class to make dealing with storing default values easier.</td>
+</tr>
+</tbody>
+</table>
 </div>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">clear</span></tt>(()&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Remove&nbsp;all&nbsp;items&nbsp;from&nbsp;D.)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">get</span></tt>((k[,d])&nbsp;-&gt;&nbsp;D[k]&nbsp;if&nbsp;k&nbsp;in&nbsp;D,&nbsp;...)</td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">items</span></tt>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;(key,&nbsp;value)&nbsp;pairs,&nbsp;...)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">iteritems</span></tt>(()&nbsp;-&gt;&nbsp;an&nbsp;iterator&nbsp;over&nbsp;the&nbsp;(key,&nbsp;...)</td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">iterkeys</span></tt>(()&nbsp;-&gt;&nbsp;an&nbsp;iterator&nbsp;over&nbsp;the&nbsp;keys&nbsp;of&nbsp;D)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">itervalues</span></tt>(...)</td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">keys</span></tt>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;keys)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">pop</span></tt>((k[,d])&nbsp;-&gt;&nbsp;v,&nbsp;...)</td>
-<td>If key is not found, d is returned if given, otherwise KeyError is raised.</td>
-</tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">popitem</span></tt>(()&nbsp;-&gt;&nbsp;(k,&nbsp;v),&nbsp;...)</td>
-<td>as a 2-tuple; but raise KeyError if D is empty.</td>
-</tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">setdefault</span></tt>((k[,d])&nbsp;-&gt;&nbsp;D.get(k,d),&nbsp;...)</td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">update</span></tt>(([E,&nbsp;...)</td>
-<td>If E present and has a .keys() method, does:     for k in E: D[k] = E[k]</td>
-</tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">values</span></tt>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;values)</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
-<dt id="nsls2.core.XR_data">
-<em class="property">class </em><tt class="descclassname">nsls2.core.</tt><tt class="descname">XR_data</tt><big>(</big><em>data</em>, <em>md=None</em>, <em>mutable=True</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#XR_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.XR_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>A class for wrapping up and carrying around data + unrelated
-meta data.</p>
-<p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#nsls2.core.XR_data.data" title="nsls2.core.XR_data.data"><tt class="xref py py-obj docutils literal"><span class="pre">data</span></tt></a></td>
-<td>Access to the data object we are carrying around</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#nsls2.core.XR_data.meta_data_keys" title="nsls2.core.XR_data.meta_data_keys"><tt class="xref py py-obj docutils literal"><span class="pre">meta_data_keys</span></tt></a>()</td>
-<td>Get a list of the meta-data keys that this object knows about</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="nsls2.core.XR_data.data">
-<tt class="descname">data</tt><a class="reference internal" href="../../_modules/nsls2/core.html#XR_data.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.XR_data.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Access to the data object we are carrying around</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="nsls2.core.XR_data.meta_data_keys">
-<tt class="descname">meta_data_keys</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#XR_data.meta_data_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.XR_data.meta_data_keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of the meta-data keys that this object knows about</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="nsls2.core.bin_1D">
-<tt class="descclassname">nsls2.core.</tt><tt class="descname">bin_1D</tt><big>(</big><em>x</em>, <em>y</em>, <em>nx=None</em>, <em>min_x=None</em>, <em>max_x=None</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#bin_1D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.bin_1D" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bin the values in y based on their x-coordinates</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : 1D array-like</p>
-<blockquote>
-<div><p>position</p>
-</div></blockquote>
-<p><strong>y</strong> : 1D array-like</p>
-<blockquote>
-<div><p>intensity</p>
-</div></blockquote>
-<p><strong>nx</strong> : integer</p>
-<blockquote>
-<div><p>number of bins to use</p>
-</div></blockquote>
-<p><strong>min_x</strong> : float</p>
-<blockquote>
-<div><p>Left edge of first bin</p>
-</div></blockquote>
-<p><strong>max_x</strong> : float</p>
-<blockquote>
-<div><p>Right edge of last bin</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>edges</strong> : 1D array</p>
-<blockquote>
-<div><p>edges of bins, length nx + 1</p>
-</div></blockquote>
-<p><strong>val</strong> : 1D array</p>
-<blockquote>
-<div><p>sum of values in each bin, length nx</p>
-</div></blockquote>
-<p><strong>count</strong> : ID</p>
-<blockquote class="last">
-<div><p>The number of counts in each bin, length nx</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="nsls2.core.bin_edges">
-<tt class="descclassname">nsls2.core.</tt><tt class="descname">bin_edges</tt><big>(</big><em>range_min=None</em>, <em>range_max=None</em>, <em>nbins=None</em>, <em>step=None</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#bin_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.bin_edges" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate bin edges.  The last value is the returned array is
-the right edge of the last bin, the rest of the values are the
-left edges of each bin.</p>
-<p>If <cite>range_max</cite> is specified all bin edges will be less than or
-equal to it&#8217;s value.</p>
-<p>If <cite>range_min</cite> is specified all bin edges will be greater than
-or equal to it&#8217;s value</p>
-<p>If <cite>nbins</cite> is specified then there will be than number of bins and
-the returned array will have length <cite>nbins + 1</cite> (as the right most
-edge is included)</p>
-<p>If <cite>step</cite> is specified then bin width is approximately <cite>step</cite> (It is
-not exact due to the nature of floats). The arrays generated by
-<cite>np.cumsum(np.ones(nbins) * step)</cite> and <cite>np.arange(nbins) * step</cite> are
-not identical.  This function uses the second method in all cases
-where <cite>step</cite> is specified.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If the set <tt class="code docutils literal"><span class="pre">(range_min,</span> <span class="pre">range_max,</span> <span class="pre">step)</span></tt> is
-given there is no guarantee that <tt class="code docutils literal"><span class="pre">range_max</span> <span class="pre">-</span> <span class="pre">range_min</span></tt>
-is an integer multiple of <tt class="code docutils literal"><span class="pre">step</span></tt>.  In this case the left
-most bin edge is <tt class="code docutils literal"><span class="pre">range_min</span></tt> and the right most bin edge
-is less than <tt class="code docutils literal"><span class="pre">range_max</span></tt> and the distance between the
-right most edge and <tt class="code docutils literal"><span class="pre">range_max</span></tt> is not greater than
-<tt class="code docutils literal"><span class="pre">step</span></tt> (this is the same behavior as the built-in
-<tt class="code docutils literal"><span class="pre">range()</span></tt>).  It is not recommended to specify bins in this
-manner.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>range_min</strong> : float, optional</p>
-<blockquote>
-<div><p>The minimum value that may be included as a bin edge</p>
-</div></blockquote>
-<p><strong>range_max</strong> : float, optional</p>
-<blockquote>
-<div><p>The maximum value that may be included as a bin edge</p>
-</div></blockquote>
-<p><strong>nbins</strong> : int, optional</p>
-<blockquote>
-<div><p>The number of bins, if specified the length of the returned
-value will be nbins + 1</p>
-</div></blockquote>
-<p><strong>step</strong> : float, optional</p>
-<blockquote>
-<div><p>The step between the bins</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">np.array</p>
-<blockquote class="last">
-<div><p>An array of floats for the bin edges.  The last value is the
-right edge of the last bin.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="nsls2.core.detector2D_to_1D">
-<tt class="descclassname">nsls2.core.</tt><tt class="descname">detector2D_to_1D</tt><big>(</big><em>img</em>, <em>detector_center</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#detector2D_to_1D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.detector2D_to_1D" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert the 2D image to a list of x y I coordinates where
-x == x_img - detector_center[0] and
-y == y_img - detector_center[1]</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>img: ndarray</strong></p>
-<blockquote>
-<div><p>2D detector image</p>
-</div></blockquote>
-<p><strong>detector_center: 2 element array</strong></p>
-<blockquote>
-<div><p>see keys_core[&#8220;detector_center&#8221;][&#8220;description&#8221;]</p>
-</div></blockquote>
-<p><strong>**kwargs: dict</strong></p>
-<blockquote>
-<div><p>Bucket for extra parameters in an unpacked dictionary</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X</strong> : numpy.ndarray</p>
-<blockquote>
-<div><p>1 x N
-x-coordinate of pixel</p>
-</div></blockquote>
-<p><strong>Y</strong> : numpy.ndarray</p>
-<blockquote>
-<div><p>1 x N
-y-coordinate of pixel</p>
-</div></blockquote>
-<p><strong>I</strong> : numpy.ndarray</p>
-<blockquote class="last">
-<div><p>1 x N
-intensity of pixel</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="nsls2.core.img_subtraction_pre">
-<tt class="descclassname">nsls2.core.</tt><tt class="descname">img_subtraction_pre</tt><big>(</big><em>img_arr</em>, <em>is_reference</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#img_subtraction_pre"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.img_subtraction_pre" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to subtract a series of measured images from
-background/dark current/reference images.  The nearest reference
-image in the reverse temporal direction is subtracted from each
-measured image.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>img_arr</strong> : numpy.ndarray</p>
-<blockquote>
-<div><p>Array of 2-D images</p>
-</div></blockquote>
-<p><strong>is_reference</strong> : 1-D boolean array</p>
-<blockquote>
-<div><p>true  : image is reference image
-false : image is measured image</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>img_corr</strong> : numpy.ndarray</p>
-<blockquote>
-<div><p>len(img_corr) == len(img_arr) - len(is_reference_img == true)
-img_corr is the array of measured images minus the reference
-images.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValueError</strong></p>
-<blockquote class="last">
-<div><dl class="docutils">
-<dt>Possible causes:</dt>
-<dd><p class="first last">is_reference contains no true values
-Raised when the first image in the array is not a reference image.</p>
-</dd>
-</dl>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="class">
-<dt id="nsls2.core.md_value">
-<em class="property">class </em><tt class="descclassname">nsls2.core.</tt><tt class="descname">md_value</tt><a class="headerlink" href="#nsls2.core.md_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
-<p class="rubric">Attributes</p>
+<div class="section" id="image-warping-functions">
+<h2>Image warping functions<a class="headerlink" href="#image-warping-functions" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#nsls2.core.md_value.units" title="nsls2.core.md_value.units"><tt class="xref py py-obj docutils literal"><span class="pre">units</span></tt></a></td>
-<td>Alias for field number 1</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#nsls2.core.md_value.value" title="nsls2.core.md_value.value"><tt class="xref py py-obj docutils literal"><span class="pre">value</span></tt></a></td>
-<td>Alias for field number 0</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">count</span></tt>(...)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">detector2D_to_1D</span></code></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">index</span></tt>((value,&nbsp;[start,&nbsp;...)</td>
-<td>Raises ValueError if the value is not present.</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.core.pixel_to_radius.html#nsls2.core.pixel_to_radius" title="nsls2.core.pixel_to_radius"><code class="xref py py-obj docutils literal"><span class="pre">pixel_to_radius</span></code></a>(shape,&nbsp;calibrated_center[,&nbsp;...])</td>
+<td>Converts pixel positions to radius from the calibrated center</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.pixel_to_phi.html#nsls2.core.pixel_to_phi" title="nsls2.core.pixel_to_phi"><code class="xref py py-obj docutils literal"><span class="pre">pixel_to_phi</span></code></a>(shape,&nbsp;calibrated_center[,&nbsp;...])</td>
+<td>Converts pixel positions to <span class="math">\(\phi\)</span>, the angle from vertical.</td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="nsls2.core.md_value.units">
-<tt class="descname">units</tt><a class="headerlink" href="#nsls2.core.md_value.units" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="nsls2.core.md_value.value">
-<tt class="descname">value</tt><a class="headerlink" href="#nsls2.core.md_value.value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="nsls2.core.radial_integration">
-<tt class="descclassname">nsls2.core.</tt><tt class="descname">radial_integration</tt><big>(</big><em>img</em>, <em>detector_center</em>, <em>sample_to_detector_distance</em>, <em>pixel_size</em>, <em>wavelength</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#radial_integration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.radial_integration" title="Permalink to this definition">¶</a></dt>
-<dd><p>docstring!</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nsls2.core.wedge_integration">
-<tt class="descclassname">nsls2.core.</tt><tt class="descname">wedge_integration</tt><big>(</big><em>src_data</em>, <em>center</em>, <em>theta_start</em>, <em>delta_theta</em>, <em>r_inner</em>, <em>delta_r</em><big>)</big><a class="reference internal" href="../../_modules/nsls2/core.html#wedge_integration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.wedge_integration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Implementation of caking.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
+</div>
+<div class="section" id="image-pre-processing">
+<h2>Image pre-processing<a class="headerlink" href="#image-pre-processing" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>scr_data</strong> : ndarray</p>
-<blockquote>
-<div><p>The source-data to be integrated</p>
-</div></blockquote>
-<p><strong>center</strong> : ndarray</p>
-<blockquote>
-<div><p>The center of the ring in pixels</p>
-</div></blockquote>
-<p><strong>theta_start</strong> : float</p>
-<blockquote>
-<div><p>The angle of the start of the wedge from the
-image y-axis in degrees</p>
-</div></blockquote>
-<p><strong>delta_theta</strong> : float</p>
-<blockquote>
-<div><p>The angular width of the wedge in degrees.  Positive
-angles go clockwise, negative go counter-clockwise.</p>
-</div></blockquote>
-<p><strong>r_inner</strong> : float</p>
-<blockquote>
-<div><p>The inner radius in pixel units, Must be non-negative</p>
-</div></blockquote>
-<p><strong>delta_r</strong> : float</p>
-<blockquote>
-<div><p>The length of the wedge in the radial direction
-in pixel units. Must be non-negative</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">float</p>
-<blockquote class="last">
-<div><p>The integrated intensity under the wedge</p>
-</div></blockquote>
-</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">img_subtraction_pre</span></code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
+</div>
+<div class="section" id="histograms-and-integration">
+<h2>Histograms and Integration<a class="headerlink" href="#histograms-and-integration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="binning">
+<h3>Binning<a class="headerlink" href="#binning" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.bin_1D.html#nsls2.core.bin_1D" title="nsls2.core.bin_1D"><code class="xref py py-obj docutils literal"><span class="pre">bin_1D</span></code></a>(x,&nbsp;y[,&nbsp;nx,&nbsp;min_x,&nbsp;max_x])</td>
+<td>Bin the values in y based on their x-coordinates</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.core.bin_image_to_1D.html#nsls2.core.bin_image_to_1D" title="nsls2.core.bin_image_to_1D"><code class="xref py py-obj docutils literal"><span class="pre">bin_image_to_1D</span></code></a>(img,&nbsp;calibrated_center,&nbsp;...)</td>
+<td>Integrates an image to a 1D curve.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.wedge_integration.html#nsls2.core.wedge_integration" title="nsls2.core.wedge_integration"><code class="xref py py-obj docutils literal"><span class="pre">wedge_integration</span></code></a>(src_data,&nbsp;center,&nbsp;...)</td>
+<td>Implementation of caking.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.core.grid3d.html#nsls2.core.grid3d" title="nsls2.core.grid3d"><code class="xref py py-obj docutils literal"><span class="pre">grid3d</span></code></a>(q,&nbsp;img_stack[,&nbsp;nx,&nbsp;ny,&nbsp;nz,&nbsp;xmin,&nbsp;...])</td>
+<td>Grid irregularly spaced data points onto a regular grid via histogramming</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="utility-functions">
+<h3>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.bin_edges.html#nsls2.core.bin_edges" title="nsls2.core.bin_edges"><code class="xref py py-obj docutils literal"><span class="pre">bin_edges</span></code></a>([range_min,&nbsp;range_max,&nbsp;nbins,&nbsp;step])</td>
+<td>Generate bin edges.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.core.bin_edges_to_centers.html#nsls2.core.bin_edges_to_centers" title="nsls2.core.bin_edges_to_centers"><code class="xref py py-obj docutils literal"><span class="pre">bin_edges_to_centers</span></code></a>(input_edges)</td>
+<td>Helper function for turning a array of bin edges into</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="helper-functions">
+<h2>Helper functions<a class="headerlink" href="#helper-functions" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.pairwise.html#nsls2.core.pairwise" title="nsls2.core.pairwise"><code class="xref py py-obj docutils literal"><span class="pre">pairwise</span></code></a>(iterable)</td>
+<td>s -&gt; (s0,s1), (s1,s2), (s2, s3), ...</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="physical-relations">
+<h2>Physical relations<a class="headerlink" href="#physical-relations" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.q_to_d.html#nsls2.core.q_to_d" title="nsls2.core.q_to_d"><code class="xref py py-obj docutils literal"><span class="pre">q_to_d</span></code></a>(q)</td>
+<td>Helper function to convert <span class="math">\(d\)</span> to <span class="math">\(q\)</span>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.core.d_to_q.html#nsls2.core.d_to_q" title="nsls2.core.d_to_q"><code class="xref py py-obj docutils literal"><span class="pre">d_to_q</span></code></a>(d)</td>
+<td>Helper function to convert <span class="math">\(d\)</span> to <span class="math">\(q\)</span>.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.core.q_to_twotheta.html#nsls2.core.q_to_twotheta" title="nsls2.core.q_to_twotheta"><code class="xref py py-obj docutils literal"><span class="pre">q_to_twotheta</span></code></a>(q,&nbsp;wavelength)</td>
+<td>Helper function to convert <span class="math">\(q\)</span> + <span class="math">\(\lambda\)</span> to <span class="math">\(2\theta\)</span>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.core.twotheta_to_q.html#nsls2.core.twotheta_to_q" title="nsls2.core.twotheta_to_q"><code class="xref py py-obj docutils literal"><span class="pre">twotheta_to_q</span></code></a>(two_theta,&nbsp;wavelength)</td>
+<td>Helper function to convert <span class="math">\(2\theta\)</span> + <span class="math">\(\lambda\)</span> to <span class="math">\(q\)</span>.</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">core</span></code> Module</a><ul>
+<li><a class="reference internal" href="#helper-classes">Helper Classes</a><ul>
+<li><a class="reference internal" href="#dictionary-like-classes">Dictionary-like classes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#image-warping-functions">Image warping functions</a></li>
+<li><a class="reference internal" href="#image-pre-processing">Image pre-processing</a></li>
+<li><a class="reference internal" href="#histograms-and-integration">Histograms and Integration</a><ul>
+<li><a class="reference internal" href="#binning">Binning</a></li>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#helper-functions">Helper functions</a></li>
+<li><a class="reference internal" href="#physical-relations">Physical relations</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">API</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/resource/api/core.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <h4>Next topic</h4>
+  <p class="topless"><a href="generated/nsls2.core.MD_dict.html"
+                        title="next chapter">nsls2.core.MD_dict</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/resource/api/core.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -502,7 +255,7 @@ in pixel units. Must be non-negative</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -512,15 +265,21 @@ in pixel units. Must be non-negative</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="generated/nsls2.core.MD_dict.html" title="nsls2.core.MD_dict"
+             >next</a> |</li>
+        <li class="right" >
           <a href="index.html" title="API"
              >previous</a> |</li>
         <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >API</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

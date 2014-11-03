@@ -1,0 +1,6 @@
+nsls2.core.grid3d
+=================
+
+.. currentmodule:: nsls2.core
+
+.. autofunction:: grid3d

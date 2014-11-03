@@ -1,0 +1,6 @@
+nsls2.constants.XrayLibWrap_Energy.values
+=========================================
+
+.. currentmodule:: nsls2.constants
+
+.. automethod:: XrayLibWrap_Energy.values

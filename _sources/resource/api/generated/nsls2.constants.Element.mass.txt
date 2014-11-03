@@ -1,0 +1,6 @@
+nsls2.constants.Element.mass
+============================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: Element.mass

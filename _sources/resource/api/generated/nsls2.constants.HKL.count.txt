@@ -1,0 +1,6 @@
+nsls2.constants.HKL.count
+=========================
+
+.. currentmodule:: nsls2.constants
+
+.. automethod:: HKL.count

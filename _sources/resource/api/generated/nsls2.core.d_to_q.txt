@@ -1,0 +1,6 @@
+nsls2.core.d_to_q
+=================
+
+.. currentmodule:: nsls2.core
+
+.. autofunction:: d_to_q

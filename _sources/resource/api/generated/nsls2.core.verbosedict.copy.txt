@@ -1,0 +1,6 @@
+nsls2.core.verbosedict.copy
+===========================
+
+.. currentmodule:: nsls2.core
+
+.. automethod:: verbosedict.copy

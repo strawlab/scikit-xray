@@ -1,0 +1,6 @@
+nsls2.calibration.refine_center
+===============================
+
+.. currentmodule:: nsls2.calibration
+
+.. autofunction:: refine_center

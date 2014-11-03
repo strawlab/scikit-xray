@@ -1,0 +1,6 @@
+nsls2.core.pairwise
+===================
+
+.. currentmodule:: nsls2.core
+
+.. autofunction:: pairwise

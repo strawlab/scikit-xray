@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="next" title="New Sub-packages and Modules" href="adding_files.html" />
     <link rel="prev" title="Git workflow" href="workflow.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -38,6 +38,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="adding_files.html" title="New Sub-packages and Modules"
@@ -53,7 +56,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="documentation">
 <span id="doc-doc"></span><h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
@@ -65,19 +68,32 @@ a feature-rich library no one can figure out how to use.</p>
 <h2>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this headline">¶</a></h2>
 <p>The docstrings must follow the <a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">numpydoc</a>
 format.</p>
+<p>For the &#8216;Returns&#8217; section of numpydoc, you must include the return
+variable name because this variable name is needed for automated vistrails
+wrapping (the return variable names are the output ports).</p>
+<p><strong>THESE MUST BE IN THE ORDER THAT THE FUNCTION RETURNS THEM IN</strong></p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>Returns
+-------
+avg : float
+    The average
+stdev : float
+    The standard deviation
+</pre></div>
+</div>
 </div>
 <div class="section" id="sphinx">
 <h2>Sphinx<a class="headerlink" href="#sphinx" title="Permalink to this headline">¶</a></h2>
 <p>We are using <a class="reference external" href="http://sphinx-doc.org/">sphinx</a> to build the
-documentation. In addition to <cite>sphinx</cite> you will also need <a class="reference external" href="https://pypi.python.org/pypi/numpydoc">numpydoc</a> installed and available.  Both
-can be installed from pypi (<tt class="code docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpydoc</span></tt> and
-<tt class="code docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sphinx</span></tt>).  If you want to build a pdf version of the
+documentation. In addition to <code class="xref py py-obj docutils literal"><span class="pre">sphinx</span></code> you will also need <a class="reference external" href="https://pypi.python.org/pypi/numpydoc">numpydoc</a> installed and available.  Both
+can be installed from pypi (<code class="code docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpydoc</span></code> and
+<code class="code docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sphinx</span></code>).  If you want to build a pdf version of the
 documentation you will also need LaTeX.</p>
-<p>To build the documentation locally, navigate to the <cite>doc</cite> folder and run</p>
+<p>To build the documentation locally, navigate to the <em class="xref py py-obj">doc</em> folder and run</p>
 <div class="highlight-python"><div class="highlight"><pre>make html
 </pre></div>
 </div>
-<p>The output website will then be in <cite>_build/html/index.html</cite> which you can
+<p>The output website will then be in <em class="xref py py-obj">_build/html/index.html</em> which you can
 open using any web-browser.</p>
 </div>
 </div>
@@ -86,7 +102,7 @@ open using any web-browser.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
@@ -103,12 +119,14 @@ open using any web-browser.</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="adding_files.html"
                         title="next chapter">New Sub-packages and Modules</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/resource/dev_guide/doc_doc.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/resource/dev_guide/doc_doc.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -125,7 +143,7 @@ open using any web-browser.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -133,6 +151,9 @@ open using any web-browser.</p>
              >index</a></li>
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="adding_files.html" title="New Sub-packages and Modules"
@@ -144,9 +165,9 @@ open using any web-browser.</p>
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

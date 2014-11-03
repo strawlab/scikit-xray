@@ -1,0 +1,6 @@
+nsls2.core.MD_dict.clear
+========================
+
+.. currentmodule:: nsls2.core
+
+.. automethod:: MD_dict.clear

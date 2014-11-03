@@ -1,0 +1,6 @@
+nsls2.core.RCParamDict.pop
+==========================
+
+.. currentmodule:: nsls2.core
+
+.. automethod:: RCParamDict.pop

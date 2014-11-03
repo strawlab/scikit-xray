@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsls2.calibration &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for nsls2.calibration</h1><div class="highlight"><pre>
+<span class="c"># ######################################################################</span>
+<span class="c"># Copyright (c) 2014, Brookhaven Science Associates, Brookhaven        #</span>
+<span class="c"># National Laboratory. All rights reserved.                            #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># Redistribution and use in source and binary forms, with or without   #</span>
+<span class="c"># modification, are permitted provided that the following conditions   #</span>
+<span class="c"># are met:                                                             #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions of source code must retain the above copyright     #</span>
+<span class="c">#   notice, this list of conditions and the following disclaimer.      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions in binary form must reproduce the above copyright  #</span>
+<span class="c">#   notice this list of conditions and the following disclaimer in     #</span>
+<span class="c">#   the documentation and/or other materials provided with the         #</span>
+<span class="c">#   distribution.                                                      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Neither the name of the Brookhaven Science Associates, Brookhaven  #</span>
+<span class="c">#   National Laboratory nor the names of its contributors may be used  #</span>
+<span class="c">#   to endorse or promote products derived from this software without  #</span>
+<span class="c">#   specific prior written permission.                                 #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  #</span>
+<span class="c"># &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    #</span>
+<span class="c"># LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    #</span>
+<span class="c"># FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE       #</span>
+<span class="c"># COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,           #</span>
+<span class="c"># INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES   #</span>
+<span class="c"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR   #</span>
+<span class="c"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)   #</span>
+<span class="c"># HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,  #</span>
+<span class="c"># STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OTHERWISE) ARISING   #</span>
+<span class="c"># IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   #</span>
+<span class="c"># POSSIBILITY OF SUCH DAMAGE.                                          #</span>
+<span class="c">########################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is the module for calibration functions and data</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
+                        <span class="n">unicode_literals</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.signal</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">nsls2.constants</span> <span class="kn">import</span> <span class="n">calibration_standards</span>
+<span class="kn">from</span> <span class="nn">nsls2.feature</span> <span class="kn">import</span> <span class="p">(</span><span class="n">filter_peak_height</span><span class="p">,</span> <span class="n">peak_refinement</span><span class="p">,</span>
+                           <span class="n">refine_log_quadratic</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nsls2.core</span> <span class="kn">import</span> <span class="p">(</span><span class="n">pixel_to_phi</span><span class="p">,</span> <span class="n">pixel_to_radius</span><span class="p">,</span>
+                        <span class="n">pairwise</span><span class="p">,</span> <span class="n">bin_edges_to_centers</span><span class="p">,</span> <span class="n">bin_1D</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="estimate_d_blind"><a class="viewcode-back" href="../../resource/api/generated/nsls2.calibration.estimate_d_blind.html#nsls2.calibration.estimate_d_blind">[docs]</a><span class="k">def</span> <span class="nf">estimate_d_blind</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">bin_centers</span><span class="p">,</span> <span class="n">ring_average</span><span class="p">,</span>
+               <span class="n">window_size</span><span class="p">,</span> <span class="n">max_peak_count</span><span class="p">,</span> <span class="n">thresh</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimate the sample-detector distance</span>
+
+<span class="sd">    Given a radially integrated calibration image return an estimate for</span>
+<span class="sd">    the sample-detector distance.  This function does not require a</span>
+<span class="sd">    rough estimate of what d should be.</span>
+
+<span class="sd">    For the peaks found the detector-sample distance is estimated via</span>
+<span class="sd">    .. math ::</span>
+
+<span class="sd">        D = \\frac{r}{\\tan 2\\theta}</span>
+
+<span class="sd">    where :math:`r` is the distance in mm from the calibrated center</span>
+<span class="sd">    to the ring on the detector and :math:`D` is the distance from</span>
+<span class="sd">    the sample to the detector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the calibration standard.  Used to look up the</span>
+<span class="sd">        expected peak location</span>
+<span class="sd">        For valid options, see the name attribute on this function</span>
+
+<span class="sd">    wavelength : float</span>
+<span class="sd">        The wavelength of scattered x-ray in nm</span>
+
+<span class="sd">    bin_centers : array</span>
+<span class="sd">        The distance from the calibrated center to the center of</span>
+<span class="sd">        the ring&#39;s annulus in mm</span>
+
+<span class="sd">    ring_average : array</span>
+<span class="sd">        The average intensity in the given ring of a azimuthally integrated</span>
+<span class="sd">        powder pattern.  In counts [arb]</span>
+
+<span class="sd">    window_size : int</span>
+<span class="sd">        The number of elements on either side of a local maximum to</span>
+<span class="sd">        use for locating and refining peaks.  Candidates are identified</span>
+<span class="sd">        as a relative maximum in a window sized (2*window_size + 1) and</span>
+<span class="sd">        the same window is used for fitting the peaks to refine the location.</span>
+
+<span class="sd">    max_peak_count : int</span>
+<span class="sd">        Use at most this many peaks</span>
+
+<span class="sd">    thresh : float</span>
+<span class="sd">        Fraction of maximum peak height</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dist_sample : float</span>
+<span class="sd">        The detector-sample distance in mm.  This is the mean of the estimate</span>
+<span class="sd">        from all of the peaks used.</span>
+
+<span class="sd">    std_dist_sample : float</span>
+<span class="sd">        The standard deviation of d computed from the peaks used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># get the calibration standard</span>
+    <span class="n">cal</span> <span class="o">=</span> <span class="n">calibration_standards</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="c"># find the local maximums</span>
+    <span class="n">cands</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">argrelmax</span><span class="p">(</span><span class="n">ring_average</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">window_size</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c"># filter local maximums by size</span>
+    <span class="n">cands</span> <span class="o">=</span> <span class="n">filter_peak_height</span><span class="p">(</span><span class="n">ring_average</span><span class="p">,</span> <span class="n">cands</span><span class="p">,</span>
+                               <span class="n">thresh</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">ring_average</span><span class="p">),</span> <span class="n">window</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span>
+    <span class="c"># TODO insert peak identification validation.  This might be better than</span>
+    <span class="c"># improving the threshold value.</span>
+    <span class="c"># refine the locations of the peaks</span>
+    <span class="n">peaks_x</span><span class="p">,</span> <span class="n">peaks_y</span> <span class="o">=</span> <span class="n">peak_refinement</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">ring_average</span><span class="p">,</span> <span class="n">cands</span><span class="p">,</span>
+                                       <span class="n">window_size</span><span class="p">,</span> <span class="n">refine_log_quadratic</span><span class="p">)</span>
+    <span class="c"># compute tan(2theta) for the expected peaks</span>
+    <span class="n">tan2theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">cal</span><span class="o">.</span><span class="n">convert_2theta</span><span class="p">(</span><span class="n">wavelength</span><span class="p">))</span>
+    <span class="c"># figure out how many peaks we can look at</span>
+    <span class="n">slc</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">tan2theta</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">peaks_x</span><span class="p">),</span> <span class="n">max_peak_count</span><span class="p">]))</span>
+    <span class="c"># estimate the sample-detector distance for each of the peaks</span>
+    <span class="n">d_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">peaks_x</span><span class="p">[</span><span class="n">slc</span><span class="p">]</span> <span class="o">/</span> <span class="n">tan2theta</span><span class="p">[</span><span class="n">slc</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">d_array</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">d_array</span><span class="p">)</span>
+
+<span class="c"># Set an attribute for the calibration names that are valid options.  This</span>
+<span class="c"># attribute also aids in autowrapping into VisTrails</span></div>
+<span class="n">estimate_d_blind</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">calibration_standards</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="refine_center"><a class="viewcode-back" href="../../resource/api/generated/nsls2.calibration.refine_center.html#nsls2.calibration.refine_center">[docs]</a><span class="k">def</span> <span class="nf">refine_center</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">pixel_size</span><span class="p">,</span> <span class="n">phi_steps</span><span class="p">,</span> <span class="n">max_peaks</span><span class="p">,</span>
+                  <span class="n">thresh</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span>
+                  <span class="n">nx</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">min_x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_x</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Refines the location of the center of the beam.</span>
+
+<span class="sd">    This relies on being able to see the whole powder pattern.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    image : ndarray</span>
+<span class="sd">        The image</span>
+
+<span class="sd">    calibrated_center : tuple</span>
+<span class="sd">        (row, column) the estimated center</span>
+
+<span class="sd">    pixel_size : tuple</span>
+<span class="sd">        (pixel_height, pixel_width)</span>
+
+<span class="sd">    phi_steps : int</span>
+<span class="sd">        How many regions to split the ring into, should be &gt;10</span>
+
+<span class="sd">    max_peaks : int</span>
+<span class="sd">        Number of rings to look it</span>
+
+<span class="sd">    thresh : float</span>
+<span class="sd">        Fraction of maximum peak height</span>
+
+<span class="sd">    window_size : int, optional</span>
+<span class="sd">        The window size to use (in bins) to use when refining peaks</span>
+
+<span class="sd">    nx : int, optional</span>
+<span class="sd">        Number of bins to use for radial binning</span>
+
+<span class="sd">    min_x : float, optional</span>
+<span class="sd">        The minimum radius to use for radial binning</span>
+
+<span class="sd">    max_x : float, optional</span>
+<span class="sd">        The maximum radius to use for radial binning</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    calibrated_center : tuple</span>
+<span class="sd">        The refined calibrated center.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nx</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">pixel_to_phi</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">pixel_size</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">pixel_to_radius</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">calibrated_center</span><span class="p">,</span> <span class="n">pixel_size</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="n">phi_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">phi_steps</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">phi_start</span><span class="p">,</span> <span class="n">phi_end</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">phi_steps</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">phi</span> <span class="o">&lt;=</span> <span class="n">phi_end</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">phi</span> <span class="o">&gt;</span> <span class="n">phi_start</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bin_1D</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">I</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+                          <span class="n">nx</span><span class="o">=</span><span class="n">nx</span><span class="p">,</span> <span class="n">min_x</span><span class="o">=</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="o">=</span><span class="n">max_x</span><span class="p">))</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+    <span class="n">ring_trace</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">bins</span><span class="p">,</span> <span class="n">b_sum</span><span class="p">,</span> <span class="n">b_count</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">b_sum</span> <span class="o">&gt;</span> <span class="mi">10</span>
+        <span class="n">avg</span> <span class="o">=</span> <span class="n">b_sum</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">/</span> <span class="n">b_count</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">bin_centers</span> <span class="o">=</span> <span class="n">bin_edges_to_centers</span><span class="p">(</span><span class="n">bins</span><span class="p">)[</span><span class="n">mask</span><span class="p">]</span>
+
+        <span class="n">cands</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">argrelmax</span><span class="p">(</span><span class="n">avg</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">window_size</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c"># filter local maximums by size</span>
+        <span class="n">cands</span> <span class="o">=</span> <span class="n">filter_peak_height</span><span class="p">(</span><span class="n">avg</span><span class="p">,</span> <span class="n">cands</span><span class="p">,</span> <span class="n">thresh</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">avg</span><span class="p">),</span>
+                                           <span class="n">window</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span>
+        <span class="n">ring_trace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">[</span><span class="n">cands</span><span class="p">[:</span><span class="n">max_peaks</span><span class="p">]])</span>
+
+    <span class="n">tr_len</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span> <span class="k">for</span> <span class="n">rt</span> <span class="ow">in</span> <span class="n">ring_trace</span><span class="p">]</span>
+    <span class="n">mm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tr_len</span><span class="p">)</span>
+    <span class="n">ring_trace</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">rt</span><span class="p">[:</span><span class="n">mm</span><span class="p">]</span> <span class="k">for</span> <span class="n">rt</span> <span class="ow">in</span> <span class="n">ring_trace</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">mean_dr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ring_trace</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ring_trace</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                      <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">phi_centers</span> <span class="o">=</span> <span class="n">bin_edges_to_centers</span><span class="p">(</span><span class="n">phi_steps</span><span class="p">)</span>
+
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phi_centers</span><span class="p">))</span>
+    <span class="c"># this is doing just one term of a Fourier series</span>
+    <span class="c"># note that we have to convert _back_ to pixels from real units</span>
+    <span class="c"># TODO do this with better integration/handle repeat better</span>
+    <span class="n">col_shift</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_centers</span><span class="p">)</span> <span class="o">*</span> <span class="n">mean_dr</span><span class="p">)</span> <span class="o">*</span>
+                 <span class="n">delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">pixel_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">row_shift</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi_centers</span><span class="p">)</span> <span class="o">*</span> <span class="n">mean_dr</span><span class="p">)</span> <span class="o">*</span>
+                 <span class="n">delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">pixel_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">calibrated_center</span><span class="p">)</span> <span class="o">+</span>
+                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">row_shift</span><span class="p">,</span> <span class="n">col_shift</span><span class="p">]))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

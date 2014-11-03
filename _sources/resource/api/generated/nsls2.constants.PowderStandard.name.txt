@@ -1,0 +1,6 @@
+nsls2.constants.PowderStandard.name
+===================================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: PowderStandard.name

@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsls2.image &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for nsls2.image</h1><div class="highlight"><pre>
+<span class="c"># ######################################################################</span>
+<span class="c"># Copyright (c) 2014, Brookhaven Science Associates, Brookhaven        #</span>
+<span class="c"># National Laboratory. All rights reserved.                            #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># Redistribution and use in source and binary forms, with or without   #</span>
+<span class="c"># modification, are permitted provided that the following conditions   #</span>
+<span class="c"># are met:                                                             #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions of source code must retain the above copyright     #</span>
+<span class="c">#   notice, this list of conditions and the following disclaimer.      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Redistributions in binary form must reproduce the above copyright  #</span>
+<span class="c">#   notice this list of conditions and the following disclaimer in     #</span>
+<span class="c">#   the documentation and/or other materials provided with the         #</span>
+<span class="c">#   distribution.                                                      #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># * Neither the name of the Brookhaven Science Associates, Brookhaven  #</span>
+<span class="c">#   National Laboratory nor the names of its contributors may be used  #</span>
+<span class="c">#   to endorse or promote products derived from this software without  #</span>
+<span class="c">#   specific prior written permission.                                 #</span>
+<span class="c">#                                                                      #</span>
+<span class="c"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  #</span>
+<span class="c"># &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    #</span>
+<span class="c"># LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    #</span>
+<span class="c"># FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE       #</span>
+<span class="c"># COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,           #</span>
+<span class="c"># INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES   #</span>
+<span class="c"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR   #</span>
+<span class="c"># SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)   #</span>
+<span class="c"># HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,  #</span>
+<span class="c"># STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OTHERWISE) ARISING   #</span>
+<span class="c"># IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   #</span>
+<span class="c"># POSSIBILITY OF SUCH DAMAGE.                                          #</span>
+<span class="c">########################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is the module for putting advanced/x-ray specific image</span>
+<span class="sd">processing tools.  These should be interesting compositions of existing</span>
+<span class="sd">tools, not just straight wrapping of np/scipy/scikit images.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
+                        <span class="n">unicode_literals</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="find_ring_center_acorr_1D"><a class="viewcode-back" href="../../resource/api/image.html#nsls2.image.find_ring_center_acorr_1D">[docs]</a><span class="k">def</span> <span class="nf">find_ring_center_acorr_1D</span><span class="p">(</span><span class="n">input_image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the pixel-resolution center of a set of concentric rings.</span>
+
+<span class="sd">    This function uses correlation between the image and it&#39;s mirror</span>
+<span class="sd">    to find the approximate center of  a single set of concentric rings.</span>
+<span class="sd">    It is assumed that there is only one set of rings in the image.  For</span>
+<span class="sd">    this method to work well the image must have significant mirror-symmetry</span>
+<span class="sd">    in both dimensions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_image : ndarray</span>
+<span class="sd">        A single image.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    calibrated_center : tuple</span>
+<span class="sd">        Returns the index (row, col) of the pixel that rings</span>
+<span class="sd">        are centered on.  Accurate to pixel resolution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">vals</span><span class="p">)]</span> <span class="k">for</span> <span class="n">vals</span><span class="p">,</span> <span class="n">bins</span> <span class="ow">in</span>
+                  <span class="p">(</span><span class="n">_corr_ax1</span><span class="p">(</span><span class="n">_im</span><span class="p">)</span> <span class="k">for</span> <span class="n">_im</span> <span class="ow">in</span> <span class="p">(</span><span class="n">input_image</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">input_image</span><span class="p">)))</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_corr_ax1</span><span class="p">(</span><span class="n">input_image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal helper function that finds the best estimate for the</span>
+<span class="sd">    location of the vertical mirror plane.  For each row the maximum</span>
+<span class="sd">    of the correlating with it&#39;s mirror is found.  The most common value</span>
+<span class="sd">    is reported back as the location of the mirror plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_image : ndarray</span>
+<span class="sd">        The input image</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vals : ndarray</span>
+<span class="sd">        histogram of what pixel has the highest correlation</span>
+
+<span class="sd">    bins : ndarray</span>
+<span class="sd">        Bin edges for the vals histogram</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">input_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">m_ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">norm_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">m_ones</span><span class="p">,</span> <span class="n">m_ones</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;full&#39;</span><span class="p">)</span>
+    <span class="c"># not sure that the /2 is the correct correction</span>
+    <span class="n">est_by_row</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                         <span class="n">mode</span><span class="o">=</span><span class="s">&#39;full&#39;</span><span class="p">)</span><span class="o">/</span><span class="n">norm_mask</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">input_image</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">est_by_row</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

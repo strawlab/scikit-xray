@@ -1,0 +1,6 @@
+nsls2.constants.XrayLibWrap.all
+===============================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: XrayLibWrap.all

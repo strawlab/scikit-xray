@@ -1,0 +1,6 @@
+nsls2.constants.XrayLibWrap.iteritems
+=====================================
+
+.. currentmodule:: nsls2.constants
+
+.. automethod:: XrayLibWrap.iteritems

@@ -23,12 +23,12 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,6 +36,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
@@ -45,7 +48,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for nsls2.io.binary</h1><div class="highlight"><pre>
 <span class="c"># ######################################################################</span>
@@ -91,47 +94,44 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="read_binary"><a class="viewcode-back" href="../../../resource/api/io/binary.html#nsls2.io.binary.read_binary">[docs]</a><span class="k">def</span> <span class="nf">read_binary</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">dsize</span><span class="p">,</span> <span class="n">headersize</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="read_binary"><a class="viewcode-back" href="../../../resource/api/io/binary.html#nsls2.io.binary.read_binary">[docs]</a><span class="k">def</span> <span class="nf">read_binary</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">dtype_str</span><span class="p">,</span> <span class="n">headersize</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    docstring, woo!</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    filename: String</span>
-<span class="sd">              The name of the file to open</span>
-<span class="sd">    nx: integer</span>
+<span class="sd">    filename : String</span>
+<span class="sd">        The name of the file to open</span>
+<span class="sd">    nx : integer</span>
 <span class="sd">        The number of data elements in the x-direction</span>
-<span class="sd">    ny: integer</span>
+<span class="sd">    ny : integer</span>
 <span class="sd">        The number of data elements in the y-direction</span>
-<span class="sd">    nz: integer</span>
+<span class="sd">    nz : integer</span>
 <span class="sd">        The number of data elements in the z-direction</span>
-<span class="sd">    dsize: numpy data type</span>
-<span class="sd">           The size of each element in the numpy array</span>
-<span class="sd">    headersize: integer</span>
-<span class="sd">                The size of the file header in bytes</span>
-<span class="sd">    extras: dict</span>
-<span class="sd">            unnecessary keys that were passed to this function through</span>
-<span class="sd">            dictionary unpacking</span>
+<span class="sd">    dtype_str : str</span>
+<span class="sd">        A valid argument for np.dtype(some_str). See read_binary.dsize</span>
+<span class="sd">        attribute</span>
+<span class="sd">    headersize : integer</span>
+<span class="sd">        The size of the file header in bytes</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (data, header)</span>
-<span class="sd">    data: ndarray</span>
+<span class="sd">    data : ndarray</span>
 <span class="sd">            data.shape = (x, y, z) if z &gt; 1</span>
 <span class="sd">            data.shape = (x, y) if z == 1</span>
 <span class="sd">            data.shape = (x,) if y == 1 &amp;&amp; z == 1</span>
-<span class="sd">    header: String</span>
+<span class="sd">    header : String</span>
 <span class="sd">            header = file.read(headersize)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c"># open the file</span>
-    <span class="n">opened_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">opened_file</span><span class="p">:</span>
+        <span class="c"># read the file header</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">opened_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">headersize</span><span class="p">)</span>
 
-    <span class="c"># read the file header</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="n">opened_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">headersize</span><span class="p">)</span>
-
-    <span class="c"># read the entire file in as 1D list</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">opened_file</span><span class="p">,</span> <span class="n">dsize</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c"># read the entire file in as 1D list</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">opened_file</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype_str</span><span class="p">),</span>
+                           <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c"># reshape the array to 3D</span>
     <span class="k">if</span> <span class="n">nz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="mi">1</span><span class="p">:</span>
@@ -142,15 +142,18 @@
     <span class="c"># unless the 2nd dimension is also 1, in which case leave the array as 1D</span>
 
     <span class="c"># return the array and the header</span>
-    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span></div>
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span>
+
+<span class="c"># set an attribute for the dsize params that are valid options</span></div>
+<span class="n">read_binary</span><span class="o">.</span><span class="n">dtype_str</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">typeDict</span><span class="p">))</span>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
@@ -167,7 +170,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -176,13 +179,16 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

@@ -1,0 +1,6 @@
+nsls2.constants.PowderStandard.convert_2theta
+=============================================
+
+.. currentmodule:: nsls2.constants
+
+.. automethod:: PowderStandard.convert_2theta

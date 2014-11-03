@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsls2.calibration.estimate_d_blind &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nsls2-calibration-estimate-d-blind">
+<h1>nsls2.calibration.estimate_d_blind<a class="headerlink" href="#nsls2-calibration-estimate-d-blind" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="nsls2.calibration.estimate_d_blind">
+<code class="descclassname">nsls2.calibration.</code><code class="descname">estimate_d_blind</code><span class="sig-paren">(</span><em>name</em>, <em>wavelength</em>, <em>bin_centers</em>, <em>ring_average</em>, <em>window_size</em>, <em>max_peak_count</em>, <em>thresh</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/nsls2/calibration.html#estimate_d_blind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.calibration.estimate_d_blind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the sample-detector distance</p>
+<p>Given a radially integrated calibration image return an estimate for
+the sample-detector distance.  This function does not require a
+rough estimate of what d should be.</p>
+<p>For the peaks found the detector-sample distance is estimated via
+.. math</p>
+<div class="highlight-python"><div class="highlight"><pre>D = \frac{r}{\tan 2\theta}
+</pre></div>
+</div>
+<p>where <span class="math">\(r\)</span> is the distance in mm from the calibrated center
+to the ring on the detector and <span class="math">\(D\)</span> is the distance from
+the sample to the detector.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name of the calibration standard.  Used to look up the
+expected peak location
+For valid options, see the name attribute on this function</p>
+</div></blockquote>
+<p><strong>wavelength</strong> : float</p>
+<blockquote>
+<div><p>The wavelength of scattered x-ray in nm</p>
+</div></blockquote>
+<p><strong>bin_centers</strong> : array</p>
+<blockquote>
+<div><p>The distance from the calibrated center to the center of
+the ring&#8217;s annulus in mm</p>
+</div></blockquote>
+<p><strong>ring_average</strong> : array</p>
+<blockquote>
+<div><p>The average intensity in the given ring of a azimuthally integrated
+powder pattern.  In counts [arb]</p>
+</div></blockquote>
+<p><strong>window_size</strong> : int</p>
+<blockquote>
+<div><p>The number of elements on either side of a local maximum to
+use for locating and refining peaks.  Candidates are identified
+as a relative maximum in a window sized (2*window_size + 1) and
+the same window is used for fitting the peaks to refine the location.</p>
+</div></blockquote>
+<p><strong>max_peak_count</strong> : int</p>
+<blockquote>
+<div><p>Use at most this many peaks</p>
+</div></blockquote>
+<p><strong>thresh</strong> : float</p>
+<blockquote>
+<div><p>Fraction of maximum peak height</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dist_sample</strong> : float</p>
+<blockquote>
+<div><p>The detector-sample distance in mm.  This is the mean of the estimate
+from all of the peaks used.</p>
+</div></blockquote>
+<p><strong>std_dist_sample</strong> : float</p>
+<blockquote class="last">
+<div><p>The standard deviation of d computed from the peaks used.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/resource/api/generated/nsls2.calibration.estimate_d_blind.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

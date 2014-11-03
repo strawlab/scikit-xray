@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nsls2.core.wedge_integration &mdash; NSLS2 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="NSLS2 0 documentation" href="../../../index.html" />
+    <link rel="up" title="core Module" href="../core.html" />
+    <link rel="next" title="nsls2.core.grid3d" href="nsls2.core.grid3d.html" />
+    <link rel="prev" title="nsls2.core.bin_image_to_1D" href="nsls2.core.bin_image_to_1D.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nsls2.core.grid3d.html" title="nsls2.core.grid3d"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nsls2.core.bin_image_to_1D.html" title="nsls2.core.bin_image_to_1D"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" accesskey="U"><code class="docutils literal"><span class="pre">core</span></code> Module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nsls2-core-wedge-integration">
+<h1>nsls2.core.wedge_integration<a class="headerlink" href="#nsls2-core-wedge-integration" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="nsls2.core.wedge_integration">
+<code class="descclassname">nsls2.core.</code><code class="descname">wedge_integration</code><span class="sig-paren">(</span><em>src_data</em>, <em>center</em>, <em>theta_start</em>, <em>delta_theta</em>, <em>r_inner</em>, <em>delta_r</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/nsls2/core.html#wedge_integration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.core.wedge_integration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of caking.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>scr_data</strong> : ndarray</p>
+<blockquote>
+<div><p>The source-data to be integrated</p>
+</div></blockquote>
+<p><strong>center</strong> : ndarray</p>
+<blockquote>
+<div><p>The center of the ring in pixels</p>
+</div></blockquote>
+<p><strong>theta_start</strong> : float</p>
+<blockquote>
+<div><p>The angle of the start of the wedge from the
+image y-axis in degrees</p>
+</div></blockquote>
+<p><strong>delta_theta</strong> : float</p>
+<blockquote>
+<div><p>The angular width of the wedge in degrees.  Positive
+angles go clockwise, negative go counter-clockwise.</p>
+</div></blockquote>
+<p><strong>r_inner</strong> : float</p>
+<blockquote>
+<div><p>The inner radius in pixel units, Must be non-negative</p>
+</div></blockquote>
+<p><strong>delta_r</strong> : float</p>
+<blockquote>
+<div><p>The length of the wedge in the radial direction
+in pixel units. Must be non-negative</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>float</strong> :</p>
+<blockquote class="last">
+<div><p>The integrated intensity under the wedge</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nsls2.core.bin_image_to_1D.html"
+                        title="previous chapter">nsls2.core.bin_image_to_1D</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nsls2.core.grid3d.html"
+                        title="next chapter">nsls2.core.grid3d</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/resource/api/generated/nsls2.core.wedge_integration.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nsls2.core.grid3d.html" title="nsls2.core.grid3d"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nsls2.core.bin_image_to_1D.html" title="nsls2.core.bin_image_to_1D"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" ><code class="docutils literal"><span class="pre">core</span></code> Module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

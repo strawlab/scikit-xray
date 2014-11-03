@@ -1,0 +1,6 @@
+nsls2.constants.HKL.index
+=========================
+
+.. currentmodule:: nsls2.constants
+
+.. automethod:: HKL.index

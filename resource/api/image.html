@@ -23,13 +23,14 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
     <link rel="up" title="API" href="index.html" />
-    <link rel="next" title="recip Module" href="recip.html" /> 
+    <link rel="next" title="recip Module" href="recip.html" />
+    <link rel="prev" title="nsls2.core.twotheta_to_q" href="generated/nsls2.core.twotheta_to_q.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -39,8 +40,14 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="recip.html" title="recip Module"
              accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="generated/nsls2.core.twotheta_to_q.html" title="nsls2.core.twotheta_to_q"
+             accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">API</a> &raquo;</li> 
       </ul>
@@ -49,30 +56,65 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-nsls2.image">
-<span id="image-module"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">image</span></tt> Module<a class="headerlink" href="#module-nsls2.image" title="Permalink to this headline">¶</a></h1>
+<span id="image-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">image</span></code> Module<a class="headerlink" href="#module-nsls2.image" title="Permalink to this headline">¶</a></h1>
 <p>This is the module for putting advanced/x-ray specific image
 processing tools.  These should be interesting compositions of existing
 tools, not just straight wrapping of np/scipy/scikit images.</p>
+<dl class="function">
+<dt id="nsls2.image.find_ring_center_acorr_1D">
+<code class="descclassname">nsls2.image.</code><code class="descname">find_ring_center_acorr_1D</code><span class="sig-paren">(</span><em>input_image</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/image.html#find_ring_center_acorr_1D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.image.find_ring_center_acorr_1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the pixel-resolution center of a set of concentric rings.</p>
+<p>This function uses correlation between the image and it&#8217;s mirror
+to find the approximate center of  a single set of concentric rings.
+It is assumed that there is only one set of rings in the image.  For
+this method to work well the image must have significant mirror-symmetry
+in both dimensions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>input_image</strong> : ndarray</p>
+<blockquote>
+<div><p>A single image.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>calibrated_center</strong> : tuple</p>
+<blockquote class="last">
+<div><p>Returns the index (row, col) of the pixel that rings
+are centered on.  Accurate to pixel resolution.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="generated/nsls2.core.twotheta_to_q.html"
+                        title="previous chapter">nsls2.core.twotheta_to_q</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="recip.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">recip</span></tt> Module</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/resource/api/image.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+                        title="next chapter"><code class="docutils literal"><span class="pre">recip</span></code> Module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/resource/api/image.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
@@ -89,7 +131,7 @@ tools, not just straight wrapping of np/scipy/scikit images.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -99,15 +141,21 @@ tools, not just straight wrapping of np/scipy/scikit images.</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="recip.html" title="recip Module"
              >next</a> |</li>
+        <li class="right" >
+          <a href="generated/nsls2.core.twotheta_to_q.html" title="nsls2.core.twotheta_to_q"
+             >previous</a> |</li>
         <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >API</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

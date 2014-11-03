@@ -23,12 +23,12 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="NSLS2 0 documentation" href="#" />
     <link rel="next" title="API" href="resource/api/index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,6 +36,9 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="resource/api/index.html" title="API"
@@ -47,7 +50,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="welcome-to-nsls2-s-documentation">
 <h1>Welcome to NSLS2&#8217;s documentation!<a class="headerlink" href="#welcome-to-nsls2-s-documentation" title="Permalink to this headline">¶</a></h1>
@@ -55,12 +58,14 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="resource/api/index.html">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="resource/api/core.html"><tt class="docutils literal"><span class="pre">core</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resource/api/image.html"><tt class="docutils literal"><span class="pre">image</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resource/api/recip.html"><tt class="docutils literal"><span class="pre">recip</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resource/api/rcparams.html"><tt class="docutils literal"><span class="pre">rcparams</span></tt> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="resource/api/spectroscopy.html"><tt class="docutils literal"><span class="pre">spectroscopy</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource/api/core.html"><code class="docutils literal"><span class="pre">core</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource/api/image.html"><code class="docutils literal"><span class="pre">image</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource/api/recip.html"><code class="docutils literal"><span class="pre">recip</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource/api/spectroscopy.html"><code class="docutils literal"><span class="pre">spectroscopy</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="resource/api/io/index.html">IO API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource/api/fitting/index.html">Fitting API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource/api/constants.html"><code class="docutils literal"><span class="pre">constants</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource/api/calibration.html"><code class="docutils literal"><span class="pre">calibration</span></code> Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="resource/dev_guide/index.html">Development Guide</a><ul>
@@ -87,7 +92,7 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
@@ -98,12 +103,14 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="resource/api/index.html"
                         title="next chapter">API</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -120,7 +127,7 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -130,14 +137,17 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="resource/api/index.html" title="API"
              >next</a> |</li>
         <li><a href="#">NSLS2 0 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
 </html>

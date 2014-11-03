@@ -1,0 +1,6 @@
+nsls2.core.RCParamDict.values
+=============================
+
+.. currentmodule:: nsls2.core
+
+.. automethod:: RCParamDict.values

@@ -1,0 +1,6 @@
+nsls2.constants.PowderStandard.reflections
+==========================================
+
+.. currentmodule:: nsls2.constants
+
+.. autoattribute:: PowderStandard.reflections
