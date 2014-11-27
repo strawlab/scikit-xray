@@ -1,0 +1,32 @@
+skxray.core.MD_dict
+===================
+
+.. currentmodule:: skxray.core
+
+.. autoclass:: MD_dict
+
+   
+
+
+  .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         MD_dict.clear
+         MD_dict.get
+         MD_dict.items
+         MD_dict.iteritems
+         MD_dict.iterkeys
+         MD_dict.itervalues
+         MD_dict.keys
+         MD_dict.pop
+         MD_dict.popitem
+         MD_dict.setdefault
+         MD_dict.update
+         MD_dict.values
+
+
+
+
+   
+

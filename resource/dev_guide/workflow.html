@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Git workflow &mdash; NSLS2 0 documentation</title>
+    <title>Git workflow &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="next" title="Documentation" href="doc_doc.html" />
     <link rel="prev" title="Introduction to Git" href="git_guide.html" /> 
@@ -40,15 +40,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="doc_doc.html" title="Documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="git_guide.html" title="Introduction to Git"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Development Guide</a> &raquo;</li> 
       </ul>
     </div>  
@@ -62,27 +59,27 @@
 <span id="workflow"></span><h1>Git workflow<a class="headerlink" href="#git-workflow" title="Permalink to this headline">¶</a></h1>
 <p>The basic workflow is that you develop new code on feature branches in
 your local repository.  When you want your code merged into the main
-repository you push your work to <code class="docutils literal"><span class="pre">github</span></code> and create a &#8220;Pull
+repository you push your work to <tt class="docutils literal"><span class="pre">github</span></tt> and create a &#8220;Pull
 Request&#8221; (PR).  The code is then reviewed and once everyone is happy,
-it will be merged into <code class="docutils literal"><span class="pre">NLSL-II/master</span></code>.</p>
+it will be merged into <tt class="docutils literal"><span class="pre">NLSL-II/master</span></tt>.</p>
 <div class="section" id="rules">
 <h2>Rules<a class="headerlink" href="#rules" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ol class="arabic simple">
 <li>Don&#8217;t work directly on the main repository, push commits to your
 personal github repository</li>
-<li>Never work on <code class="docutils literal"><span class="pre">master</span></code>, always work on a feature branch</li>
+<li>Never work on <tt class="docutils literal"><span class="pre">master</span></tt>, always work on a feature branch</li>
 <li>Don&#8217;t merge your own PR.</li>
-<li>Don&#8217;t merge <code class="docutils literal"><span class="pre">NSLS-II/master</span></code> into your feature branch
+<li>Don&#8217;t merge <tt class="docutils literal"><span class="pre">NSLS-II/master</span></tt> into your feature branch
 as this can make merging back into master tricky.</li>
 <li>Commit messages must be at least one sentence and preferably a short
 paragraph.  They should not be longer than 2 paragraphs (if you need to
 write that much the commit should probably be split up).</li>
 <li>Commit messages should start with a descriptor code (borrowed from numpy
 ), see table below.</li>
-<li>Add a file in <code class="docutils literal"><span class="pre">changelog</span></code> describing the propose of this branch
+<li>Add a file in <tt class="docutils literal"><span class="pre">changelog</span></tt> describing the propose of this branch
 in a sentence.  When we make releases these will be compiled into
-a <code class="docutils literal"><span class="pre">CHANGELOG</span></code>.  Doing it this way prevents excessive merge conflicts.</li>
+a <tt class="docutils literal"><span class="pre">CHANGELOG</span></tt>.  Doing it this way prevents excessive merge conflicts.</li>
 <li>Add a test for every new function you add</li>
 <li>When you fix a bug add a test that used to fail and now passes</li>
 </ol>
@@ -199,9 +196,9 @@ git push github
 </pre></div>
 </div>
 <p>Once everyone is happy with the changes, the branch can be merged into
-the main <code class="docutils literal"><span class="pre">master</span></code> branch via the web interface.  If there are
-conflicts on <code class="docutils literal"><span class="pre">master</span></code> with your work, it is your responsibility to
-<strong>rebase</strong> your branch on to the current <code class="docutils literal"><span class="pre">master</span></code>.</p>
+the main <tt class="docutils literal"><span class="pre">master</span></tt> branch via the web interface.  If there are
+conflicts on <tt class="docutils literal"><span class="pre">master</span></tt> with your work, it is your responsibility to
+<strong>rebase</strong> your branch on to the current <tt class="docutils literal"><span class="pre">master</span></tt>.</p>
 </div>
 </div>
 
@@ -264,21 +261,18 @@ conflicts on <code class="docutils literal"><span class="pre">master</span></cod
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="doc_doc.html" title="Documentation"
              >next</a> |</li>
         <li class="right" >
           <a href="git_guide.html" title="Introduction to Git"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>

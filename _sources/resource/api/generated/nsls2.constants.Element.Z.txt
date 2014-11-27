@@ -1,6 +1,0 @@
-nsls2.constants.Element.Z
-=========================
-
-.. currentmodule:: nsls2.constants
-
-.. autoattribute:: Element.Z

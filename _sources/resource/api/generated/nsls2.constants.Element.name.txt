@@ -1,6 +1,0 @@
-nsls2.constants.Element.name
-============================
-
-.. currentmodule:: nsls2.constants
-
-.. autoattribute:: Element.name

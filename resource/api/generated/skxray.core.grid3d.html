@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>skxray.core.grid3d &mdash; scikit-xray 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="scikit-xray 0 documentation" href="../../../index.html" />
+    <link rel="up" title="core Module" href="../core.html" />
+    <link rel="next" title="skxray.core.bin_edges" href="skxray.core.bin_edges.html" />
+    <link rel="prev" title="skxray.core.wedge_integration" href="skxray.core.wedge_integration.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.bin_edges.html" title="skxray.core.bin_edges"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.wedge_integration.html" title="skxray.core.wedge_integration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" accesskey="U"><tt class="docutils literal"><span class="pre">core</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="skxray-core-grid3d">
+<h1>skxray.core.grid3d<a class="headerlink" href="#skxray-core-grid3d" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="skxray.core.grid3d">
+<tt class="descclassname">skxray.core.</tt><tt class="descname">grid3d</tt><span class="sig-paren">(</span><em>q</em>, <em>img_stack</em>, <em>nx=None</em>, <em>ny=None</em>, <em>nz=None</em>, <em>xmin=None</em>, <em>xmax=None</em>, <em>ymin=None</em>, <em>ymax=None</em>, <em>zmin=None</em>, <em>zmax=None</em>, <em>binary_mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/skxray/core.html#grid3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.core.grid3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid irregularly spaced data points onto a regular grid via histogramming</p>
+<p>This function will process the set of reciprocal space values (q), the
+image stack (img_stack) and grid the image data based on the bounds
+provided, using defaults if none are provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>q</strong> : ndarray</p>
+<blockquote>
+<div><p>(Qx, Qy, Qz) - HKL values - Nx3 array</p>
+</div></blockquote>
+<p><strong>img_stack</strong> : ndarray</p>
+<blockquote>
+<div><p>Intensity array of the images
+dimensions are: [num_img][num_rows][num_cols]</p>
+</div></blockquote>
+<p><strong>nx</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of voxels along x</p>
+</div></blockquote>
+<p><strong>ny</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of voxels along y</p>
+</div></blockquote>
+<p><strong>nz</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of voxels along z</p>
+</div></blockquote>
+<p><strong>xmin</strong> : float, optional</p>
+<blockquote>
+<div><p>Minimum value along x. Defaults to smallest x value in q</p>
+</div></blockquote>
+<p><strong>ymin</strong> : float, optional</p>
+<blockquote>
+<div><p>Minimum value along y. Defaults to smallest y value in q</p>
+</div></blockquote>
+<p><strong>zmin</strong> : float, optional</p>
+<blockquote>
+<div><p>Minimum value along z. Defaults to smallest z value in q</p>
+</div></blockquote>
+<p><strong>xmax</strong> : float, optional</p>
+<blockquote>
+<div><p>Maximum value along x. Defaults to largest x value in q</p>
+</div></blockquote>
+<p><strong>ymax</strong> : float, optional</p>
+<blockquote>
+<div><p>Maximum value along y. Defaults to largest y value in q</p>
+</div></blockquote>
+<p><strong>zmax</strong> : float, optional</p>
+<blockquote>
+<div><p>Maximum value along z. Defaults to largest z value in q</p>
+</div></blockquote>
+<p><strong>binary_mask</strong> : ndarray, optional</p>
+<blockquote>
+<div><p>The binary mask provides a mechanism to remove unwanted pixels
+from the images.
+Binary mask can be two different shapes.
+- 1: 2-D with binary_mask.shape == np.asarray(img_stack[0]).shape
+- 2: 3-D with binary_mask.shape == np.asarray(img_stack).shape</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>mean</strong> : ndarray</p>
+<blockquote>
+<div><p>intensity grid.  The values in this grid are the
+mean of the values that fill with in the grid.</p>
+</div></blockquote>
+<p><strong>occupancy</strong> : ndarray</p>
+<blockquote>
+<div><p>The number of data points that fell in the grid.</p>
+</div></blockquote>
+<p><strong>std_err</strong> : ndarray</p>
+<blockquote>
+<div><p>This is the standard error of the value in the
+grid box.</p>
+</div></blockquote>
+<p><strong>oob</strong> : int</p>
+<blockquote>
+<div><p>Out Of Bounds. Number of data points that are outside of
+the gridded region.</p>
+</div></blockquote>
+<p><strong>bounds</strong> : list</p>
+<blockquote class="last">
+<div><p>tuple of (min, max, step) for x, y, z in order: [x_bounds,
+y_bounds, z_bounds]</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="skxray.core.wedge_integration.html"
+                        title="previous chapter">skxray.core.wedge_integration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="skxray.core.bin_edges.html"
+                        title="next chapter">skxray.core.bin_edges</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/resource/api/generated/skxray.core.grid3d.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.bin_edges.html" title="skxray.core.bin_edges"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.wedge_integration.html" title="skxray.core.wedge_integration"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" ><tt class="docutils literal"><span class="pre">core</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+skxray.constants.HKL.l
+======================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: HKL.l

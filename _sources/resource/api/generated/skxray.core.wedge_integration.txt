@@ -1,0 +1,6 @@
+skxray.core.wedge_integration
+=============================
+
+.. currentmodule:: skxray.core
+
+.. autofunction:: wedge_integration

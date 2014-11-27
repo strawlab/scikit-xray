@@ -1,0 +1,6 @@
+skxray.core.RCParamDict.update
+==============================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: RCParamDict.update

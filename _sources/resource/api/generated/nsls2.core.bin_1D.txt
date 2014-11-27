@@ -1,6 +1,0 @@
-nsls2.core.bin_1D
-=================
-
-.. currentmodule:: nsls2.core
-
-.. autofunction:: bin_1D

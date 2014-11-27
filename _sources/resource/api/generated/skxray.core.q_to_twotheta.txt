@@ -1,0 +1,6 @@
+skxray.core.q_to_twotheta
+=========================
+
+.. currentmodule:: skxray.core
+
+.. autofunction:: q_to_twotheta

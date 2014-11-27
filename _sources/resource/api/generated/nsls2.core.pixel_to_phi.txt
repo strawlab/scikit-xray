@@ -1,6 +1,0 @@
-nsls2.core.pixel_to_phi
-=======================
-
-.. currentmodule:: nsls2.core
-
-.. autofunction:: pixel_to_phi

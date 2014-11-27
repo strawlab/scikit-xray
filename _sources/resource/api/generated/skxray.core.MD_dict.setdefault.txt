@@ -1,0 +1,6 @@
+skxray.core.MD_dict.setdefault
+==============================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: MD_dict.setdefault

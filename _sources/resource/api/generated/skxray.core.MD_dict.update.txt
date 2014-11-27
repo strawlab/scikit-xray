@@ -1,0 +1,6 @@
+skxray.core.MD_dict.update
+==========================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: MD_dict.update

@@ -1,6 +1,0 @@
-nsls2.constants.XrayLibWrap_Energy.iterkeys
-===========================================
-
-.. currentmodule:: nsls2.constants
-
-.. automethod:: XrayLibWrap_Energy.iterkeys

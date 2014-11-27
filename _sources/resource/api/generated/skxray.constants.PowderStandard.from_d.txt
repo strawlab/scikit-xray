@@ -1,0 +1,6 @@
+skxray.constants.PowderStandard.from_d
+======================================
+
+.. currentmodule:: skxray.constants
+
+.. automethod:: PowderStandard.from_d

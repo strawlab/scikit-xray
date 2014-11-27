@@ -1,0 +1,6 @@
+skxray.constants.Element.mass
+=============================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.mass

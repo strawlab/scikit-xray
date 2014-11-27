@@ -1,6 +1,0 @@
-nsls2.core.bin_edges_to_centers
-===============================
-
-.. currentmodule:: nsls2.core
-
-.. autofunction:: bin_edges_to_centers

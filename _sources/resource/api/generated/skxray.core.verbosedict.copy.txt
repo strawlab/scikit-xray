@@ -1,0 +1,6 @@
+skxray.core.verbosedict.copy
+============================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: verbosedict.copy

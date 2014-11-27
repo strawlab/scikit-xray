@@ -1,0 +1,6 @@
+skxray.constants.XrayLibWrap.iteritems
+======================================
+
+.. currentmodule:: skxray.constants
+
+.. automethod:: XrayLibWrap.iteritems

@@ -1,6 +1,0 @@
-nsls2.constants.HKL.length
-==========================
-
-.. currentmodule:: nsls2.constants
-
-.. autoattribute:: HKL.length

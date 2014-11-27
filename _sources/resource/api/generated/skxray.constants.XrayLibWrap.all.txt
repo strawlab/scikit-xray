@@ -1,0 +1,6 @@
+skxray.constants.XrayLibWrap.all
+================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: XrayLibWrap.all

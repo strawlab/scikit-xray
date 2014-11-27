@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>spectroscopy Module &mdash; NSLS2 0 documentation</title>
+    <title>spectroscopy Module &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="API" href="index.html" />
     <link rel="next" title="IO API" href="io/index.html" />
     <link rel="prev" title="recip Module" href="recip.html" /> 
@@ -40,15 +40,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="io/index.html" title="IO API"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="recip.html" title="recip Module"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">API</a> &raquo;</li> 
       </ul>
     </div>  
@@ -58,12 +55,12 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-nsls2.spectroscopy">
-<span id="spectroscopy-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">spectroscopy</span></code> Module<a class="headerlink" href="#module-nsls2.spectroscopy" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-skxray.spectroscopy">
+<span id="spectroscopy-module"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">spectroscopy</span></tt> Module<a class="headerlink" href="#module-skxray.spectroscopy" title="Permalink to this headline">¶</a></h1>
 <p>This module is for spectroscopy specific tools (spectrum fitting etc).</p>
 <dl class="function">
-<dt id="nsls2.spectroscopy.align_and_scale">
-<code class="descclassname">nsls2.spectroscopy.</code><code class="descname">align_and_scale</code><span class="sig-paren">(</span><em>energy_list</em>, <em>counts_list</em>, <em>pk_find_fun=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#align_and_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.align_and_scale" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.spectroscopy.align_and_scale">
+<tt class="descclassname">skxray.spectroscopy.</tt><tt class="descname">align_and_scale</tt><span class="sig-paren">(</span><em>energy_list</em>, <em>counts_list</em>, <em>pk_find_fun=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/spectroscopy.html#align_and_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.spectroscopy.align_and_scale" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -79,7 +76,7 @@
 <p><strong>pk_find_fun</strong> : function or None</p>
 <blockquote>
 <div><p>A function which takes two ndarrays and returns parameters
-about the largest peak.  If None, defaults to <a class="reference internal" href="#nsls2.spectroscopy.find_largest_peak" title="nsls2.spectroscopy.find_largest_peak"><code class="xref py py-obj docutils literal"><span class="pre">find_largest_peak</span></code></a>.
+about the largest peak.  If None, defaults to <a class="reference internal" href="#skxray.spectroscopy.find_largest_peak" title="skxray.spectroscopy.find_largest_peak"><tt class="xref py py-obj docutils literal"><span class="pre">find_largest_peak</span></tt></a>.
 For this demo, the output is (center, height, width), but this sould
 be pinned down better.</p>
 </div></blockquote>
@@ -100,8 +97,8 @@ be pinned down better.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nsls2.spectroscopy.find_largest_peak">
-<code class="descclassname">nsls2.spectroscopy.</code><code class="descname">find_largest_peak</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>window=5</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#find_largest_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.find_largest_peak" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.spectroscopy.find_largest_peak">
+<tt class="descclassname">skxray.spectroscopy.</tt><tt class="descname">find_largest_peak</tt><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>window=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/spectroscopy.html#find_largest_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.spectroscopy.find_largest_peak" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds and estimates the location, width, and height of
 the largest peak. Assumes the top of the peak can be
 approximated as a Gaussian.  Finds the peak properties
@@ -147,8 +144,8 @@ for the fitting</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nsls2.spectroscopy.integrate_ROI">
-<code class="descclassname">nsls2.spectroscopy.</code><code class="descname">integrate_ROI</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>x_min</em>, <em>x_max</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#integrate_ROI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.integrate_ROI" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.spectroscopy.integrate_ROI">
+<tt class="descclassname">skxray.spectroscopy.</tt><tt class="descname">integrate_ROI</tt><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>x_min</em>, <em>x_max</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/spectroscopy.html#integrate_ROI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.spectroscopy.integrate_ROI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrate region(s) of input data.</p>
 <p>If <em class="xref py py-obj">x_min</em> and <em class="xref py py-obj">x_max</em> are arrays/lists they must be equal in
 length. The values contained in the &#8216;x&#8217; must be monotonic (up or
@@ -182,7 +179,7 @@ in units of x.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>float</strong> :</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">float</p>
 <blockquote class="last">
 <div><p>The totals integrated value in same units as <em class="xref py py-obj">y</em></p>
 </div></blockquote>
@@ -193,8 +190,8 @@ in units of x.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nsls2.spectroscopy.integrate_ROI_spectrum">
-<code class="descclassname">nsls2.spectroscopy.</code><code class="descname">integrate_ROI_spectrum</code><span class="sig-paren">(</span><em>bin_edges</em>, <em>counts</em>, <em>x_min</em>, <em>x_max</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/spectroscopy.html#integrate_ROI_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.spectroscopy.integrate_ROI_spectrum" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.spectroscopy.integrate_ROI_spectrum">
+<tt class="descclassname">skxray.spectroscopy.</tt><tt class="descname">integrate_ROI_spectrum</tt><span class="sig-paren">(</span><em>bin_edges</em>, <em>counts</em>, <em>x_min</em>, <em>x_max</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/spectroscopy.html#integrate_ROI_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.spectroscopy.integrate_ROI_spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrate region(s) of histogram.</p>
 <p>If <em class="xref py py-obj">x_min</em> and <em class="xref py py-obj">x_max</em> are arrays/lists they must be equal in
 length. The values contained in the &#8216;x_value_array&#8217; must be
@@ -229,7 +226,7 @@ included in the sum.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>float</strong> :</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">float</p>
 <blockquote class="last">
 <div><p>The totals integrated value in same units as <em class="xref py py-obj">counts</em></p>
 </div></blockquote>
@@ -249,7 +246,7 @@ included in the sum.</p>
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="recip.html"
-                        title="previous chapter"><code class="docutils literal"><span class="pre">recip</span></code> Module</a></p>
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">recip</span></tt> Module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="io/index.html"
                         title="next chapter">IO API</a></p>
@@ -287,21 +284,18 @@ included in the sum.</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="io/index.html" title="IO API"
              >next</a> |</li>
         <li class="right" >
           <a href="recip.html" title="recip Module"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >API</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>

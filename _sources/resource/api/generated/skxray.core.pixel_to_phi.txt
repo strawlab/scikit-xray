@@ -1,0 +1,6 @@
+skxray.core.pixel_to_phi
+========================
+
+.. currentmodule:: skxray.core
+
+.. autofunction:: pixel_to_phi

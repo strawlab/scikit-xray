@@ -1,6 +1,0 @@
-nsls2.constants.XrayLibWrap_Energy.incident_energy
-==================================================
-
-.. currentmodule:: nsls2.constants
-
-.. autoattribute:: XrayLibWrap_Energy.incident_energy

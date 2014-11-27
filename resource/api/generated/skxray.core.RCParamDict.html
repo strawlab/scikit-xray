@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>skxray.core.RCParamDict &mdash; scikit-xray 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="scikit-xray 0 documentation" href="../../../index.html" />
+    <link rel="up" title="core Module" href="../core.html" />
+    <link rel="next" title="skxray.core.RCParamDict.clear" href="skxray.core.RCParamDict.clear.html" />
+    <link rel="prev" title="skxray.core.verbosedict.viewvalues" href="skxray.core.verbosedict.viewvalues.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.RCParamDict.clear.html" title="skxray.core.RCParamDict.clear"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.verbosedict.viewvalues.html" title="skxray.core.verbosedict.viewvalues"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" accesskey="U"><tt class="docutils literal"><span class="pre">core</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="skxray-core-rcparamdict">
+<h1>skxray.core.RCParamDict<a class="headerlink" href="#skxray-core-rcparamdict" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="skxray.core.RCParamDict">
+<em class="property">class </em><tt class="descclassname">skxray.core.</tt><tt class="descname">RCParamDict</tt><a class="reference internal" href="../../../_modules/skxray/core.html#RCParamDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.core.RCParamDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to make dealing with storing default values easier.</p>
+<p>RC params is a hold- over from the UNIX days where configuration
+files are &#8216;rc&#8217; files.  See
+<a class="reference external" href="http://en.wikipedia.org/wiki/Configuration_file">http://en.wikipedia.org/wiki/Configuration_file</a></p>
+<p class="rubric">Examples</p>
+<p>Getting and setting data by path is possible</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span> <span class="o">=</span> <span class="n">RCParamDict</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tt</span><span class="p">[</span><span class="s">&#39;nested.a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="skxray.core.RCParamDict.clear.html#skxray.core.RCParamDict.clear" title="skxray.core.RCParamDict.clear"><tt class="xref py py-obj docutils literal"><span class="pre">clear</span></tt></a>(()&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Remove&nbsp;all&nbsp;items&nbsp;from&nbsp;D.)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.core.RCParamDict.get.html#skxray.core.RCParamDict.get" title="skxray.core.RCParamDict.get"><tt class="xref py py-obj docutils literal"><span class="pre">get</span></tt></a>((k[,d])&nbsp;-&gt;&nbsp;D[k]&nbsp;if&nbsp;k&nbsp;in&nbsp;D,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="skxray.core.RCParamDict.items.html#skxray.core.RCParamDict.items" title="skxray.core.RCParamDict.items"><tt class="xref py py-obj docutils literal"><span class="pre">items</span></tt></a>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;(key,&nbsp;value)&nbsp;pairs,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.core.RCParamDict.iteritems.html#skxray.core.RCParamDict.iteritems" title="skxray.core.RCParamDict.iteritems"><tt class="xref py py-obj docutils literal"><span class="pre">iteritems</span></tt></a>(()&nbsp;-&gt;&nbsp;an&nbsp;iterator&nbsp;over&nbsp;the&nbsp;(key,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="skxray.core.RCParamDict.iterkeys.html#skxray.core.RCParamDict.iterkeys" title="skxray.core.RCParamDict.iterkeys"><tt class="xref py py-obj docutils literal"><span class="pre">iterkeys</span></tt></a>(()&nbsp;-&gt;&nbsp;an&nbsp;iterator&nbsp;over&nbsp;the&nbsp;keys&nbsp;of&nbsp;D)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.core.RCParamDict.itervalues.html#skxray.core.RCParamDict.itervalues" title="skxray.core.RCParamDict.itervalues"><tt class="xref py py-obj docutils literal"><span class="pre">itervalues</span></tt></a>(...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="skxray.core.RCParamDict.keys.html#skxray.core.RCParamDict.keys" title="skxray.core.RCParamDict.keys"><tt class="xref py py-obj docutils literal"><span class="pre">keys</span></tt></a>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;keys)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.core.RCParamDict.pop.html#skxray.core.RCParamDict.pop" title="skxray.core.RCParamDict.pop"><tt class="xref py py-obj docutils literal"><span class="pre">pop</span></tt></a>((k[,d])&nbsp;-&gt;&nbsp;v,&nbsp;...)</td>
+<td>If key is not found, d is returned if given, otherwise KeyError is raised.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="skxray.core.RCParamDict.popitem.html#skxray.core.RCParamDict.popitem" title="skxray.core.RCParamDict.popitem"><tt class="xref py py-obj docutils literal"><span class="pre">popitem</span></tt></a>(()&nbsp;-&gt;&nbsp;(k,&nbsp;v),&nbsp;...)</td>
+<td>as a 2-tuple; but raise KeyError if D is empty.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.core.RCParamDict.setdefault.html#skxray.core.RCParamDict.setdefault" title="skxray.core.RCParamDict.setdefault"><tt class="xref py py-obj docutils literal"><span class="pre">setdefault</span></tt></a>((k[,d])&nbsp;-&gt;&nbsp;D.get(k,d),&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="skxray.core.RCParamDict.update.html#skxray.core.RCParamDict.update" title="skxray.core.RCParamDict.update"><tt class="xref py py-obj docutils literal"><span class="pre">update</span></tt></a>(([E,&nbsp;...)</td>
+<td>If E present and has a .keys() method, does:     for k in E: D[k] = E[k]</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.core.RCParamDict.values.html#skxray.core.RCParamDict.values" title="skxray.core.RCParamDict.values"><tt class="xref py py-obj docutils literal"><span class="pre">values</span></tt></a>(()&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;D&#8217;s&nbsp;values)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="skxray.core.verbosedict.viewvalues.html"
+                        title="previous chapter">skxray.core.verbosedict.viewvalues</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="skxray.core.RCParamDict.clear.html"
+                        title="next chapter">skxray.core.RCParamDict.clear</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/resource/api/generated/skxray.core.RCParamDict.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.RCParamDict.clear.html" title="skxray.core.RCParamDict.clear"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.verbosedict.viewvalues.html" title="skxray.core.verbosedict.viewvalues"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" ><tt class="docutils literal"><span class="pre">core</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

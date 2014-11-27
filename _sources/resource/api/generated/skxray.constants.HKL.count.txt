@@ -1,0 +1,6 @@
+skxray.constants.HKL.count
+==========================
+
+.. currentmodule:: skxray.constants
+
+.. automethod:: HKL.count

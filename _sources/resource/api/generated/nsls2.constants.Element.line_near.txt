@@ -1,6 +1,0 @@
-nsls2.constants.Element.line_near
-=================================
-
-.. currentmodule:: nsls2.constants
-
-.. automethod:: Element.line_near

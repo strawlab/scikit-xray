@@ -1,0 +1,6 @@
+skxray.constants.Element.jump_factor
+====================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.jump_factor

@@ -1,0 +1,6 @@
+skxray.constants.XrayLibWrap_Energy.opts_info_type
+==================================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: XrayLibWrap_Energy.opts_info_type

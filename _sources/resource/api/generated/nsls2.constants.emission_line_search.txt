@@ -1,6 +1,0 @@
-nsls2.constants.emission_line_search
-====================================
-
-.. currentmodule:: nsls2.constants
-
-.. autofunction:: emission_line_search

@@ -1,0 +1,6 @@
+skxray.constants.XrayLibWrap.info_type
+======================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: XrayLibWrap.info_type

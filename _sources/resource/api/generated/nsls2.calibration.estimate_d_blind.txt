@@ -1,6 +1,0 @@
-nsls2.calibration.estimate_d_blind
-==================================
-
-.. currentmodule:: nsls2.calibration
-
-.. autofunction:: estimate_d_blind

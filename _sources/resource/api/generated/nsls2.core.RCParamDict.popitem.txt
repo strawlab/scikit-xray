@@ -1,6 +1,0 @@
-nsls2.core.RCParamDict.popitem
-==============================
-
-.. currentmodule:: nsls2.core
-
-.. automethod:: RCParamDict.popitem

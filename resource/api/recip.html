@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>recip Module &mdash; NSLS2 0 documentation</title>
+    <title>recip Module &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="API" href="index.html" />
     <link rel="next" title="spectroscopy Module" href="spectroscopy.html" />
     <link rel="prev" title="image Module" href="image.html" /> 
@@ -40,15 +40,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="spectroscopy.html" title="spectroscopy Module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="image.html" title="image Module"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">API</a> &raquo;</li> 
       </ul>
     </div>  
@@ -58,13 +55,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-nsls2.recip">
-<span id="recip-module"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">recip</span></code> Module<a class="headerlink" href="#module-nsls2.recip" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-skxray.recip">
+<span id="recip-module"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">recip</span></tt> Module<a class="headerlink" href="#module-skxray.recip" title="Permalink to this headline">¶</a></h1>
 <p>This module is for functions and classes specific to reciprocal space
 calculations.</p>
 <dl class="function">
-<dt id="nsls2.recip.hkl_to_q">
-<code class="descclassname">nsls2.recip.</code><code class="descname">hkl_to_q</code><span class="sig-paren">(</span><em>hkl_arr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/recip.html#hkl_to_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.hkl_to_q" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.recip.hkl_to_q">
+<tt class="descclassname">skxray.recip.</tt><tt class="descname">hkl_to_q</tt><span class="sig-paren">(</span><em>hkl_arr</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/recip.html#hkl_to_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.recip.hkl_to_q" title="Permalink to this definition">¶</a></dt>
 <dd><p>This module compute the reciprocal space (q) values from known HKL array
 for each pixel of the detector for all the images</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -90,8 +87,8 @@ shape is [num_images * num_rows * num_columns]</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nsls2.recip.process_to_q">
-<code class="descclassname">nsls2.recip.</code><code class="descname">process_to_q</code><span class="sig-paren">(</span><em>setting_angles</em>, <em>detector_size</em>, <em>pixel_size</em>, <em>calibrated_center</em>, <em>dist_sample</em>, <em>wavelength</em>, <em>ub</em>, <em>frame_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/recip.html#process_to_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.recip.process_to_q" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.recip.process_to_q">
+<tt class="descclassname">skxray.recip.</tt><tt class="descname">process_to_q</tt><span class="sig-paren">(</span><em>setting_angles</em>, <em>detector_size</em>, <em>pixel_size</em>, <em>calibrated_center</em>, <em>dist_sample</em>, <em>wavelength</em>, <em>ub</em>, <em>frame_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/recip.html#process_to_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.recip.process_to_q" title="Permalink to this definition">¶</a></dt>
 <dd><p>This will compute the hkl values for all pixels in a shape specified by
 detector_size.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -141,7 +138,7 @@ output from this function. Defaults to hkl mode (frame_mode=4)
 &#8216;phi&#8217;      : Phi axis frame.
 &#8216;cart&#8217;     : Crystal cartesian frame.
 &#8216;hkl&#8217;      : Reciprocal lattice units frame.
-See the <code class="xref py py-obj docutils literal"><span class="pre">process_to_q.frame_mode</span></code> attribute for an exact list of
+See the <tt class="xref py py-obj docutils literal"><span class="pre">process_to_q.frame_mode</span></tt> attribute for an exact list of
 valid options.</p>
 </div></blockquote>
 </td>
@@ -158,19 +155,19 @@ shape is [num_images * num_rows * num_columns][3]</p>
 <p class="rubric">Notes</p>
 <p>Six angles of an image: (delta, theta, chi, phi, mu, gamma )
 These axes are defined according to the following references.</p>
-<p>References: text <a class="reference internal" href="#r5" id="id1">[R5]</a>, text <a class="reference internal" href="#r6" id="id2">[R6]</a></p>
-<table class="docutils citation" frame="void" id="r5" rules="none">
+<p>References: text <a class="reference internal" href="#r1" id="id1">[R1]</a>, text <a class="reference internal" href="#r2" id="id2">[R2]</a></p>
+<table class="docutils citation" frame="void" id="r1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[R5]</a></td><td>M. Lohmeier and E.Vlieg, &#8220;Angle calculations for a six-circle
+<tr><td class="label"><a class="fn-backref" href="#id1">[R1]</a></td><td>M. Lohmeier and E.Vlieg, &#8220;Angle calculations for a six-circle
 surface x-ray diffractometer,&#8221; J. Appl. Cryst., vol 26, pp 706-716,
 1993.</td></tr>
 </tbody>
 </table>
-<table class="docutils citation" frame="void" id="r6" rules="none">
+<table class="docutils citation" frame="void" id="r2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[R6]</a></td><td>E. Vlieg, &#8220;A (2+3)-Type surface diffractometer: Mergence of the
+<tr><td class="label"><a class="fn-backref" href="#id2">[R2]</a></td><td>E. Vlieg, &#8220;A (2+3)-Type surface diffractometer: Mergence of the
 z-axis and (2+2)-Type geometries,&#8221; J. Appl. Cryst., vol 31, pp 198-203,
 1998.</td></tr>
 </tbody>
@@ -187,10 +184,10 @@ z-axis and (2+2)-Type geometries,&#8221; J. Appl. Cryst., vol 31, pp 198-203,
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="image.html"
-                        title="previous chapter"><code class="docutils literal"><span class="pre">image</span></code> Module</a></p>
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">image</span></tt> Module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="spectroscopy.html"
-                        title="next chapter"><code class="docutils literal"><span class="pre">spectroscopy</span></code> Module</a></p>
+                        title="next chapter"><tt class="docutils literal"><span class="pre">spectroscopy</span></tt> Module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -225,21 +222,18 @@ z-axis and (2+2)-Type geometries,&#8221; J. Appl. Cryst., vol 31, pp 198-203,
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="spectroscopy.html" title="spectroscopy Module"
              >next</a> |</li>
         <li class="right" >
           <a href="image.html" title="image Module"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >API</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>

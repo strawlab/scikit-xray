@@ -1,6 +1,0 @@
-nsls2.constants.Element.fluor_yield
-===================================
-
-.. currentmodule:: nsls2.constants
-
-.. autoattribute:: Element.fluor_yield

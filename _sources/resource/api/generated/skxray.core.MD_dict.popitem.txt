@@ -1,0 +1,6 @@
+skxray.core.MD_dict.popitem
+===========================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: MD_dict.popitem

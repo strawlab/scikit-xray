@@ -1,0 +1,6 @@
+skxray.core.verbosedict.pop
+===========================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: verbosedict.pop

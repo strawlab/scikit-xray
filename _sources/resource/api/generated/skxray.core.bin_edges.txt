@@ -1,0 +1,6 @@
+skxray.core.bin_edges
+=====================
+
+.. currentmodule:: skxray.core
+
+.. autofunction:: bin_edges

@@ -1,6 +1,0 @@
-nsls2.constants.Element.emission_line
-=====================================
-
-.. currentmodule:: nsls2.constants
-
-.. autoattribute:: Element.emission_line

@@ -1,6 +1,0 @@
-nsls2.core.verbosedict.keys
-===========================
-
-.. currentmodule:: nsls2.core
-
-.. automethod:: verbosedict.keys

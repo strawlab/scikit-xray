@@ -1,0 +1,6 @@
+skxray.constants.Reflection.d
+=============================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Reflection.d

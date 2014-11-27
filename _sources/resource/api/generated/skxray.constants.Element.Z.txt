@@ -1,0 +1,6 @@
+skxray.constants.Element.Z
+==========================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.Z

@@ -1,0 +1,6 @@
+skxray.constants.Element.line_near
+==================================
+
+.. currentmodule:: skxray.constants
+
+.. automethod:: Element.line_near

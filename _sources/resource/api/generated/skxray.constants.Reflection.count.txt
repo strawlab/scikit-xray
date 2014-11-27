@@ -1,0 +1,6 @@
+skxray.constants.Reflection.count
+=================================
+
+.. currentmodule:: skxray.constants
+
+.. automethod:: Reflection.count

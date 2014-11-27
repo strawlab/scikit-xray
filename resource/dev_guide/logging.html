@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Logging &mdash; NSLS2 0 documentation</title>
+    <title>Logging &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="prev" title="New Sub-packages and Modules" href="adding_files.html" /> 
   </head>
@@ -39,12 +39,9 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="adding_files.html" title="New Sub-packages and Modules"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Development Guide</a> &raquo;</li> 
       </ul>
     </div>  
@@ -57,12 +54,12 @@
   <div class="section" id="logging">
 <span id="id1"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
 <p>Getting feed back from running programs is invaluable for assessing
-the health and performance of the code.  However copious <code class="docutils literal"><span class="pre">print</span></code>
+the health and performance of the code.  However copious <tt class="docutils literal"><span class="pre">print</span></tt>
 statements are not practical on projects larger than short scripts.
 This is particularly true for libraries which are imported into user
 code; it is rude to spam the user with debugging output.</p>
 <p>This is such a common need that the tools to solve it are built into
-the core python library in the <a class="reference external" href="http://docs.python.org/library/logging.html#module-logging" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">logging</span></code></a> module.</p>
+the core python library in the <a class="reference external" href="http://docs.python.org/library/logging.html#module-logging" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">logging</span></tt></a> module.</p>
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference external" href="https://github.com/tacaswell/logger_demo">Demonstration</a></li>
@@ -74,13 +71,13 @@ the core python library in the <a class="reference external" href="http://docs.p
 <div class="section" id="rough-overview">
 <h2>Rough Overview<a class="headerlink" href="#rough-overview" title="Permalink to this headline">¶</a></h2>
 <p>The logging module provides a frame work for generating and
-propagating messages.  Each process has a hierarchy of <code class="xref py py-class docutils literal"><span class="pre">Logger</span></code>
+propagating messages.  Each process has a hierarchy of <tt class="xref py py-class docutils literal"><span class="pre">Logger</span></tt>
 objects.  Using the methods on these objects you can generate error
 messages with a severity level attached.  The log messages are then
-formatted (using a <code class="xref py py-class docutils literal"><span class="pre">Formatter</span></code> object) and distributed by
-<code class="xref py py-class docutils literal"><span class="pre">Handler</span></code> objects attached to the <code class="xref py py-class docutils literal"><span class="pre">Logger</span></code>.  The
-messages are also passed up to any parent <code class="xref py py-class docutils literal"><span class="pre">Logger</span></code> s.  Each
-<code class="xref py py-class docutils literal"><span class="pre">Handler</span></code> and <code class="xref py py-class docutils literal"><span class="pre">Logger</span></code> objects have a severity threshold, messages
+formatted (using a <tt class="xref py py-class docutils literal"><span class="pre">Formatter</span></tt> object) and distributed by
+<tt class="xref py py-class docutils literal"><span class="pre">Handler</span></tt> objects attached to the <tt class="xref py py-class docutils literal"><span class="pre">Logger</span></tt>.  The
+messages are also passed up to any parent <tt class="xref py py-class docutils literal"><span class="pre">Logger</span></tt> s.  Each
+<tt class="xref py py-class docutils literal"><span class="pre">Handler</span></tt> and <tt class="xref py py-class docutils literal"><span class="pre">Logger</span></tt> objects have a severity threshold, messages
 below that threshold are ignored.  This enables easy run-time selection of the
 verbosity of the logging.</p>
 <p>There are five default levels of logging, listed in decreasing order of
@@ -126,8 +123,8 @@ a level explicitly set, it will use the level of it&#8217;s parent.  Unless proh
 loggers will forward all of their accepted messages to their parents.</p>
 <div class="section" id="create-a-message">
 <h3>Create a message<a class="headerlink" href="#create-a-message" title="Permalink to this headline">¶</a></h3>
-<p>A <code class="code docutils literal"><span class="pre">logger</span></code> is defined in each module of our libraries by <code class="code docutils literal"><span class="pre">logger</span> <span class="pre">=</span>
-<span class="pre">logging.getLogger(__name__)</span></code> where <code class="code docutils literal"><span class="pre">__name__</span></code> is the module name.
+<p>A <tt class="code docutils literal"><span class="pre">logger</span></tt> is defined in each module of our libraries by <tt class="code docutils literal"><span class="pre">logger</span> <span class="pre">=</span>
+<span class="pre">logging.getLogger(__name__)</span></tt> where <tt class="code docutils literal"><span class="pre">__name__</span></tt> is the module name.
 Creating messages with the various severity levels is done by</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;this is a debug message&quot;</span><span class="p">)</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;this is a info message&quot;</span><span class="p">)</span>
@@ -145,10 +142,10 @@ Creating messages with the various severity levels is done by</p>
 </div>
 <div class="section" id="attaching-a-handler">
 <h3>Attaching a Handler<a class="headerlink" href="#attaching-a-handler" title="Permalink to this headline">¶</a></h3>
-<p>By default the library does not attach a non-null <code class="xref py py-class docutils literal"><span class="pre">Handler</span></code> to
-any of the <code class="xref py py-class docutils literal"><span class="pre">Logger</span></code> objects (<a class="reference external" href="https://docs.python.org/2/howto/logging.html#configuring-logging-for-a-library">see</a>).
-In order to get the messages out a <code class="xref py py-class docutils literal"><span class="pre">Handler</span></code> (with it&#8217;s own
-<code class="xref py py-class docutils literal"><span class="pre">Formatter</span></code>) need to be attached to the logger</p>
+<p>By default the library does not attach a non-null <tt class="xref py py-class docutils literal"><span class="pre">Handler</span></tt> to
+any of the <tt class="xref py py-class docutils literal"><span class="pre">Logger</span></tt> objects (<a class="reference external" href="https://docs.python.org/2/howto/logging.html#configuring-logging-for-a-library">see</a>).
+In order to get the messages out a <tt class="xref py py-class docutils literal"><span class="pre">Handler</span></tt> (with it&#8217;s own
+<tt class="xref py py-class docutils literal"><span class="pre">Formatter</span></tt>) need to be attached to the logger</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">h</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
 <span class="n">form</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
@@ -160,7 +157,7 @@ attached to the logger.  <em class="xref py py-obj">StreamHandler</em> writes to
 </div>
 <div class="section" id="defining-a-formatter">
 <h3>Defining a Formatter<a class="headerlink" href="#defining-a-formatter" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="xref py py-class docutils literal"><span class="pre">Formatters</span></code> are essentially string formatting.  For a full
+<p>The <tt class="xref py py-class docutils literal"><span class="pre">Formatters</span></tt> are essentially string formatting.  For a full
 list of the data available and the corresponding variable names, see <a class="reference external" href="https://docs.python.org/2/library/logging.html#logrecord-attributes">this list</a></p>
 <p>For example to show the time, the severity, and the message</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
@@ -236,18 +233,15 @@ the message</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="adding_files.html" title="New Sub-packages and Modules"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>

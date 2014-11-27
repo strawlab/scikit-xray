@@ -1,0 +1,6 @@
+skxray.core.verbosedict.setdefault
+==================================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: verbosedict.setdefault

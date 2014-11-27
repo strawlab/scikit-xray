@@ -1,0 +1,6 @@
+skxray.core.RCParamDict.setdefault
+==================================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: RCParamDict.setdefault

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Introduction to Git &mdash; NSLS2 0 documentation</title>
+    <title>Introduction to Git &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="next" title="Git workflow" href="workflow.html" />
     <link rel="prev" title="Development Guide" href="index.html" /> 
@@ -40,15 +40,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="workflow.html" title="Git workflow"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Development Guide"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Development Guide</a> &raquo;</li> 
       </ul>
     </div>  
@@ -287,10 +284,10 @@ commit on your branch</p>
 clones of a repository are <em>technically</em> equivolent.  However, for
 organizational reasons we desigante one to be the &#8216;canonical&#8217;
 repository, in this case the repository associated with the
-<code class="docutils literal"><span class="pre">NSLS-II</span></code> group on github.</p>
+<tt class="docutils literal"><span class="pre">NSLS-II</span></tt> group on github.</p>
 <p>In order to get the lastest code from github to your local machine you
-need to tell <code class="docutils literal"><span class="pre">git</span></code> where the other code is.  These locations are, in
-the langague of <code class="docutils literal"><span class="pre">git</span></code>, <strong>remotes</strong>.  The first remote we will want to
+need to tell <tt class="docutils literal"><span class="pre">git</span></tt> where the other code is.  These locations are, in
+the langague of <tt class="docutils literal"><span class="pre">git</span></tt>, <strong>remotes</strong>.  The first remote we will want to
 add in the canonical repository:</p>
 <div class="highlight-python"><div class="highlight"><pre># make sure you are in the working directory of your local repo
 cd ~/my_source/repo_name
@@ -312,7 +309,7 @@ upstream        git@github.com:NSLS-II/pyRafters.git (push)
 </pre></div>
 </div>
 <p>which shows two remotes (origin and upstream).  It is recommended to
-re-name <code class="docutils literal"><span class="pre">origin</span></code> -&gt; your github username</p>
+re-name <tt class="docutils literal"><span class="pre">origin</span></tt> -&gt; your github username</p>
 <div class="highlight-python"><div class="highlight"><pre>git remote rename origin gh_username
 </pre></div>
 </div>
@@ -459,21 +456,18 @@ generate conflicts which will need to resolved by hand.</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="workflow.html" title="Git workflow"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Development Guide"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>

@@ -1,0 +1,6 @@
+skxray.constants.Element.cs
+===========================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.cs

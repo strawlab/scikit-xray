@@ -1,6 +1,0 @@
-nsls2.core.MD_dict.update
-=========================
-
-.. currentmodule:: nsls2.core
-
-.. automethod:: MD_dict.update

@@ -1,0 +1,6 @@
+skxray.core.q_to_d
+==================
+
+.. currentmodule:: skxray.core
+
+.. autofunction:: q_to_d

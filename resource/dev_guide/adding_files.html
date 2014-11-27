@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>New Sub-packages and Modules &mdash; NSLS2 0 documentation</title>
+    <title>New Sub-packages and Modules &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="Development Guide" href="index.html" />
     <link rel="next" title="Logging" href="logging.html" />
     <link rel="prev" title="Documentation" href="doc_doc.html" /> 
@@ -40,15 +40,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="logging.html" title="Logging"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="doc_doc.html" title="Documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Development Guide</a> &raquo;</li> 
       </ul>
     </div>  
@@ -62,36 +59,36 @@
 <span id="adding-files"></span><h1>New Sub-packages and Modules<a class="headerlink" href="#new-sub-packages-and-modules" title="Permalink to this headline">¶</a></h1>
 <p>When adding new packages and modules (which map to folders and files)
 to the library you are required to update both the build/install
-system (<code class="file docutils literal"><span class="pre">setup.py</span></code>) and add files to the documentation folder.</p>
-<p>All python source code must be under the main <code class="file docutils literal"><span class="pre">nsls2</span></code> directory.
-Non-python sources goes in the <code class="file docutils literal"><span class="pre">src</span></code> directory.</p>
+system (<tt class="file docutils literal"><span class="pre">setup.py</span></tt>) and add files to the documentation folder.</p>
+<p>All python source code must be under the main <tt class="file docutils literal"><span class="pre">skxray</span></tt> directory.
+Non-python sources goes in the <tt class="file docutils literal"><span class="pre">src</span></tt> directory.</p>
 <div class="section" id="build">
 <h2>Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h2>
 <p>For a folder in the source-tree to be a package it must have an
-<code class="file docutils literal"><span class="pre">__init__.py</span></code> file (even if it is empty).  All of the python
-(<code class="file docutils literal"><span class="pre">*.py</span></code>) files in that package are then recognized as modules in
+<tt class="file docutils literal"><span class="pre">__init__.py</span></tt> file (even if it is empty).  All of the python
+(<tt class="file docutils literal"><span class="pre">*.py</span></tt>) files in that package are then recognized as modules in
 that package which can be imported in other files (See Relative Imports header).</p>
-<p>In order for <a class="reference external" href="http://docs.python.org/library/distutils.html#module-distutils" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">distutils</span></code></a> to work it must be explicitly told what
+<p>In order for <a class="reference external" href="http://docs.python.org/library/distutils.html#module-distutils" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">distutils</span></tt></a> to work it must be explicitly told what
 packages from the source tree to byte-compile and install.  This is
-done via the <code class="code docutils literal"><span class="pre">packages</span></code> key word argument (kwarg) to <code class="xref py py-func docutils literal"><span class="pre">setup()</span></code> in
-<code class="file docutils literal"><span class="pre">setup.py</span></code>.  If you add a package, then it&#8217;s dotted-name must be
+done via the <tt class="code docutils literal"><span class="pre">packages</span></tt> key word argument (kwarg) to <tt class="xref py py-func docutils literal"><span class="pre">setup()</span></tt> in
+<tt class="file docutils literal"><span class="pre">setup.py</span></tt>.  If you add a package, then it&#8217;s dotted-name must be
 added to this list.</p>
-<p>e.g. if you add a new package called <code class="code docutils literal"><span class="pre">utils</span></code> to the <code class="code docutils literal"><span class="pre">nsls2</span></code> folder,
+<p>e.g. if you add a new package called <tt class="code docutils literal"><span class="pre">utils</span></tt> to the <tt class="code docutils literal"><span class="pre">skxray</span></tt> folder,
 the following setup.py file:</p>
 <div class="highlight-python"><div class="highlight"><pre>setup(
-    name=&#39;NSLS2&#39;,
+    name=&#39;scikit-xray&#39;,
     version=&#39;0&#39;,
     author=&#39;Brookhaven National Lab&#39;,
-    packages=[&quot;nsls2&quot;],
+    packages=[&quot;skxray&quot;],
     )
 
 would need to be modified to:
 
 setup(
-    name=&#39;NSLS2&#39;,
+    name=&#39;scikit-xray&#39;,
     version=&#39;0&#39;,
     author=&#39;Brookhaven National Lab&#39;,
-    packages=[&quot;nsls2&quot;, &quot;nsls2.utils&quot;],   &lt;------- modification happened here
+    packages=[&quot;skxray&quot;, &quot;skxray.utils&quot;],   &lt;------- modification happened here
     )
 </pre></div>
 </div>
@@ -101,10 +98,10 @@ setup(
 <p>See <a class="reference internal" href="doc_doc.html#doc-doc"><em>Documentation</em></a> for documentation about writing and building
 the documentation.</p>
 <p>Continuing the example from above where a &#8216;utils&#8217; source code package was added,
-a folder called <code class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></code> should be added.  Let&#8217;s also
-presume that you&#8217;ve got <code class="file docutils literal"><span class="pre">fitting.py</span></code> in the <code class="file docutils literal"><span class="pre">/nsls2/utils/</span></code>.  In the
-documentation <code class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></code> folder, create a file named
-<code class="file docutils literal"><span class="pre">index.rst</span></code> with the contents:</p>
+a folder called <tt class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></tt> should be added.  Let&#8217;s also
+presume that you&#8217;ve got <tt class="file docutils literal"><span class="pre">fitting.py</span></tt> in the <tt class="file docutils literal"><span class="pre">/skxray/utils/</span></tt>.  In the
+documentation <tt class="file docutils literal"><span class="pre">/doc/resource/api/utils</span></tt> folder, create a file named
+<tt class="file docutils literal"><span class="pre">index.rst</span></tt> with the contents:</p>
 <div class="highlight-python"><div class="highlight"><pre>UTILS API
 =========
 
@@ -116,13 +113,13 @@ Contents:
    fitting
 </pre></div>
 </div>
-<p>Also, add the <code class="file docutils literal"><span class="pre">/doc/resource/api/utils/index.rst</span></code> to
-<code class="file docutils literal"><span class="pre">/doc/resource/api/index.rst</span></code>.  This will tell <a href="#id1"><span class="problematic" id="id2">:prog:`sphinx`</span></a> to include
+<p>Also, add the <tt class="file docutils literal"><span class="pre">/doc/resource/api/utils/index.rst</span></tt> to
+<tt class="file docutils literal"><span class="pre">/doc/resource/api/index.rst</span></tt>.  This will tell <a href="#id1"><span class="problematic" id="id2">:prog:`sphinx`</span></a> to include
 the new package in the API documentation.</p>
-<p>Now, let&#8217;s create a module called <code class="file docutils literal"><span class="pre">fitting.py</span></code> in the <code class="file docutils literal"><span class="pre">utils</span></code>
-package.  When you add <code class="file docutils literal"><span class="pre">fitting.py</span></code> you need to add a corresponding file
+<p>Now, let&#8217;s create a module called <tt class="file docutils literal"><span class="pre">fitting.py</span></tt> in the <tt class="file docutils literal"><span class="pre">utils</span></tt>
+package.  When you add <tt class="file docutils literal"><span class="pre">fitting.py</span></tt> you need to add a corresponding file
 in the documentation folder structure:
-<code class="file docutils literal"><span class="pre">/doc/resource/api/utils/fitting.rst</span></code>.  In <code class="file docutils literal"><span class="pre">fitting.rst</span></code> use the
+<tt class="file docutils literal"><span class="pre">/doc/resource/api/utils/fitting.rst</span></tt>.  In <tt class="file docutils literal"><span class="pre">fitting.rst</span></tt> use the
 following template:</p>
 <div class="highlight-python"><div class="highlight"><pre>======================
  :mod:`fitting` Module
@@ -131,7 +128,7 @@ following template:</p>
 Any prose you want to add about the module, such as examples, discussion,
 or saying hi to your mom can go here.
 
-.. automodule:: nsls2.utils.fitting
+.. automodule:: skxray.utils.fitting
    :members:
    :show-inheritance:
    :undoc-members:
@@ -143,17 +140,17 @@ of all the classes and functions in the module.</p>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <p>When you add a new module or package please add the corresponding
-files and folders in the <code class="file docutils literal"><span class="pre">nsls2/tests</span></code> folder.  Packages get
-<code class="file docutils literal"><span class="pre">test_packagename</span></code> and modules get <code class="file docutils literal"><span class="pre">test_module_name.py</span></code>
+files and folders in the <tt class="file docutils literal"><span class="pre">skxray/tests</span></tt> folder.  Packages get
+<tt class="file docutils literal"><span class="pre">test_packagename</span></tt> and modules get <tt class="file docutils literal"><span class="pre">test_module_name.py</span></tt>
 in the proper directory.</p>
 <p>Using the example above, you would create the directory
-<code class="file docutils literal"><span class="pre">/nsls2/tests/test_utils/</span></code> and the file <code class="file docutils literal"><span class="pre">test_fitting.py</span></code> in the
-<code class="file docutils literal"><span class="pre">test_utils</span></code> folder.</p>
+<tt class="file docutils literal"><span class="pre">/skxray/tests/test_utils/</span></tt> and the file <tt class="file docutils literal"><span class="pre">test_fitting.py</span></tt> in the
+<tt class="file docutils literal"><span class="pre">test_utils</span></tt> folder.</p>
 <p>Remember: Write a test for all new functionality!!</p>
 </div>
 <div class="section" id="relative-imports">
 <h2>Relative Imports<a class="headerlink" href="#relative-imports" title="Permalink to this headline">¶</a></h2>
-<p>See the issue (#?) in the NSLS2 repo on github.</p>
+<p>See the issue (#?) in the scikit-xray repo on github.</p>
 </div>
 </div>
 
@@ -214,21 +211,18 @@ in the proper directory.</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="logging.html" title="Logging"
              >next</a> |</li>
         <li class="right" >
           <a href="doc_doc.html" title="Documentation"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >Development Guide</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>constants Module &mdash; NSLS2 0 documentation</title>
+    <title>constants Module &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,9 +24,9 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="API" href="index.html" />
-    <link rel="next" title="nsls2.constants.emission_line_search" href="generated/nsls2.constants.emission_line_search.html" />
+    <link rel="next" title="skxray.constants.emission_line_search" href="generated/skxray.constants.emission_line_search.html" />
     <link rel="prev" title="fitting.model.physics_peak Module" href="fitting/model/physics_peak.html" /> 
   </head>
   <body role="document">
@@ -40,15 +40,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="generated/nsls2.constants.emission_line_search.html" title="nsls2.constants.emission_line_search"
+          <a href="generated/skxray.constants.emission_line_search.html" title="skxray.constants.emission_line_search"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="fitting/model/physics_peak.html" title="fitting.model.physics_peak Module"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">API</a> &raquo;</li> 
       </ul>
     </div>  
@@ -59,7 +56,7 @@
           <div class="body" role="main">
             
   <div class="section" id="constants-module">
-<h1><code class="xref py py-mod docutils literal"><span class="pre">constants</span></code> Module<a class="headerlink" href="#constants-module" title="Permalink to this headline">¶</a></h1>
+<h1><tt class="xref py py-mod docutils literal"><span class="pre">constants</span></tt> Module<a class="headerlink" href="#constants-module" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="elemental-data">
 <h2>Elemental data<a class="headerlink" href="#elemental-data" title="Permalink to this headline">¶</a></h2>
 <p>Tools for working with elemental constants.</p>
@@ -69,10 +66,10 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.constants.emission_line_search.html#nsls2.constants.emission_line_search" title="nsls2.constants.emission_line_search"><code class="xref py py-obj docutils literal"><span class="pre">emission_line_search</span></code></a>(line_e,&nbsp;delta_e,&nbsp;...[,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/skxray.constants.emission_line_search.html#skxray.constants.emission_line_search" title="skxray.constants.emission_line_search"><tt class="xref py py-obj docutils literal"><span class="pre">emission_line_search</span></tt></a>(line_e,&nbsp;delta_e,&nbsp;...[,&nbsp;...])</td>
 <td>Find elements which have an emission line near an energy</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.constants.Element.html#nsls2.constants.Element" title="nsls2.constants.Element"><code class="xref py py-obj docutils literal"><span class="pre">Element</span></code></a>(element)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/skxray.constants.Element.html#skxray.constants.Element" title="skxray.constants.Element"><tt class="xref py py-obj docutils literal"><span class="pre">Element</span></tt></a>(element)</td>
 <td>Object to return all the elemental information</td>
 </tr>
 </tbody>
@@ -83,17 +80,17 @@
 provides a programmatic interface to x-ray fluorescence constants.  We
 provide dictionary-like wrapping classes to provide easy access to the
 data.  For the most part users should access this data through the
-<a class="reference internal" href="generated/nsls2.constants.Element.html#nsls2.constants.Element" title="nsls2.constants.Element"><code class="xref py py-obj docutils literal"><span class="pre">Element</span></code></a> object which manages the creation and access to these objects.</p>
+<a class="reference internal" href="generated/skxray.constants.Element.html#skxray.constants.Element" title="skxray.constants.Element"><tt class="xref py py-obj docutils literal"><span class="pre">Element</span></tt></a> object which manages the creation and access to these objects.</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.constants.XrayLibWrap.html#nsls2.constants.XrayLibWrap" title="nsls2.constants.XrayLibWrap"><code class="xref py py-obj docutils literal"><span class="pre">XrayLibWrap</span></code></a>(element,&nbsp;info_type)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/skxray.constants.XrayLibWrap.html#skxray.constants.XrayLibWrap" title="skxray.constants.XrayLibWrap"><tt class="xref py py-obj docutils literal"><span class="pre">XrayLibWrap</span></tt></a>(element,&nbsp;info_type)</td>
 <td>High-level interface to xraylib.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.constants.XrayLibWrap_Energy.html#nsls2.constants.XrayLibWrap_Energy" title="nsls2.constants.XrayLibWrap_Energy"><code class="xref py py-obj docutils literal"><span class="pre">XrayLibWrap_Energy</span></code></a>(element,&nbsp;info_type,&nbsp;...)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/skxray.constants.XrayLibWrap_Energy.html#skxray.constants.XrayLibWrap_Energy" title="skxray.constants.XrayLibWrap_Energy"><tt class="xref py py-obj docutils literal"><span class="pre">XrayLibWrap_Energy</span></tt></a>(element,&nbsp;info_type,&nbsp;...)</td>
 <td>This is an interface to wrap xraylib to perform calculation on fluorescence cross section, or other incident energy related quantity.</td>
 </tr>
 </tbody>
@@ -108,16 +105,16 @@ data.  For the most part users should access this data through the
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.constants.calibration_standards.html#nsls2.constants.calibration_standards" title="nsls2.constants.calibration_standards"><code class="xref py py-obj docutils literal"><span class="pre">calibration_standards</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/skxray.constants.calibration_standards.html#skxray.constants.calibration_standards" title="skxray.constants.calibration_standards"><tt class="xref py py-obj docutils literal"><span class="pre">calibration_standards</span></tt></a></td>
 <td>Calibration standards</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.constants.PowderStandard.html#nsls2.constants.PowderStandard" title="nsls2.constants.PowderStandard"><code class="xref py py-obj docutils literal"><span class="pre">PowderStandard</span></code></a>(name,&nbsp;reflections)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/skxray.constants.PowderStandard.html#skxray.constants.PowderStandard" title="skxray.constants.PowderStandard"><tt class="xref py py-obj docutils literal"><span class="pre">PowderStandard</span></tt></a>(name,&nbsp;reflections)</td>
 <td>Class for providing safe access to powder calibration standards data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/nsls2.constants.Reflection.html#nsls2.constants.Reflection" title="nsls2.constants.Reflection"><code class="xref py py-obj docutils literal"><span class="pre">Reflection</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/skxray.constants.Reflection.html#skxray.constants.Reflection" title="skxray.constants.Reflection"><tt class="xref py py-obj docutils literal"><span class="pre">Reflection</span></tt></a></td>
 <td>Namedtuple sub-class for scattering reflection information</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/nsls2.constants.HKL.html#nsls2.constants.HKL" title="nsls2.constants.HKL"><code class="xref py py-obj docutils literal"><span class="pre">HKL</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="generated/skxray.constants.HKL.html#skxray.constants.HKL" title="skxray.constants.HKL"><tt class="xref py py-obj docutils literal"><span class="pre">HKL</span></tt></a></td>
 <td>Namedtuple sub-class miller indicies (HKL)</td>
 </tr>
 </tbody>
@@ -148,7 +145,7 @@ data.  For the most part users should access this data through the
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">constants</span></code> Module</a><ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">constants</span></tt> Module</a><ul>
 <li><a class="reference internal" href="#elemental-data">Elemental data</a><ul>
 <li><a class="reference internal" href="#x-ray-fluorescence-data">X-ray fluorescence data</a></li>
 </ul>
@@ -163,10 +160,10 @@ data.  For the most part users should access this data through the
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="fitting/model/physics_peak.html"
-                        title="previous chapter"><code class="docutils literal"><span class="pre">fitting.model.physics_peak</span></code> Module</a></p>
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">fitting.model.physics_peak</span></tt> Module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="generated/nsls2.constants.emission_line_search.html"
-                        title="next chapter">nsls2.constants.emission_line_search</a></p>
+  <p class="topless"><a href="generated/skxray.constants.emission_line_search.html"
+                        title="next chapter">skxray.constants.emission_line_search</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -201,21 +198,18 @@ data.  For the most part users should access this data through the
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="generated/nsls2.constants.emission_line_search.html" title="nsls2.constants.emission_line_search"
+          <a href="generated/skxray.constants.emission_line_search.html" title="skxray.constants.emission_line_search"
              >next</a> |</li>
         <li class="right" >
           <a href="fitting/model/physics_peak.html" title="fitting.model.physics_peak Module"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >API</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>

@@ -1,0 +1,6 @@
+skxray.constants.HKL.length
+===========================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: HKL.length

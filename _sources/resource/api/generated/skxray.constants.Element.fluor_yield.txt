@@ -1,0 +1,6 @@
+skxray.constants.Element.fluor_yield
+====================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.fluor_yield

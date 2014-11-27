@@ -1,0 +1,6 @@
+skxray.constants.PowderStandard.reflections
+===========================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: PowderStandard.reflections

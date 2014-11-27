@@ -1,0 +1,6 @@
+skxray.core.verbosedict.viewitems
+=================================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: verbosedict.viewitems

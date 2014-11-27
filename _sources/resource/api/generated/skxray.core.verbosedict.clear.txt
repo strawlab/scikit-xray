@@ -1,0 +1,6 @@
+skxray.core.verbosedict.clear
+=============================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: verbosedict.clear

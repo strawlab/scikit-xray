@@ -1,6 +1,0 @@
-nsls2.core.bin_image_to_1D
-==========================
-
-.. currentmodule:: nsls2.core
-
-.. autofunction:: bin_image_to_1D

@@ -1,0 +1,6 @@
+skxray.core.verbosedict.fromkeys
+================================
+
+.. currentmodule:: skxray.core
+
+.. automethod:: verbosedict.fromkeys

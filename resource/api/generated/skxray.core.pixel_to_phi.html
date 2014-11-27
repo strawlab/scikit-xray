@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>skxray.core.pixel_to_phi &mdash; scikit-xray 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="scikit-xray 0 documentation" href="../../../index.html" />
+    <link rel="up" title="core Module" href="../core.html" />
+    <link rel="prev" title="skxray.core.pixel_to_radius" href="skxray.core.pixel_to_radius.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.pixel_to_radius.html" title="skxray.core.pixel_to_radius"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" accesskey="U"><tt class="docutils literal"><span class="pre">core</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="skxray-core-pixel-to-phi">
+<h1>skxray.core.pixel_to_phi<a class="headerlink" href="#skxray-core-pixel-to-phi" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="skxray.core.pixel_to_phi">
+<tt class="descclassname">skxray.core.</tt><tt class="descname">pixel_to_phi</tt><span class="sig-paren">(</span><em>shape</em>, <em>calibrated_center</em>, <em>pixel_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/skxray/core.html#pixel_to_phi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.core.pixel_to_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts pixel positions to <span class="math">\(\phi\)</span>, the angle from vertical.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>shape</strong> : tuple</p>
+<blockquote>
+<div><p>The shape of the image (nrow, ncol) to warp
+the coordinates of</p>
+</div></blockquote>
+<p><strong>calibrated_center</strong> : tuple</p>
+<blockquote>
+<div><p>The center in pixels-units (row, col)</p>
+</div></blockquote>
+<p><strong>pixel_size</strong> : tuple, optional</p>
+<blockquote>
+<div><p>The size of a pixel (really the pitch) in real units. (height, width).</p>
+<p>Defaults to 1 pixel/pixel if not specified.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>phi</strong> : array</p>
+<blockquote class="last">
+<div><p><span class="math">\(\phi\)</span>, the angle from the vertical axis.
+<span class="math">\(\phi \el [-\pi, \pi]\)</span></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="skxray.core.pixel_to_radius.html"
+                        title="previous chapter">skxray.core.pixel_to_radius</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/resource/api/generated/skxray.core.pixel_to_phi.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.core.pixel_to_radius.html" title="skxray.core.pixel_to_radius"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../core.html" ><tt class="docutils literal"><span class="pre">core</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>skxray.constants.PowderStandard &mdash; scikit-xray 0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="scikit-xray 0 documentation" href="../../../index.html" />
+    <link rel="up" title="constants Module" href="../constants.html" />
+    <link rel="next" title="skxray.constants.PowderStandard.name" href="skxray.constants.PowderStandard.name.html" />
+    <link rel="prev" title="skxray.constants.calibration_standards" href="skxray.constants.calibration_standards.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.constants.PowderStandard.name.html" title="skxray.constants.PowderStandard.name"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="skxray.constants.calibration_standards.html" title="skxray.constants.calibration_standards"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../constants.html" accesskey="U"><tt class="docutils literal"><span class="pre">constants</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="skxray-constants-powderstandard">
+<h1>skxray.constants.PowderStandard<a class="headerlink" href="#skxray-constants-powderstandard" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="skxray.constants.PowderStandard">
+<em class="property">class </em><tt class="descclassname">skxray.constants.</tt><tt class="descname">PowderStandard</tt><span class="sig-paren">(</span><em>name</em>, <em>reflections</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/skxray/constants.html#PowderStandard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.constants.PowderStandard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for providing safe access to powder calibration standards
+data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>Name of the standard</p>
+</div></blockquote>
+<p><strong>reflections</strong> : list</p>
+<blockquote class="last">
+<div><p>A list of (d, (h, k, l), q) values.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="skxray.constants.PowderStandard.name.html#skxray.constants.PowderStandard.name" title="skxray.constants.PowderStandard.name"><tt class="xref py py-obj docutils literal"><span class="pre">name</span></tt></a></td>
+<td>Name of the calibration standard</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.constants.PowderStandard.reflections.html#skxray.constants.PowderStandard.reflections" title="skxray.constants.PowderStandard.reflections"><tt class="xref py py-obj docutils literal"><span class="pre">reflections</span></tt></a></td>
+<td>List of the known reflections</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="skxray.constants.PowderStandard.convert_2theta.html#skxray.constants.PowderStandard.convert_2theta" title="skxray.constants.PowderStandard.convert_2theta"><tt class="xref py py-obj docutils literal"><span class="pre">convert_2theta</span></tt></a>(wavelength)</td>
+<td>Convert the measured 2theta values to a different wavelength</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="skxray.constants.PowderStandard.from_d.html#skxray.constants.PowderStandard.from_d" title="skxray.constants.PowderStandard.from_d"><tt class="xref py py-obj docutils literal"><span class="pre">from_d</span></tt></a>(name,&nbsp;d[,&nbsp;hkl])</td>
+<td>Method to construct a PowderStandard object from known <span class="math">\(d\)</span> values.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="skxray.constants.PowderStandard.from_lambda_2theta_hkl.html#skxray.constants.PowderStandard.from_lambda_2theta_hkl" title="skxray.constants.PowderStandard.from_lambda_2theta_hkl"><tt class="xref py py-obj docutils literal"><span class="pre">from_lambda_2theta_hkl</span></tt></a>(name,&nbsp;wavelength,&nbsp;...)</td>
+<td>Method to construct a PowderStandard object from calibrated <span class="math">\(2\theata\)</span> values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="skxray.constants.calibration_standards.html"
+                        title="previous chapter">skxray.constants.calibration_standards</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="skxray.constants.PowderStandard.name.html"
+                        title="next chapter">skxray.constants.PowderStandard.name</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/resource/api/generated/skxray.constants.PowderStandard.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="skxray.constants.PowderStandard.name.html" title="skxray.constants.PowderStandard.name"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="skxray.constants.calibration_standards.html" title="skxray.constants.calibration_standards"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >API</a> &raquo;</li>
+          <li><a href="../constants.html" ><tt class="docutils literal"><span class="pre">constants</span></tt> Module</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Brookhaven National Lab.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

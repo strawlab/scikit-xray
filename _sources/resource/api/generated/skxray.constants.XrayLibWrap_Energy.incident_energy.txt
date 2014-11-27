@@ -1,0 +1,6 @@
+skxray.constants.XrayLibWrap_Energy.incident_energy
+===================================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: XrayLibWrap_Energy.incident_energy

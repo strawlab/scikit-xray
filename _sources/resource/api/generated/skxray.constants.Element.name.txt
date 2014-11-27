@@ -1,0 +1,6 @@
+skxray.constants.Element.name
+=============================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.name

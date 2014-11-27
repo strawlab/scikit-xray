@@ -1,0 +1,6 @@
+skxray.constants.Element.bind_energy
+====================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.bind_energy

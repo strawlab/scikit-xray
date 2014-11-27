@@ -1,0 +1,6 @@
+skxray.constants.Element.emission_line
+======================================
+
+.. currentmodule:: skxray.constants
+
+.. autoattribute:: Element.emission_line

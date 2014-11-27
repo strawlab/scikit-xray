@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>calibration Module &mdash; NSLS2 0 documentation</title>
+    <title>calibration Module &mdash; scikit-xray 0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -24,10 +24,10 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="NSLS2 0 documentation" href="../../index.html" />
+    <link rel="top" title="scikit-xray 0 documentation" href="../../index.html" />
     <link rel="up" title="API" href="index.html" />
     <link rel="next" title="Development Guide" href="../dev_guide/index.html" />
-    <link rel="prev" title="nsls2.constants.HKL.index" href="generated/nsls2.constants.HKL.index.html" /> 
+    <link rel="prev" title="skxray.constants.HKL.index" href="generated/skxray.constants.HKL.index.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -40,15 +40,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="../dev_guide/index.html" title="Development Guide"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="generated/nsls2.constants.HKL.index.html" title="nsls2.constants.HKL.index"
+          <a href="generated/skxray.constants.HKL.index.html" title="skxray.constants.HKL.index"
              accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">API</a> &raquo;</li> 
       </ul>
     </div>  
@@ -59,7 +56,7 @@
           <div class="body" role="main">
             
   <div class="section" id="calibration-module">
-<h1><code class="xref py py-mod docutils literal"><span class="pre">calibration</span></code> Module<a class="headerlink" href="#calibration-module" title="Permalink to this headline">¶</a></h1>
+<h1><tt class="xref py py-mod docutils literal"><span class="pre">calibration</span></tt> Module<a class="headerlink" href="#calibration-module" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="demos">
 <h2>Demos<a class="headerlink" href="#demos" title="Permalink to this headline">¶</a></h2>
 <blockquote>
@@ -67,10 +64,10 @@
 <li>Basic auto-centering and calibration <a class="reference external" href="http://nbviewer.ipython.org/github/tacaswell/Demos/blob/calib_demo/demos/notebooks/2014-09-15_calibration/D_estimate_demo.ipynb">(notebook)</a></li>
 </ul>
 </div></blockquote>
-<span class="target" id="module-nsls2.calibration"></span><p>This is the module for calibration functions and data</p>
+<span class="target" id="module-skxray.calibration"></span><p>This is the module for calibration functions and data</p>
 <dl class="function">
-<dt id="nsls2.calibration.estimate_d_blind">
-<code class="descclassname">nsls2.calibration.</code><code class="descname">estimate_d_blind</code><span class="sig-paren">(</span><em>name</em>, <em>wavelength</em>, <em>bin_centers</em>, <em>ring_average</em>, <em>window_size</em>, <em>max_peak_count</em>, <em>thresh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/calibration.html#estimate_d_blind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.calibration.estimate_d_blind" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.calibration.estimate_d_blind">
+<tt class="descclassname">skxray.calibration.</tt><tt class="descname">estimate_d_blind</tt><span class="sig-paren">(</span><em>name</em>, <em>wavelength</em>, <em>bin_centers</em>, <em>ring_average</em>, <em>window_size</em>, <em>max_peak_count</em>, <em>thresh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/calibration.html#estimate_d_blind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.calibration.estimate_d_blind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimate the sample-detector distance</p>
 <p>Given a radially integrated calibration image return an estimate for
 the sample-detector distance.  This function does not require a
@@ -140,8 +137,8 @@ from all of the peaks used.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nsls2.calibration.refine_center">
-<code class="descclassname">nsls2.calibration.</code><code class="descname">refine_center</code><span class="sig-paren">(</span><em>image</em>, <em>calibrated_center</em>, <em>pixel_size</em>, <em>phi_steps</em>, <em>max_peaks</em>, <em>thresh</em>, <em>window_size</em>, <em>nx=None</em>, <em>min_x=None</em>, <em>max_x=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/nsls2/calibration.html#refine_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nsls2.calibration.refine_center" title="Permalink to this definition">¶</a></dt>
+<dt id="skxray.calibration.refine_center">
+<tt class="descclassname">skxray.calibration.</tt><tt class="descname">refine_center</tt><span class="sig-paren">(</span><em>image</em>, <em>calibrated_center</em>, <em>pixel_size</em>, <em>phi_steps</em>, <em>max_peaks</em>, <em>thresh</em>, <em>window_size</em>, <em>nx=None</em>, <em>min_x=None</em>, <em>max_x=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/skxray/calibration.html#refine_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#skxray.calibration.refine_center" title="Permalink to this definition">¶</a></dt>
 <dd><p>Refines the location of the center of the beam.</p>
 <p>This relies on being able to see the whole powder pattern.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -211,15 +208,15 @@ from all of the peaks used.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">calibration</span></code> Module</a><ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">calibration</span></tt> Module</a><ul>
 <li><a class="reference internal" href="#demos">Demos</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="generated/nsls2.constants.HKL.index.html"
-                        title="previous chapter">nsls2.constants.HKL.index</a></p>
+  <p class="topless"><a href="generated/skxray.constants.HKL.index.html"
+                        title="previous chapter">skxray.constants.HKL.index</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../dev_guide/index.html"
                         title="next chapter">Development Guide</a></p>
@@ -257,21 +254,18 @@ from all of the peaks used.</p>
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="../dev_guide/index.html" title="Development Guide"
              >next</a> |</li>
         <li class="right" >
-          <a href="generated/nsls2.constants.HKL.index.html" title="nsls2.constants.HKL.index"
+          <a href="generated/skxray.constants.HKL.index.html" title="skxray.constants.HKL.index"
              >previous</a> |</li>
-        <li><a href="../../index.html">NSLS2 0 documentation</a> &raquo;</li>
+        <li><a href="../../index.html">scikit-xray 0 documentation</a> &raquo;</li>
           <li><a href="index.html" >API</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Brookhaven National Lab.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
     </div>
   </body>
 </html>
