@@ -11,6 +11,30 @@ to write the image data set back in AmiraMesh file format.
 import numpy as np
 import os
 import logging
+import re
+
+def decode_rle( d, uncompressed_size ):
+    # based on decode.rle from nat's amiramesh-io.R
+    d = np.fromstring(d, dtype=np.uint8 )
+    rval = np.empty( (uncompressed_size,), dtype=np.uint8 )
+    bytes_read = 0
+    filepos = 0
+    while bytes_read < uncompressed_size:
+        x=d[filepos]
+        if x==0:
+            raise ValueError('x is 0 at %d'%filepos)
+        filepos += 1
+
+        if x > 0x7f:
+            x = (x & 0x7f)
+            mybytes=d[filepos:filepos+x]
+            filepos += x
+        else:
+            mybytes=np.repeat(d[filepos],x)
+            filepos += 1
+        rval[bytes_read:bytes_read+len(mybytes)] = mybytes
+        bytes_read += len(mybytes)
+    return rval
 
 def _read_amira(src_file):
     """
@@ -117,15 +141,40 @@ def _amira_data_to_numpy(am_data, header_dict, flip_z=True):
     # format or ASCII format. These format types require different stripping 
     # tools and different string conversion tools.
     if header_dict['data_format'] == 'BINARY-LITTLE-ENDIAN':
+        assert header_dict['encoding'] == 'raw'
         data_strip = am_data.strip('\n')
         flt_values = np.fromstring(data_strip, 
                                    (am_format_dict[header_dict['data_format']] + 
                                        am_dtype_dict[header_dict['data_type']]))
-    if header_dict['data_format'] == 'ASCII':
+    elif header_dict['data_format'] == 'BINARY':
+        if header_dict['encoding'] == 'raw':
+            if header_dict['data_type'] != 'byte':
+                raise NotImplementedError('unsupported data type %r for format %r'%(
+                    header_dict['data_type'],header_dict['data_format']))
+            data_strip = am_data.strip('\n')
+        else:
+            enc = header_dict['encoding']
+            enc_re = re.compile(r'@1\(HxByteRLE,?(\d+)\)')
+            matchobj = enc_re.match( enc )
+            assert matchobj is not None
+            num_bytes = int(matchobj.groups()[0])
+
+            data_rle = am_data.strip('\n')
+            assert len(data_rle)==num_bytes
+
+            assert header_dict['data_type'] == 'byte'
+            uncompressed_size = Zdim*Ydim*Xdim
+            data_strip = decode_rle( data_rle, uncompressed_size )
+        flt_values = np.fromstring(data_strip, dtype=np.uint8) # only tested with bytes
+
+    elif header_dict['data_format'] == 'ASCII':
+        assert header_dict['encoding'] == 'raw'
         data_strip = am_data.translate(None, '\n')
         string_list = data_strip.split(" ")
         string_list = string_list[0:(len(string_list)-2)]
         flt_values = np.array(string_list).astype(am_dtype_dict[header_dict['data_type']])
+    else:
+        raise NotImplementedError('unknown data_format: %r'%header_dict['data_format'])
     # Resize the 1D array to the correct ndarray dimensions
     flt_values.resize(Zdim, Ydim, Xdim)
     if flip_z == True:
@@ -260,6 +309,21 @@ def _create_md_dict(clean_header):
         elif 'Coordinates' in header_line:
             md_dict['coordinates'] = str(header_line[header_line
                     .index('Coordinates') + 1])
+        elif len(header_line)>=1 and header_line[0]=='Lattice':
+            usual = ['Lattice', '{', 'byte', 'Data', '}', '@1']
+            is_usual=True
+            for i in range(len(usual)):
+                if usual[i]!=header_line[i]:
+                    is_usual=False
+            if is_usual:
+                md_dict['encoding'] = 'raw'
+            else:
+                # e.g. ['Lattice', '{', 'byte', 'Labels', '}', '@1(HxByteRLE1803306)']
+                assert header_line[1]=='{'
+                assert header_line[2]=='byte'
+                assert header_line[3]=='Labels'
+                assert header_line[4]=='}'
+                md_dict['encoding'] = header_line[5]
     return md_dict
 
 
